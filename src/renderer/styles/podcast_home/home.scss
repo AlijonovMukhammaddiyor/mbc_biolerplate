@@ -1,0 +1,10 @@
+@import "../general/general";
+
+.podcasts__home__container {
+	position: relative;
+	width: 100%;
+	height: calc(100% - 46px);
+	min-height: calc(100% - 46px);
+	@include flex($dir: column, $gap: 0, $just: flex-start);
+	overflow: hidden;
+}

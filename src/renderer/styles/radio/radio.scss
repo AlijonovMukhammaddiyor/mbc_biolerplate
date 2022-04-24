@@ -1,0 +1,37 @@
+@import "../general/general";
+
+.radio__container {
+  width: $radio_width_1080_more_pc;
+  height: 100%;
+  position: relative;
+  display: grid;
+  grid-template-columns: $radio_width_1080_more_pc;
+  grid-template-rows: 100px 17px auto 17px 1fr;
+  background-color: #dedede;
+  border-right: 1px solid hsl(0, 0%, 90%);
+
+  @include media_1080_768_pc {
+    grid-template-columns: repeat(1, 100%);
+    width: $radio_width_768_more_pc;
+    flex-basis: 100%;
+  }
+
+  .extra1 {
+    background-color: #7742cc;
+  }
+}
+
+.no__image {
+  grid-template-rows: 100px 17px auto 0px 1fr;
+}
+
+.radio__container.is__tablet {
+  flex-basis: $radio_width_768_more_tablet;
+  width: $radio_width_768_more_tablet;
+  height: 100%;
+
+  @media (min-width: 1080px) {
+    width: $radio_width_1080_tablet;
+    flex-basis: 420px;
+  }
+}

@@ -1,0 +1,36 @@
+@import "../general/general";
+
+.info__container {
+  width: $info_width_1080_more_pc;
+  height: 100%;
+  @include flex($just: center);
+
+  @include media_1080_768_pc {
+    display: none;
+  }
+
+  button {
+    background-color: $main_color;
+    padding: 10px 15px;
+    border: none;
+    color: white;
+    font-size: 18px;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+}
+
+.info__container.is__tablet {
+  flex-basis: $info_width_768_more_tablet;
+  width: $info_width_768_more_tablet;
+  height: 100%;
+  @include flex($just: center);
+
+  @include media_1080_768_pc {
+    @include flex($just: center);
+  }
+  @media (min-width: 1080px) {
+    flex-basis: 660px;
+    width: $info_width_1080_tablet;
+  }
+}

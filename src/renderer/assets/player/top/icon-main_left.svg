@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16.74" height="29.017" viewBox="0 0 16.74 29.017">
+    <defs>
+        <style>
+            .cls-2{fill:#fff}
+        </style>
+    </defs>
+    <g id="icon_main" style="opacity:.9">
+        <rect id="사각형_12" data-name="사각형 12" class="cls-2" width="20.283" height="3.391" rx="1.695" transform="rotate(-45 17.312 7.171)"/>
+        <rect id="사각형_13" data-name="사각형 13" class="cls-2" width="20.283" height="3.391" rx="1.695" transform="rotate(45 -13.62 9.033)"/>
+    </g>
+</svg>

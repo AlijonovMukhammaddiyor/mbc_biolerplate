@@ -1,0 +1,52 @@
+@import '../general/general.scss';
+
+.podcast__share__container {
+  position: absolute;
+  width: 360px;
+  height: 150px;
+  top: 30%;
+  left: 2rem;
+  background-color: #f8f8f8;
+  border-radius: 10px;
+  box-shadow: 0px 0px 4px 0 rgba(0, 0, 0, 0.16);
+  @include flex($dir: column, $gap: 23.5px, $just: flex-start);
+  padding: 16px;
+
+  .icon__close {
+    position: absolute;
+    cursor: pointer;
+    top: 15px;
+    right: 15px;
+    width: 13.5px;
+    height: 13.5px;
+    object-fit: contain;
+  }
+
+  .title {
+    @include font($color: #0e0e0e, $size: 14px);
+  }
+
+  .url {
+    width: 100%;
+    @include flex();
+    padding: 0 10px;
+    @include font($color: $main_color);
+
+    input {
+      width: 232px;
+      height: 30px;
+      outline: none;
+      @include font($color: #0e0e0e);
+    }
+  }
+
+  .copy__btn {
+    width: 74px;
+    height: 30px;
+    border-radius: 4px;
+    @include font($weight: $light, $size: $small_font);
+    background-color: $main_color;
+    border: none;
+    cursor: pointer;
+  }
+}

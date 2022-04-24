@@ -1,0 +1,68 @@
+@import '../general/general.scss';
+
+.message__write__container {
+  height: 49px !important;
+  height: 49px;
+  border-top: 1px solid #d3d3d3;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  @include flex($just: space-between);
+  z-index: 11;
+
+  input,
+  button {
+    height: 100%;
+  }
+
+  .register {
+    width: 75px;
+    height: calc(100% + 2px);
+    color: white;
+    background-color: #333;
+    border: none;
+    cursor: pointer;
+  }
+
+  .text {
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.57;
+    letter-spacing: -0.28px;
+    text-align: left;
+    outline: none;
+    border: none;
+    width: 100%;
+    padding: 0 10px 0 32px;
+    @include font($weight: $light, $size: $small_font, $color: #484848);
+
+    button {
+      border: none;
+      background-color: transparent;
+      margin-right: 5px;
+    }
+    p {
+      cursor: pointer;
+      text-decoration: underline;
+      display: inline-block;
+      color: $main_color;
+      font-weight: 400;
+    }
+
+    &::placeholder {
+      color: $main_color;
+    }
+
+    &:focus {
+      &::placeholder {
+        color: transparent;
+      }
+    }
+  }
+
+  .is__user {
+    background-color: $main_color;
+    color: white;
+  }
+}

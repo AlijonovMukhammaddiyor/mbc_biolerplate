@@ -1,0 +1,82 @@
+@import "../general/general.scss";
+
+.subpodcast__play__speed {
+	width: 60px;
+	height: 45px;
+	position: relative;
+
+	.speed__inner {
+		position: absolute;
+		width: 100%;
+		border-radius: 10px;
+		padding: 8.5px 0;
+		height: 100%;
+		top: 0;
+		left: 0;
+		@include flex($dir: column, $just: space-between);
+		@include animation($time: 0.2s, $type: ease-in-out);
+
+		.current__speed {
+			position: absolute;
+			top: 16px;
+			@include font($weight: $light, $size: 10px);
+			@include flex($just: center, $gap: 2px, $dir: row);
+
+			.speed__hover__arrow {
+				// margin-top: 1px;
+				width: 6px;
+				height: 6px;
+				object-fit: contain;
+				transform: rotate(180deg);
+			}
+		}
+
+		.speed__icon {
+			cursor: pointer;
+			width: 42.1px;
+			height: 30.5px;
+			// margin-top: 6px;
+			object-fit: contain;
+		}
+
+		.speed__option {
+			display: none;
+			width: 100%;
+			text-align: center;
+			border-radius: 10px;
+			height: 18px;
+			padding-top: 3px;
+			@include animation($time: 0.2s, $type: ease-in-out);
+			@include font($weight: $light, $size: $xsmal_font);
+			cursor: pointer;
+		}
+		.one_two {
+			font-size: 11px;
+			left: 18px;
+			top: 16px;
+			margin-left: 2px;
+		}
+	}
+}
+
+.speed-hover {
+	padding-bottom: 0;
+	.speed__inner {
+		background-color: #955cf1;
+		height: 159px;
+		z-index: 10;
+		@include animation($time: 0.2s, $type: ease-in-out);
+
+		.speed__hover__arrow {
+			display: block;
+		}
+		.speed__option {
+			display: block;
+
+			&:hover {
+				color: $main_color;
+				background-color: #ffffffdc;
+			}
+		}
+	}
+}

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="66" height="66" viewBox="0 0 66 66">
+    <g transform="translate(-177.411 -.207)">
+        <g data-name="패스 238" style="fill:none">
+            <path d="M33 0A33 33 0 1 1 0 33 33 33 0 0 1 33 0z" style="stroke:none" transform="translate(177.411 .207)"/>
+            <path d="M33 2a30.9 30.9 0 0 0-21.92 9.08A30.9 30.9 0 0 0 2 33a30.9 30.9 0 0 0 9.08 21.92A30.9 30.9 0 0 0 33 64a30.9 30.9 0 0 0 21.92-9.08A30.9 30.9 0 0 0 64 33a30.9 30.9 0 0 0-9.08-21.92A30.9 30.9 0 0 0 33 2m0-2c18.225 0 33 14.775 33 33S51.225 66 33 66 0 51.225 0 33 14.775 0 33 0z" style="fill:#ebebeb;stroke:none" transform="translate(177.411 .207)"/>
+        </g>
+        <rect data-name="사각형 16" width="5" height="18" rx="2.5" transform="translate(202.411 24.207)" style="fill:#ebebeb"/>
+        <rect data-name="사각형 17" width="5" height="18" rx="2.5" transform="translate(213.411 24.207)" style="fill:#ebebeb"/>
+    </g>
+</svg>

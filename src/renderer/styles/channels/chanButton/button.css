@@ -1,0 +1,81 @@
+* {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "MBCNEW";
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: auto;
+  height: 100%;
+  background: -webkit-gradient(linear, left top, left bottom, from(#3e3e5a), to(#333333));
+  background: linear-gradient(to bottom, #3e3e5a, #333333);
+}
+
+@media screen and (max-width: 1080px) {
+  body {
+    display: block;
+    height: auto;
+  }
+}
+
+svg {
+  font-family: 'MBCNEW';
+}
+
+.channel__button .channel__btn {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  width: 81px;
+  padding: 4px 13px;
+  border-radius: 1rem;
+  font-family: "MBCNEW";
+  font-size: 14px;
+  color: #fff;
+  font-weight: 300;
+  -webkit-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 100;
+}
+
+.channel__button .channel__btn:hover {
+  background-color: #ad85ee;
+}
+
+.channel__button #current__channel {
+  background-color: #7742cc;
+  font-family: "MBCNEW";
+  font-size: 14px;
+  color: #fff;
+  font-weight: 400;
+}
+
+.channel__button .podcast__in {
+  color: #7742cc;
+}
+
+.channel__button .podcast__in#current__channel {
+  background-color: #7742cc;
+  color: white;
+}
+/*# sourceMappingURL=button.css.map */

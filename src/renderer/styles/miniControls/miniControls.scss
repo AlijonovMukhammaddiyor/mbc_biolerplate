@@ -1,0 +1,26 @@
+@import '../general/general.scss';
+
+.mini__controls__container {
+  height: 70px;
+  background-color: #ebebeb;
+  width: 100%;
+  padding: 15px 30px;
+  @include flex();
+
+  .left {
+    flex-basis: calc(100% - 80px);
+    max-width: calc(100% - 80px);
+    overflow: hidden;
+    @include flex($just: flex-start, $gap: 16px);
+  }
+
+  .right {
+    flex-basis: calc(61px);
+    @include flex($just: flex-end, $gap: 20px);
+    .toggle__message__icon {
+      width: 22px;
+      height: 20px;
+      object-fit: contain;
+    }
+  }
+}

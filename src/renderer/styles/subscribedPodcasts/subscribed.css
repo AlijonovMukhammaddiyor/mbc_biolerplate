@@ -1,0 +1,139 @@
+* {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "MBCNEW";
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: auto;
+  height: 100%;
+  background: -webkit-gradient(linear, left top, left bottom, from(#3e3e5a), to(#333333));
+  background: linear-gradient(to bottom, #3e3e5a, #333333);
+}
+
+@media screen and (max-width: 1080px) {
+  body {
+    display: block;
+    height: auto;
+  }
+}
+
+svg {
+  font-family: 'MBCNEW';
+}
+
+.subscribed__podcasts {
+  width: 100%;
+  padding: 14px 22px 15px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 16px;
+  overflow: hidden;
+  border-bottom: 1px solid #ebebeb;
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
+  height: 175px;
+  max-height: 175px;
+  min-height: 175px;
+}
+
+.subscribed__podcasts .title {
+  width: 100%;
+}
+
+.subscribed__podcasts .title p {
+  text-align: left;
+  font-family: "MBCNEW";
+  font-size: 14px;
+  color: #333;
+  font-weight: 400;
+}
+
+.subscribed__podcasts .podcasts__carousel {
+  width: 100%;
+}
+
+.subscribed__podcasts .no__podcasts {
+  font-family: "MBCNEW";
+  font-size: 14px;
+  color: #707070;
+  font-weight: 300;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: auto;
+  min-height: 101px;
+}
+
+.subscribed__podcasts .not__subscribed {
+  font-family: "MBCNEW";
+  font-size: 14px;
+  color: #707070;
+  font-weight: 300;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: auto;
+  min-height: 101px;
+}
+
+.subscribed__podcasts .not__subscribed span {
+  padding: 3px;
+  color: #7742cc;
+  text-decoration: underline;
+  cursor: pointer;
+}
+/*# sourceMappingURL=subscribed.css.map */

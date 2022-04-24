@@ -1,0 +1,78 @@
+* {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "MBCNEW";
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: auto;
+  height: 100%;
+  background: -webkit-gradient(linear, left top, left bottom, from(#3e3e5a), to(#333333));
+  background: linear-gradient(to bottom, #3e3e5a, #333333);
+}
+
+@media screen and (max-width: 1080px) {
+  body {
+    display: block;
+    height: auto;
+  }
+}
+
+svg {
+  font-family: 'MBCNEW';
+}
+
+.program__image__container {
+  -ms-grid-row: 1;
+  -ms-grid-row-span: 2;
+  grid-row: 1/3;
+  -ms-grid-column: 1;
+  grid-column: 1;
+  background-repeat: no-repeat;
+  background-size: 100% auto;
+  background-color: black;
+  overflow: hidden;
+  position: relative;
+  background-position: 50% 20%;
+}
+
+.program__image__container .background__image.is_vod {
+  opacity: 0.2;
+}
+
+.program__image__container .to_left__icon,
+.program__image__container .to_right__icon {
+  width: 16.7px;
+  height: 29px;
+  -o-object-fit: contain;
+     object-fit: contain;
+  position: absolute;
+  top: 50%;
+  left: 15px;
+  cursor: pointer;
+}
+
+.program__image__container .to_right__icon {
+  left: auto;
+  right: 15px;
+}
+/*# sourceMappingURL=image.css.map */

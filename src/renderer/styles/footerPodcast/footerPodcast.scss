@@ -1,0 +1,37 @@
+@import "../general/general.scss";
+
+.footer__podcast {
+	margin-top: 8px;
+	width: 100%;
+	@include flex($just: space-between);
+	padding: 10px 30px 0;
+
+	.footer__left {
+		img {
+			cursor: pointer;
+		}
+		@include flex($just: flex-start, $gap: 35px);
+		@include font($weight: $light, $size: 12px);
+		.footer__share {
+			@include flex($just: center, $gap: 5px, $dir: row);
+		}
+
+		.footer__like {
+			@include flex($just: center, $gap: 5px, $dir: row);
+			img {
+				width: 20.2px;
+				height: 18.2px;
+				object-fit: contain;
+			}
+		}
+	}
+
+	.footer__right {
+		img {
+			cursor: pointer;
+			width: 21.6px;
+			height: 14.8px;
+			object-fit: contain;
+		}
+	}
+}

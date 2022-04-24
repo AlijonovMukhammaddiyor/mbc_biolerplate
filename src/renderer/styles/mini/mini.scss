@@ -1,0 +1,13 @@
+@import '../general/general.scss';
+
+.minimized__container {
+  background-color: #ebebeb;
+  height: 600px;
+  width: 420px;
+  @include flex($just: flex-start, $dir: column, $gap: 0);
+  position: relative;
+}
+
+.minimized__container.message_closed {
+  height: 110px;
+}

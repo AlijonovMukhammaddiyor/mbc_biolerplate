@@ -1,0 +1,16 @@
+@import '../general/general.scss';
+
+.play__pause__container {
+  .play__icon {
+    border-radius: 50%;
+    width: 64px;
+    height: 64px;
+    cursor: pointer;
+    object-fit: contain;
+  }
+
+  .play__icon.mini {
+    width: 30px;
+    height: 30px;
+  }
+}

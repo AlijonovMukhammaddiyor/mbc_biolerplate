@@ -1,0 +1,254 @@
+* {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "MBCNEW";
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: auto;
+  height: 100%;
+  background: -webkit-gradient(linear, left top, left bottom, from(#3e3e5a), to(#333333));
+  background: linear-gradient(to bottom, #3e3e5a, #333333);
+}
+
+@media screen and (max-width: 1080px) {
+  body {
+    display: block;
+    height: auto;
+  }
+}
+
+svg {
+  font-family: 'MBCNEW';
+}
+
+.audio__controls {
+  height: 60px;
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 8px;
+  margin-inline: auto;
+  background-color: #ebebeb;
+  padding: 0 30px 0;
+}
+
+.audio__controls .volume {
+  margin-bottom: 10px;
+}
+
+.audio__controls .time__progress {
+  -ms-flex-preferred-size: 100%;
+      flex-basis: 100%;
+  margin-top: 10px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 8px;
+}
+
+.audio__controls .time__progress .program__interval {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: auto;
+  width: 100%;
+}
+
+.audio__controls .time__progress .program__interval p {
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.08;
+  letter-spacing: -0.12px;
+  text-align: left;
+  font-family: "MBCNEW";
+  font-size: 12px;
+  color: #3e3e5a;
+  font-weight: 300;
+}
+
+.audio__controls .time__progress .program__interval .start_time__subpodcast,
+.audio__controls .time__progress .program__interval .end_time__subpodcast {
+  color: #fff;
+}
+
+.audio__controls .time__progress .onair__range {
+  --range: calc(var(--max) - var(--min));
+  --ratio: calc((var(--val) - var(--min)) / var(--range));
+  --sx: calc(0.5 *13px + var(--ratio) * (100% - 13px));
+  padding: 0;
+  border-radius: 5px;
+  width: 100%;
+  height: 5px;
+  background: lightgray;
+}
+
+.audio__controls .time__progress .onair__range, .audio__controls .time__progress .onair__range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  -webkit-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
+}
+
+.audio__controls .time__progress .onair__range::-webkit-slider-runnable-track {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  border: none;
+  width: 100%;
+  height: 5px;
+  border-radius: 5px;
+  background: #cccccc;
+}
+
+.js .audio__controls .time__progress .onair__range::-webkit-slider-runnable-track {
+  background: -webkit-gradient(linear, left top, left bottom, from(#7742cc), to(#7742cc)) 0/var(--sx) 100% no-repeat #cccccc;
+  background: linear-gradient(#7742cc, #7742cc) 0/var(--sx) 100% no-repeat #cccccc;
+}
+
+.audio__controls .time__progress .onair__range::-moz-range-track {
+  box-sizing: border-box;
+  border: none;
+  width: 100%;
+  height: 5px;
+  border-radius: 5px;
+  background: #cccccc;
+}
+
+.audio__controls .time__progress .onair__range::-ms-track {
+  box-sizing: border-box;
+  border: none;
+  width: 100%;
+  height: 5px;
+  border-radius: 5px;
+  background: #cccccc;
+}
+
+.audio__controls .time__progress .onair__range::-moz-range-progress {
+  height: 5px;
+  background: #7742cc;
+}
+
+.audio__controls .time__progress .onair__range::-ms-fill-lower {
+  height: 5px;
+  background: #7742cc;
+}
+
+.audio__controls .time__progress .onair__range::-ms-tooltip {
+  display: none;
+}
+
+.audio__controls .time__progress .subpodcast__range {
+  width: 100%;
+  height: 10px;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+.audio__controls .time__progress .subpodcast__range:hover {
+  height: 20px;
+  border-radius: 0;
+}
+
+.audio__controls .time__progress .subpodcast__range .buffered {
+  height: 10px;
+  position: relative;
+  background: #c9c9c9;
+  width: 100%;
+  border-radius: 10px;
+}
+
+.audio__controls .time__progress .subpodcast__range #buffered__amount {
+  display: block;
+  height: 100%;
+  border-radius: 10px;
+  background-color: #b8a2db;
+  width: 0;
+  display: none;
+}
+
+.audio__controls .time__progress .subpodcast__range .progress {
+  margin-top: -10px;
+  height: 100%;
+  border-radius: 10px;
+  position: relative;
+  width: 100%;
+}
+
+.audio__controls .time__progress .subpodcast__range #progress__amount {
+  display: block;
+  height: 100%;
+  border-radius: 10px;
+  background-color: white;
+  width: 0;
+}
+
+.audio__controls .time__progress .subpodcast__range:hover .buffered {
+  height: 20px;
+  border-radius: 0;
+}
+
+.audio__controls .time__progress .subpodcast__range:hover #buffered__amount {
+  display: block;
+  height: 20px;
+  border-radius: 10px;
+  border-radius: 0;
+}
+
+.audio__controls .time__progress .subpodcast__range:hover #progress__amount {
+  margin-top: -20px;
+  border-radius: 0px;
+}
+
+.audio__controls.controls__podcast__in {
+  background-color: #7742cc;
+}
+/*# sourceMappingURL=progressBar.css.map */

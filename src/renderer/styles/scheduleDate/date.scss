@@ -1,0 +1,23 @@
+@import "../general/general";
+
+.schedule__date {
+  min-height: 30px;
+  flex-basis: 30px;
+  width: 100%;
+  padding: 0 22px;
+  margin-top: 13px;
+  @include flex($just: space-between);
+  overflow: hidden;
+
+  img {
+    cursor: pointer;
+  }
+
+  img.disable__pointer {
+    cursor: auto;
+  }
+
+  .date {
+    @include font($color: hsl(240, 16%, 25%), $weight: $light);
+  }
+}

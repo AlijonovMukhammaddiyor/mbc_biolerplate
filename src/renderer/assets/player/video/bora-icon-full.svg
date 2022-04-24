@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+    <defs>
+        <style>
+            .cls-1{fill:none;stroke:#ebebeb;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px}
+        </style>
+    </defs>
+    <g id="bora_icon_full" transform="translate(1.494 .741)">
+        <path id="선_48" data-name="선 48" class="cls-1" transform="translate(-.494 .259)" d="M0 0h6"/>
+        <path id="선_49" data-name="선 49" class="cls-1" transform="translate(-.494 .259)" d="M0 6V0"/>
+        <path id="선_50" data-name="선 50" class="cls-1" transform="translate(19.506 .259)" d="M0 0v6"/>
+        <path id="선_51" data-name="선 51" class="cls-1" transform="translate(12.506 .259)" d="M0 0h7"/>
+        <path id="선_52" data-name="선 52" class="cls-1" transform="translate(-.494 20.259)" d="M0 0h6"/>
+        <path id="선_53" data-name="선 53" class="cls-1" transform="translate(-.494 13.259)" d="M0 0v7"/>
+        <path id="선_54" data-name="선 54" class="cls-1" transform="translate(19.506 13.259)" d="M0 7V0"/>
+        <path id="선_55" data-name="선 55" class="cls-1" transform="translate(12.506 20.259)" d="M0 0h7"/>
+    </g>
+</svg>

@@ -1,0 +1,33 @@
+@import '../general/general.scss';
+
+.mini__navbar__container {
+  height: 40px;
+  width: 100%;
+  background-color: #ebebeb;
+  -webkit-app-region: drag;
+
+  img {
+    -webkit-app-region: no-drag;
+  }
+
+  .top {
+    @include flex();
+    padding: 19px 25px 0;
+    height: 40px;
+
+    img {
+      cursor: pointer;
+      -webkit-app-region: no-drag;
+    }
+
+    .right {
+      width: 100px;
+      @include flex($just: flex-end, $gap: 10.8px);
+    }
+
+    .left {
+      width: 120px;
+      @include flex($just: space-between);
+    }
+  }
+}

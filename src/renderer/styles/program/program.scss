@@ -1,0 +1,142 @@
+@import "../general/general";
+
+.program__container {
+	width: 100%;
+	border-top: 1px solid #ebebeb;
+	@include animation($time: 0.2s);
+	height: var(--val);
+	overflow: hidden;
+
+	#on__air__top {
+		scroll-margin-top: 10px;
+	}
+
+	.top {
+		padding: 16px 28px 16px 22px;
+		width: 100%;
+		height: 52.5px;
+		@include flex($just: space-between, $gap: 14px);
+		.right {
+			width: 15px;
+			img {
+				width: 15px;
+				height: 7.5px;
+				object-fit: contain;
+				cursor: pointer;
+				@include animation($time: 0s);
+			}
+		}
+		.left {
+			overflow: hidden;
+			flex-basis: calc(100% - 30px);
+			width: calc(100% - 30px);
+			position: relative;
+			@include flex($just: flex-start, $gap: 20px);
+
+			.time {
+				width: 40px;
+				// overflow: hidden;
+				p {
+					@include font($color: #21212e, $weight: $light);
+				}
+			}
+			.info {
+				width: calc(100% - 60px);
+				@include flex($dir: column, $just: center, $align: flex-start, $gap: 8px);
+
+				.title__air {
+					width: 100%;
+					@include flex($just: flex-start, $gap: 6px);
+					img {
+						width: 56px;
+						height: 20.7px;
+						object-fit: contain;
+						// display: none;
+					}
+
+					.title {
+						max-width: calc(100% - 62px);
+						white-space: nowrap;
+						overflow: hidden;
+						text-overflow: ellipsis;
+						@include font($color: #21212e, $weight: $light);
+					}
+				}
+				.bora {
+					width: 100%;
+					@include flex($just: flex-start, $gap: 10px);
+
+					p {
+						max-width: calc(100% - 35px);
+						white-space: nowrap;
+						overflow: hidden;
+						text-overflow: ellipsis;
+						@include font($color: #21212e, $weight: $light);
+					}
+				}
+			}
+		}
+	}
+	.is__bora {
+		height: 64px;
+	}
+
+	.bottom {
+		@include animation($time: 0.2s);
+		overflow: hidden;
+		padding: 0 81px 0;
+		@include flex($just: flex-start, $gap: 10px);
+		img {
+			width: 38px;
+			height: 38px;
+			object-fit: contain;
+		}
+		.cursor {
+			cursor: pointer;
+		}
+	}
+}
+
+#slided__program {
+	height: var(--slidedVal);
+	background-color: #fff;
+	@include animation($time: 0.2s);
+	.top {
+		.right {
+			img {
+				transform: rotate(-180deg);
+				@include animation($time: 0s);
+			}
+		}
+	}
+
+	.bottom {
+		padding-bottom: 15px;
+		@include animation($time: 0.1s);
+	}
+}
+
+#slided__program.on__air {
+	background-color: #e2e2e2;
+}
+
+.on__air {
+	background-color: #e2e2e2;
+	.top {
+		.left {
+			.time {
+				p {
+					font-weight: 500;
+					width: 44px;
+				}
+			}
+			.info {
+				.title__air {
+					.title {
+						font-weight: 500;
+					}
+				}
+			}
+		}
+	}
+}

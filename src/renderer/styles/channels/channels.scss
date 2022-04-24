@@ -1,0 +1,8 @@
+@import "../general/general";
+
+.mini__channels__container {
+  @include flex($just: center, $gap: 10px);
+  padding: 10px 15px;
+  width: 100%;
+  // max-width: $radio_width_1080_more;
+}

@@ -1,0 +1,39 @@
+@import '../general/general';
+
+.navbar__container {
+  width: 100%;
+  padding: 24px 10px 10px 22px;
+  @include flex();
+  -webkit-app-region: drag;
+
+  img.logo {
+    width: auto;
+    height: 15px;
+    object-fit: contain;
+    color: white;
+    cursor: pointer;
+    position: relative;
+    z-index: 100;
+  }
+
+  .account__settings {
+    @include flex($gap: 16px);
+    img {
+      height: 21px;
+      width: auto;
+      object-fit: contain;
+      cursor: pointer;
+      @include animation;
+      position: relative;
+      z-index: 100;
+      -webkit-app-region: no-drag;
+      cursor: pointer;
+    }
+
+    img.settings.clicked {
+      transform: rotate(180deg);
+      position: relative;
+      z-index: 100;
+    }
+  }
+}

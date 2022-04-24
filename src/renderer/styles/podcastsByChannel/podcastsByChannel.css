@@ -1,0 +1,266 @@
+* {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "MBCNEW";
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: auto;
+  height: 100%;
+  background: -webkit-gradient(linear, left top, left bottom, from(#3e3e5a), to(#333333));
+  background: linear-gradient(to bottom, #3e3e5a, #333333);
+}
+
+@media screen and (max-width: 1080px) {
+  body {
+    display: block;
+    height: auto;
+  }
+}
+
+svg {
+  font-family: 'MBCNEW';
+}
+
+.podcasts__container {
+  height: calc(100% - 46px);
+  min-height: calc(100% - 46px);
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: auto;
+  padding-top: 20px;
+}
+
+.podcasts__container .filters {
+  width: 100%;
+  padding: 0 22px 18px;
+  position: relative;
+}
+
+.podcasts__container .filters .dropdowns {
+  top: 0px;
+  width: 100%;
+  right: 0;
+  padding: 0 22px;
+  position: absolute;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+  gap: 30px;
+}
+
+.podcasts__container .filters .radio__select {
+  position: absolute;
+  top: 53px;
+  width: calc(100% - 44px);
+}
+
+.podcasts__container .filters .changeOrder {
+  margin-top: 5rem;
+  background-color: transparent;
+  border: none;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.2;
+  letter-spacing: -0.48px;
+  text-align: left;
+  float: right;
+  padding: 0;
+  font-family: "MBCNEW";
+  font-size: 12px;
+  color: #7742cc;
+  font-weight: 300;
+  cursor: pointer;
+  border-bottom: 1px solid #7742cc;
+}
+
+.podcasts__container .filters .changeOrder span {
+  font-weight: bold;
+  margin-left: 2px;
+  margin-bottom: 2px;
+}
+
+.podcasts__container .filters .by__category.changeOrder {
+  margin-top: 42px;
+}
+
+.podcasts__container .podcasts {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+  gap: 14px;
+  width: 100%;
+  position: relative;
+  overflow-y: scroll;
+  padding: 0px 17px 0 22px;
+  overflow-x: hidden;
+  /* width */
+  /* Track */
+  /* Handle */
+  /* Handle on hover */
+}
+
+.podcasts__container .podcasts::-webkit-scrollbar {
+  width: 9px;
+}
+
+.podcasts__container .podcasts::-webkit-scrollbar-track {
+  background: #ebebeb;
+  border-radius: 4px;
+}
+
+.podcasts__container .podcasts::-webkit-scrollbar-thumb {
+  background: #b0b0b0;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.podcasts__container .podcasts::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.podcasts__container .podcasts .podcast {
+  cursor: pointer;
+  max-width: 100%;
+  min-width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 8px;
+  overflow: hidden;
+  min-height: 70px;
+}
+
+.podcasts__container .podcasts .podcast .title__img {
+  width: 69px;
+  height: 69px;
+  border-radius: 10px;
+  -o-object-fit: contain;
+     object-fit: contain;
+}
+
+.podcasts__container .podcasts .podcast .podcast__details {
+  width: calc(100% - 77px);
+  height: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: auto;
+}
+
+.podcasts__container .podcasts .podcast .podcast__details .info {
+  width: 100%;
+}
+
+.podcasts__container .podcasts .podcast .podcast__details .info .title {
+  display: -webkit-box;
+  max-width: calc(100% - 10px);
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.63;
+  letter-spacing: -0.32px;
+  text-align: left;
+  font-family: "MBCNEW";
+  font-size: 15px;
+  color: #21212e;
+  font-weight: 300;
+}
+
+.podcasts__container .podcasts .podcast .podcast__details .info .subtitle {
+  display: -webkit-box;
+  max-width: calc(100% - 10px);
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.23;
+  letter-spacing: -0.26px;
+  text-align: left;
+  font-family: "MBCNEW";
+  font-size: 13px;
+  color: #969696;
+  font-weight: 300;
+}
+
+.podcasts__container .podcasts .podcast .podcast__details .icon__subs {
+  width: 58px;
+  height: 35px;
+  -o-object-fit: contain;
+     object-fit: contain;
+}
+/*# sourceMappingURL=podcastsByChannel.css.map */

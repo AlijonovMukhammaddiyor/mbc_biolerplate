@@ -1,0 +1,51 @@
+@import '../general/general.scss';
+
+.title_msg__container {
+  padding: 0 0px 10px;
+  background-color: #fff;
+  // position: absolute;
+  // top: 60px;
+  // left: 0;
+  z-index: 2;
+  width: calc(100%);
+  .title__msg {
+    padding: 10px 15px;
+    border-radius: 10px;
+    background-color: #ebebeb;
+    max-width: 100%;
+
+    .title {
+      margin: 0;
+      font-size: 14px;
+      @include font($weight: $light, $color: $main_color);
+      font-stretch: normal;
+      font-style: normal;
+      letter-spacing: -0.28px;
+      width: 100%;
+      max-width: 100%;
+
+      span {
+        margin-left: 5px;
+        @include font($weight: $light, $size: $xsmal_font, $color: #828282);
+        font-stretch: normal;
+        font-style: normal;
+        line-height: 1.83;
+        letter-spacing: -0.24px;
+        text-align: left;
+      }
+    }
+    .content {
+      margin: 3px 0 0;
+      font-stretch: normal;
+      font-style: normal;
+      line-height: 1.3;
+      letter-spacing: -0.28px;
+      text-align: left;
+      @include font($weight: $light, $color: #484848);
+    }
+  }
+}
+
+.title_msg__container.mini {
+  top: 20px;
+}

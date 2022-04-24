@@ -1,0 +1,23 @@
+@import "../general/general";
+
+.player__container {
+  height: 100%;
+  box-sizing: border-box;
+  flex-basis: $player_width;
+  width: $player_width;
+  max-width: $player_width;
+  overflow: hidden;
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto $player_extra_div_height 240px;
+
+  .extra {
+    grid-column: 1;
+    grid-row: 2;
+  }
+}
+
+.login__visible {
+  opacity: 0.5;
+}

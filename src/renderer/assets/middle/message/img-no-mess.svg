@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="224" height="196" viewBox="0 0 224 196">
+    <g transform="translate(-234.673 -550.471)">
+        <text data-name="본 프로그램은 mini 메시지를 제공하지 않습니다." transform="translate(346.673 564.471)"
+            style="fill:#646464;font-size:16px;font-family:Arial,MBC NEW;letter-spacing:-.02em">
+            <tspan x="-45.856" y="0">본 프로그램은</tspan>
+            <tspan x="-111.424" y="22">mini 메시지를 제공하지 않습니다.</tspan>
+        </text>
+        <circle data-name="타원 31" cx="65" cy="65" r="65" transform="translate(281.673 616.471)"
+            style="fill:#ebebeb;opacity:.48" />
+        <g data-name="그룹 225">
+            <path data-name="패스 227"
+                d="M1005 669h35.644c7.425 0 12.548 5.639 12.548 12.931v16.948c0 5.818-2 8.976-7.089 10.887"
+                transform="translate(-678.279 -12.731)"
+                style="fill:none;stroke:#3e3e5a;stroke-linejoin:round;stroke-width:3px" />
+            <path data-name="패스 228"
+                d="M1049.164 714.374c-.975.973-2.971.752-4.472.752h-18.149l-14.563 9.245 3.81-9.245h-4.7c-7.425 0-14.086-6.5-14.086-13.8v-13.932c0-11.047 9.018-12.924 10.794-14.31"
+                transform="translate(-682.327 -10.665)"
+                style="fill:none;stroke:#3e3e5a;stroke-linejoin:round;stroke-width:3px" />
+            <path data-name="선 113" transform="translate(319.593 648.471)"
+                style="fill:none;stroke:#3e3e5a;stroke-linejoin:round;stroke-width:3px" d="m0 0 58.333 58.33" />
+        </g>
+    </g>
+</svg>

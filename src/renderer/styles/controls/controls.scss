@@ -1,0 +1,28 @@
+@import "../general//general";
+
+$audio_details_height: 140px;
+
+.player__controls__container {
+	height: 100%;
+	width: 100%;
+	grid-row: 2/4;
+	grid-column: 1;
+	background-color: #ebebeb;
+	border-radius: $player_extra_div_height $player_extra_div_height 0 0;
+	overflow: hidden;
+	position: relative;
+	@include flex($dir: column, $just: flex-start);
+	.audio__details,
+	.footer {
+		width: 100%;
+	}
+}
+
+.controls__subpodcast__in {
+	background-color: $main_color;
+}
+
+.play__pause {
+	@include flex($just: center);
+	width: 100%;
+}

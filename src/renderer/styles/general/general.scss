@@ -1,0 +1,126 @@
+// this file contains all the global colors and mixins
+// Every other scss file will import this file to be able to use it
+
+// breakpoints
+$breakpoint_large: 1080px;
+$breakpoint_medium: 768px;
+$breakpoint_last: 360px;
+
+// fonts
+$main_font_family: 'MBCNEW';
+$xsmal_font: 12px;
+$small_font: 13px;
+$medium_font: 14px;
+$large_font: 16px;
+$light: 300;
+$normal: 400;
+$semibold: 500;
+$bold: 600;
+
+@mixin font(
+  $family: $main_font_family,
+  $color: #fff,
+  $size: $medium_font,
+  $weight: $normal
+) {
+  font-family: $family;
+  font-size: $size;
+  color: $color;
+  font-weight: $weight;
+}
+
+// colors
+$main_gray: gray;
+$main_color: #7742cc;
+$channel_button_font_color: #fff;
+$channel_btn_width: 81px;
+$player_extra_div_height: 22px;
+
+// width and height
+$app_width: 960px;
+$app_height: 600px;
+$login_width: 360px;
+$login_height: 480px;
+$login_left: ($app_width - $login_width)/2;
+$login_top: ($app_height - $login_height)/2;
+$ad_width: 120px;
+$player_width: 420px;
+$middle_width: 420px;
+
+// font-sizes
+@mixin channel_font {
+  font-family: 'MBCNEW';
+  font-size: 15px;
+  color: gray;
+}
+
+@mixin current_title {
+  font-family: 'MBCNEW';
+  font-size: 22px;
+  color: #0e0e0e;
+}
+
+@mixin current_song_title {
+  font-family: 'MBCNEW';
+  font-size: 15px;
+  font-weight: 300;
+  //   color: #0e0e0e;
+}
+
+@mixin flex($dir: row, $just: space-between, $align: center, $gap: auto) {
+  display: flex;
+  flex-direction: $dir;
+  justify-content: $just;
+  align-items: $align;
+  gap: $gap;
+}
+
+@mixin animation($type: ease-in-out, $time: 0.5s) {
+  transition: all $time $type;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+// Media queries
+@mixin media_1080_768_pc {
+  @media screen and (max-width: $breakpoint_large) {
+    @content;
+  }
+}
+
+@mixin media_768 {
+  @media (max-width: $breakpoint_medium) {
+    @content;
+  }
+}
+
+@mixin media_360 {
+  @media (max-width: $breakpoint_last) {
+    @content;
+  }
+}
+
+body {
+  font-family: $main_font_family;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  @include flex($just: center);
+  height: 100%;
+  // scrollbar-width: none;
+  //   width: 100%;
+  background: linear-gradient(to bottom, #3e3e5a, #333333);
+
+  @include media_1080_768_pc {
+    display: block;
+    height: auto;
+  }
+}
+
+svg {
+  font-family: 'MBCNEW';
+}

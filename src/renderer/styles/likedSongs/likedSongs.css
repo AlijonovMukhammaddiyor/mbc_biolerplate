@@ -1,0 +1,306 @@
+* {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "MBCNEW";
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: auto;
+  height: 100%;
+  background: -webkit-gradient(linear, left top, left bottom, from(#3e3e5a), to(#333333));
+  background: linear-gradient(to bottom, #3e3e5a, #333333);
+}
+
+@media screen and (max-width: 1080px) {
+  body {
+    display: block;
+    height: auto;
+  }
+}
+
+svg {
+  font-family: 'MBCNEW';
+}
+
+.liked__songs__container {
+  padding: 20px 0px 0;
+  width: 100%;
+  height: calc(100% - 56px);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+  gap: auto;
+  overflow: hidden;
+  position: relative;
+}
+
+.liked__songs__container .header {
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
+  width: 100%;
+  padding: 0 30px 0 22px;
+  font-family: "MBCNEW";
+  font-size: 12px;
+  color: #333;
+  font-weight: 300;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: auto;
+}
+
+.liked__songs__container .header .left {
+  min-width: 2rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 7px;
+}
+
+.liked__songs__container .header .left .checkbox {
+  cursor: pointer;
+  width: 14px;
+  height: 14px;
+  border: none;
+  background-color: transparent;
+}
+
+.liked__songs__container .header .left .checkbox img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: contain;
+     object-fit: contain;
+}
+
+.liked__songs__container .header .left .delete {
+  border: none;
+  background-color: transparent;
+  margin-left: 7px;
+  color: #b5b5b5;
+}
+
+.liked__songs__container .header .left .delete.enabled {
+  color: #7742cc;
+  cursor: pointer;
+}
+
+.liked__songs__container .header .right {
+  padding-right: 8px;
+}
+
+.liked__songs__container .header .right button {
+  border: none;
+  background-color: transparent;
+}
+
+.liked__songs__container .header .right p {
+  cursor: pointer;
+}
+
+.liked__songs__container .no__song {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 40px;
+  padding-top: 3rem;
+  font-family: "MBCNEW";
+  font-size: 14px;
+  color: #707070;
+  font-weight: 300;
+}
+
+.liked__songs__container .no__song .no__song_image {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  background-color: #ebebeb;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: auto;
+}
+
+.liked__songs__container .songs {
+  padding-top: 7px;
+  height: calc(100% - 14px);
+  width: 100%;
+  overflow-y: scroll;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+  gap: 10px;
+}
+
+.liked__songs__container .songs .song {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 6px;
+  border-bottom: 2px solid rgba(230, 230, 230, 0.871);
+  padding: 1px 30px 10px 22px;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.liked__songs__container .songs .song .icon__playing {
+  position: absolute;
+  top: 23px;
+  left: 50px;
+  z-index: 100;
+}
+
+.liked__songs__container .songs .song .checkbox {
+  border: none;
+  background-color: transparent;
+  width: 14px;
+  height: 14px;
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
+}
+
+.liked__songs__container .songs .song .checkbox img {
+  -o-object-fit: contain;
+     object-fit: contain;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+}
+
+.liked__songs__container .songs .song .song__img {
+  width: 50px;
+  height: 50px;
+  border-radius: 10px;
+}
+
+.liked__songs__container .songs .song .redirect__icon {
+  cursor: pointer;
+}
+
+.liked__songs__container .songs .song .info {
+  margin-left: 4px;
+  -ms-flex-preferred-size: calc(100% - 100px);
+      flex-basis: calc(100% - 100px);
+  width: calc(100% - 100px);
+}
+
+.liked__songs__container .songs .song .info .song__title {
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: "MBCNEW";
+  font-size: 14px;
+  color: #21212e;
+  font-weight: 300;
+  line-height: 1.8;
+}
+
+.liked__songs__container .songs .song .info .song_artist_name {
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: "MBCNEW";
+  font-size: 13px;
+  color: #969696;
+  font-weight: 300;
+  line-height: 1.3;
+}
+
+.liked__songs__container .songs .song .info.deleting {
+  -ms-flex-preferred-size: calc(100% - 118px);
+      flex-basis: calc(100% - 118px);
+  width: calc(100% - 118px);
+}
+/*# sourceMappingURL=likedSongs.css.map */

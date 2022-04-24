@@ -1,0 +1,49 @@
+@import "../general/general";
+
+.tracklist__container {
+  background-color: white;
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  height: calc(100% - 50px);
+  @include flex($dir: column, $gap: 0, $just: flex-start);
+  overflow: hidden;
+  border-radius: $player_extra_div_height $player_extra_div_height 0 0;
+
+  .tracks {
+    flex-basis: calc(100% - 69px);
+    width: 100%;
+    padding: 0;
+    overflow: scroll;
+    overflow-x: hidden;
+    background-color: #fff;
+    @include flex($dir: column, $align: flex-start, $just: flex-start, $gap: 20px);
+    padding-bottom: 20px;
+
+    &::-webkit-scrollbar {
+      width: 9px;
+    }
+    /* width */
+    &::-webkit-scrollbar {
+      width: 7px;
+    }
+
+    /* Track */
+    &::-webkit-scrollbar-track {
+      background: #ebebeb;
+      border-radius: 4px;
+    }
+
+    /* Handle */
+    &::-webkit-scrollbar-thumb {
+      background: hsl(0, 0%, 69%);
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    /* Handle on hover */
+    &::-webkit-scrollbar-thumb:hover {
+      background: #555;
+    }
+  }
+}

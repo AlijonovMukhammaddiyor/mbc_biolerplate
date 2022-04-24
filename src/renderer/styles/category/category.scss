@@ -1,0 +1,25 @@
+@import "../general/general.scss";
+
+.podcast__category__container {
+	// padding: 20px 22px;
+	width: 100%;
+	@include flex($just: space-between, $gap: 10px);
+
+	p {
+		@include font($color: #707070, $weight: $light);
+		height: 38px;
+		padding: 0 15px;
+		border: 1px solid #cacacf;
+		border-radius: 4px;
+		display: flex;
+		align-items: center;
+		box-shadow: 0 0 2px #cacacf;
+		cursor: pointer;
+	}
+
+	.current {
+		border: none;
+		background-color: $main_color;
+		color: white;
+	}
+}

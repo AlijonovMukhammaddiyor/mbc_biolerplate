@@ -1,0 +1,152 @@
+* {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "MBCNEW";
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: auto;
+  height: 100%;
+  background: -webkit-gradient(linear, left top, left bottom, from(#3e3e5a), to(#333333));
+  background: linear-gradient(to bottom, #3e3e5a, #333333);
+}
+
+@media screen and (max-width: 1080px) {
+  body {
+    display: block;
+    height: auto;
+  }
+}
+
+svg {
+  font-family: 'MBCNEW';
+}
+
+.message {
+  padding: 10px 12px;
+  background-color: white;
+  border-radius: 5px;
+  border: 1px solid #e6e6e6;
+  margin: 0 0 14.3px 10px;
+  height: -webkit-min-content;
+  height: -moz-min-content;
+  height: min-content;
+  max-width: calc(100% - 20px);
+  position: relative;
+  width: calc(100% - 20px);
+}
+
+.message .message__arrow {
+  position: absolute;
+  height: 10px;
+  width: 10px;
+  background-color: #fff;
+  left: 0;
+  top: 70%;
+  /* Border */
+  border-bottom: 1px solid #e6e6e6;
+  border-left: 1px solid #e6e6e6;
+  -webkit-transform: translate(-50%, -50%) rotate(45deg);
+          transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.message .title {
+  max-width: 100%;
+  line-height: 22px;
+  letter-spacing: -0.28px;
+  font-family: "MBCNEW";
+  font-size: 13px;
+  color: #484848;
+  font-weight: 400;
+}
+
+.message .title span {
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.83;
+  letter-spacing: -0.24px;
+  text-align: left;
+  margin-left: 5px;
+  font-family: "MBCNEW";
+  font-size: 11px;
+  color: #616161;
+  font-weight: 300;
+}
+
+.message .content {
+  font-size: 13px;
+  font-weight: 300;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.57;
+  letter-spacing: -0.28px;
+  text-align: left;
+  color: #484848;
+  max-width: 100%;
+}
+
+.my__message {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: auto;
+}
+
+.my__message .message {
+  background-color: #7742cc;
+  border-color: #7742cc;
+  padding: 10px 15px;
+}
+
+.my__message .message .message__arrow {
+  background-color: #7742cc;
+  border-color: #7742cc;
+  right: 0;
+  left: auto;
+  -webkit-transform: translate(50%, -50%) rotate(135deg);
+          transform: translate(50%, -50%) rotate(135deg);
+}
+
+.my__message .message .title {
+  margin-bottom: 5px;
+}
+
+.my__message .message .title,
+.my__message .message .content {
+  color: white;
+}
+
+.my__message .message .title span,
+.my__message .message .content span {
+  color: white;
+}
+/*# sourceMappingURL=message.css.map */

@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="15" height="20" viewBox="0 0 15 20">
+    <defs>
+        <style>
+            .cls-1{fill:none;stroke:#7742cc;stroke-linejoin:round;stroke-width:2px}
+        </style>
+    </defs>
+    <g id="podcast_icon_list_ing" transform="translate(-18 -16.63)">
+        <g id="그룹_198" data-name="그룹 198" transform="translate(17.353 16.911)">
+            <path id="선_71" data-name="선 71" class="cls-1" transform="translate(4.648 12.719)" d="M0 0h3"/>
+            <path id="선_155" data-name="선 155" class="cls-1" transform="translate(.648 12.719)" d="M0 0h3"/>
+            <path id="선_72" data-name="선 72" class="cls-1" transform="translate(4.648 9.719)" d="M0 0h3"/>
+            <path id="선_156" data-name="선 156" class="cls-1" transform="translate(.648 9.719)" d="M0 0h3"/>
+            <path id="선_73" data-name="선 73" class="cls-1" transform="translate(4.648 6.719)" d="M0 0h3"/>
+            <path id="선_74" data-name="선 74" class="cls-1" transform="translate(4.648 3.719)" d="M0 0h3"/>
+            <path id="선_75" data-name="선 75" class="cls-1" transform="translate(4.648 .719)" d="M0 0h3"/>
+            <path id="선_76" data-name="선 76" class="cls-1" transform="translate(4.648 15.719)" d="M0 0h3"/>
+            <path id="선_154" data-name="선 154" class="cls-1" transform="translate(.648 15.719)" d="M0 0h3"/>
+            <path id="선_77" data-name="선 77" class="cls-1" transform="translate(4.648 18.719)" d="M0 0h3"/>
+            <path id="선_153" data-name="선 153" class="cls-1" transform="translate(.648 18.719)" d="M0 0h3"/>
+            <path id="선_78" data-name="선 78" class="cls-1" transform="translate(8.648 12.719)" d="M0 0h3"/>
+            <path id="선_79" data-name="선 79" class="cls-1" transform="translate(8.648 9.719)" d="M0 0h3"/>
+            <path id="선_80" data-name="선 80" class="cls-1" transform="translate(8.648 6.719)" d="M0 0h3"/>
+            <path id="선_81" data-name="선 81" class="cls-1" transform="translate(8.648 15.719)" d="M0 0h3"/>
+            <path id="선_82" data-name="선 82" class="cls-1" transform="translate(8.648 18.719)" d="M0 0h3"/>
+            <path id="선_83" data-name="선 83" class="cls-1" transform="translate(12.648 15.719)" d="M0 0h3"/>
+            <path id="선_84" data-name="선 84" class="cls-1" transform="translate(12.648 18.719)" d="M0 0h3"/>
+        </g>
+    </g>
+</svg>

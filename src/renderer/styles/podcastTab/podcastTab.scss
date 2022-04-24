@@ -1,0 +1,12 @@
+@import "../general/general";
+
+.podcastTab__container {
+	background-color: #f8f8f8;
+	position: relative;
+	box-sizing: border-box;
+	width: 100%;
+	height: calc(100% - 50px);
+	min-height: calc(100% - 50px);
+	overflow: hidden;
+	border-radius: $player_extra_div_height $player_extra_div_height 0 0;
+}

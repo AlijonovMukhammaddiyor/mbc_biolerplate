@@ -1,0 +1,16 @@
+@import '../general/general';
+
+$drag_area_width: $player_width + $middle_width;
+
+.app__container {
+  width: $app_width;
+  height: $app_height;
+  @include flex($gap: 0, $just: flex-start);
+  background-color: #fff;
+  overflow: hidden;
+  position: relative;
+}
+
+* {
+  box-sizing: border-box;
+}

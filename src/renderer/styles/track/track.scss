@@ -1,0 +1,88 @@
+@import '../general/general';
+
+.track__container {
+  height: 50px;
+  min-height: 50px;
+  width: 100%;
+  max-width: 100%;
+  min-width: 100%;
+  padding: 0 25px !important;
+  @include flex($just: flex-start, $gap: 15px);
+  overflow: hidden;
+
+  .order_number {
+    @include font($color: #484848, $size: 12px, $weight: $light);
+    width: 10px;
+  }
+
+  .playing_icon {
+    width: 15px;
+    height: 18px;
+    object-fit: contain;
+  }
+
+  .main {
+    height: 100%;
+    width: calc(100%);
+    max-width: calc(100%);
+    @include flex($just: space-between, $gap: 20px);
+    overflow: hidden;
+
+    .left {
+      @include flex($just: flex-start, $gap: 10px);
+      height: 100%;
+      overflow: hidden;
+      flex-basis: calc(100% - 70px);
+
+      img {
+        height: 49px;
+        width: 49px;
+        object-fit: contain;
+        border-radius: 10px;
+      }
+      .names {
+        height: 100%;
+        flex-basis: calc(100% - 60px);
+        width: calc(100% - 60px);
+        @include flex(
+          $dir: column,
+          $align: flex-start,
+          $just: center,
+          $gap: 2px
+        );
+        overflow: hidden;
+
+        .title {
+          max-width: 100%;
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 2;
+          overflow: hidden;
+          @include font($color: #333);
+        }
+
+        .subtitle {
+          max-width: 100%;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+
+          @include font($color: #646464, $size: 12px, $weight: $light);
+        }
+      }
+
+      .playing__track {
+        .title {
+          color: $main_color;
+        }
+      }
+    }
+
+    .icons {
+      @include flex($just: flex-end, $gap: 19px);
+      img {
+        cursor: pointer;
+      }
+    }
+  }
+}

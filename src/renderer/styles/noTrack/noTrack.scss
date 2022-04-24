@@ -1,0 +1,20 @@
+@import "../general/general";
+
+.no__tracks {
+  height: 100%;
+  width: 100%;
+  @include flex($dir: column, $align: center, $just: flex-start, $gap: 28px);
+  margin-top: 100px;
+
+  p {
+    color: #646464;
+  }
+
+  .no_tracks_img {
+    width: 130px;
+    height: 130px;
+    @include flex($just: center);
+    background-color: #ebebeb;
+    border-radius: 50%;
+  }
+}

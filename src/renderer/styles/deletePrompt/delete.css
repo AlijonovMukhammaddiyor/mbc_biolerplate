@@ -1,0 +1,123 @@
+* {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "MBCNEW";
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: auto;
+  height: 100%;
+  background: -webkit-gradient(linear, left top, left bottom, from(#3e3e5a), to(#333333));
+  background: linear-gradient(to bottom, #3e3e5a, #333333);
+}
+
+@media screen and (max-width: 1080px) {
+  body {
+    display: block;
+    height: auto;
+  }
+}
+
+svg {
+  font-family: 'MBCNEW';
+}
+
+.delete__prompt__container {
+  position: absolute;
+  width: 360px;
+  height: 150px;
+  top: 30%;
+  left: 2rem;
+  background-color: #fff;
+  z-index: 1000;
+  border-radius: 10px;
+  -webkit-box-shadow: 0px 0px 10px 0 rgba(0, 0, 0, 0.16);
+          box-shadow: 0px 0px 10px 0 rgba(0, 0, 0, 0.16);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 10px;
+  padding: 35px 16px 16px;
+}
+
+.delete__prompt__container .icon__close {
+  position: absolute;
+  cursor: pointer;
+  top: 15px;
+  right: 15px;
+  width: 13.5px;
+  height: 13.5px;
+  -o-object-fit: contain;
+     object-fit: contain;
+}
+
+.delete__prompt__container .button__container {
+  margin-top: 1rem;
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: auto;
+}
+
+.delete__prompt__container .button__container button {
+  padding: 10px 15px;
+  cursor: pointer;
+  border-radius: 6px;
+  border: none;
+}
+
+.delete__prompt__container .button__container .cancel_button {
+  background-color: #e6e6e6;
+  font-family: "MBCNEW";
+  font-size: 14px;
+  color: #333;
+  font-weight: 400;
+}
+
+.delete__prompt__container .button__container .confirmation_button {
+  background-color: #7742cc;
+  font-family: "MBCNEW";
+  font-size: 14px;
+  color: #fff;
+  font-weight: 400;
+}
+/*# sourceMappingURL=delete.css.map */

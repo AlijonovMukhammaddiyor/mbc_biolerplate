@@ -1,0 +1,63 @@
+@import '../general/general.scss';
+
+.mymini__navbar__container {
+  width: 100%;
+  @include flex($just: space-between, $gap: 20px);
+  flex-wrap: nowrap;
+  overflow: hidden;
+  padding: 0 22px;
+
+  .left,
+  .right {
+    border: none;
+    flex-shrink: 0;
+    cursor: pointer;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background-color: #ebebeb;
+    @include flex($just: center);
+    img {
+      width: 13px;
+      height: 13px;
+      object-fit: contain;
+    }
+  }
+
+  .nav__items {
+    @include flex($just: flex-start, $gap: 20px);
+    overflow: hidden;
+    .item {
+      flex-shrink: 0;
+      cursor: pointer;
+      @include font($weight: $light, $size: 14px, $color: #646464);
+      position: relative;
+      padding: 5px 3px 8px;
+      border: none;
+      background-color: transparent;
+
+      &::after {
+        display: none;
+        position: absolute;
+        height: 4px;
+        width: 100%;
+        left: 0;
+        bottom: 0;
+        content: '';
+        background-color: $main_color;
+        border-radius: 10px;
+      }
+    }
+
+    .item.blank {
+      width: 80px;
+    }
+    .current {
+      color: $main_color;
+
+      &::after {
+        display: block;
+      }
+    }
+  }
+}

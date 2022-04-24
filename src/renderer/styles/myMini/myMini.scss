@@ -1,0 +1,37 @@
+@import "../general/general.scss";
+
+.may__mini__container {
+	background-color: #f8f8f8;
+	position: relative;
+	box-sizing: border-box;
+	width: 100%;
+	height: calc(100% - 50px);
+	min-height: calc(100% - 50px);
+	@include flex($dir: column, $gap: 0, $just: flex-start);
+	overflow: hidden;
+	border-radius: $player_extra_div_height $player_extra_div_height 0 0;
+
+	.title__mymini {
+		width: 100%;
+		text-align: center;
+		padding: 18px 0 20px;
+		p {
+			@include font($color: #333, $size: 16px);
+		}
+	}
+
+	.close__icon {
+		position: absolute;
+		width: 16px;
+		object-fit: contain;
+		top: 7px;
+		right: 12px;
+		cursor: pointer;
+		padding: 2px 1px 2px 2px;
+		border-radius: 50%;
+		border: 1px solid white;
+		&:hover {
+			border-color: black;
+		}
+	}
+}

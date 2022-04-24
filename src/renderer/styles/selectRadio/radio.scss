@@ -1,0 +1,25 @@
+@import "../general/general";
+
+.select__radio {
+	width: 100%;
+	@include flex($just: space-around);
+
+	.option {
+		@include flex($just: center);
+		img {
+			width: 10px;
+			height: 10px;
+			object-fit: contain;
+			cursor: pointer;
+			margin-right: 2px;
+		}
+		p {
+			font-stretch: normal;
+			font-style: normal;
+			line-height: 1.08;
+			letter-spacing: -0.48px;
+			text-align: left;
+			@include font($color: #0e0e0e, $size: $xsmal_font, $weight: $light);
+		}
+	}
+}

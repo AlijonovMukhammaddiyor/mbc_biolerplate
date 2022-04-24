@@ -1,0 +1,124 @@
+/* eslint-disable @typescript-eslint/ban-types */
+import { useState } from 'react';
+import $ from 'jquery';
+import { STATE } from '../../../../context/utils/types';
+import '../../../../styles/messageWrite/msgWrite.css';
+import Data from '../../../../context/utils/data';
+
+type Props = {
+  state: STATE;
+  dispatch: <T extends object>(obj: T) => void;
+};
+
+export default function MessageWrite({ state, dispatch }: Props) {
+  const [myMessage, setMyMessage] = useState<string>('');
+
+  return (
+    <div className="message__write__container">
+      {state.user.cookieAvailable ? (
+        <input
+          type="text"
+          className="text"
+          placeholder="mini 메시지 작성(200자 내외)"
+          value={myMessage}
+          onKeyPress={(e) => {
+            if (e.key === 'Enter') {
+              registerMessage();
+            }
+          }}
+          onChange={(e) => {
+            setMyMessage(e.currentTarget.value);
+          }}
+        />
+      ) : (
+        <div className="text">
+          <button
+            type="button"
+            onClick={() => {
+              dispatch({ type: 'SHOW_LOGIN_SCREEN' });
+            }}
+          >
+            <p>로그인</p>
+          </button>
+          후 이용해주세요
+        </div>
+      )}
+      <button
+        type="submit"
+        onClick={registerMessage}
+        className={
+          state.user
+            ? state.user.cookieAvailable
+              ? 'register is__user'
+              : 'register '
+            : 'register '
+        }
+      >
+        등록
+      </button>
+    </div>
+  );
+
+  async function registerMessage() {
+    const BroadCastID =
+      state.main_state.general.currentPrograms[state.main_state.general.channel]
+        ?.BroadCastID;
+    const groupID =
+      state.main_state.general.currentPrograms[state.main_state.general.channel]
+        ?.ProgramGroupID;
+
+    if (
+      state.user.cookieAvailable &&
+      BroadCastID &&
+      groupID &&
+      state.user.mainUser
+    )
+      $.ajax({
+        url: Data.urls.msgRegisterPCApi,
+        type: 'POST',
+        data: $.param({
+          bid: parseInt(BroadCastID!, 10),
+          gid: parseInt(groupID!, 10),
+          Comment: myMessage,
+          Uno: `${state.user.mainUser.UserInfo.UNO}`,
+          Username: state.user.mainUser.UserInfo.UserName,
+          UserID: state.user.mainUser.UserInfo.UserID,
+          Type: '1',
+          Device: 'pcApp',
+          Cookieinfo: readCookie('IMBCSession'),
+          Agent: `${window.navigator.userAgent}`,
+        }),
+        dataType: 'json',
+        crossDomain: true,
+        xhrFields: {
+          withCredentials: true,
+        },
+        success: (data: any) => {
+          console.log(data);
+          console.log('registered message');
+          setMyMessage('');
+        },
+        error: (request, status, error) => {
+          console.log(
+            `code:${request.status}\n` +
+              `error:${error}\n` +
+              `message:${request.responseText}`
+          );
+        },
+      });
+  }
+
+  function readCookie(name: string) {
+    if (state.user.mainUser) {
+      const nameEQ = `${name}=`;
+      const ca = state.user.mainUser.UserInfo.IMBCCookie.split(';');
+      for (let i = 0; i < ca.length; i += 1) {
+        let c = ca[i];
+        while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) === 0)
+          return c.substring(nameEQ.length, c.length);
+      }
+    }
+    return null;
+  }
+}

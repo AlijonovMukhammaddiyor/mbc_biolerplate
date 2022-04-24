@@ -1,0 +1,18 @@
+@import '../general/general.scss';
+
+.no_message__container {
+  width: 100%;
+  margin-top: -0;
+  position: absolute;
+  display: flex;
+  top: 9rem;
+  height: 210px;
+
+  img {
+    -webkit-user-drag: none;
+    margin: auto;
+    object-fit: contain;
+    width: 235px;
+    height: 196px;
+  }
+}

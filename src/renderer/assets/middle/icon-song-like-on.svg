@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="58" height="35" viewBox="0 0 58 35">
+    <defs>
+        <style type="text/css">
+            @font-face {
+                font-family: "MBCNEW";
+                src: url("../../styles/fonts/mbc_fonts/MBC NEW L.eot");
+                src: url("../../styles/fonts/mbc_fonts/MBC NEW L.eot") format("embedded-opentype"),
+                    url("../../styles/fonts/mbc_fonts/MBC NEW L.woff2") format("woff2"),
+                    url("../../styles/fonts/mbc_fonts/MBC NEW L.woff") format("woff");
+                font-weight: 300;
+                font-style: normal;
+            }
+
+            @font-face {
+                font-family: "MBCNEW";
+                src: url("../../styles/fonts/mbc_fonts/MBC NEW M.eot");
+                src: url("../../styles/fonts/mbc_fonts/MBC NEW M.eot") format("embedded-opentype"),
+                    url("../../styles/fonts/mbc_fonts/MBC NEW M.woff2") format("woff2"),
+                    url("../../styles/fonts/mbc_fonts/MBC NEW M.woff") format("woff");
+                font-weight: 400;
+                font-style: normal;
+            }
+
+            @font-face {
+                font-family: "MBCNEW";
+                src: url("../../styles/fonts/mbc_fonts/MBC NEW SB.eot");
+                src: url("../../styles/fonts/mbc_fonts/MBC NEW SB.eot") format("embedded-opentype"),
+                    url("../../styles/fonts/mbc_fonts/MBC NEW SB.woff2") format("woff2"),
+                    url("../../styles/fonts/mbc_fonts/MBC NEW SB.woff") format("woff");
+                font-weight: 500;
+                font-style: normal;
+            }
+
+            @font-face {
+                font-family: "MBCNEW";
+                src: url("../../styles/fonts/mbc_fonts/MBC NEW B.eot");
+                src: url("../../styles/fonts/mbc_fonts/MBC NEW B.eot") format("embedded-opentype"),
+                    url("../../styles/fonts/mbc_fonts/MBC NEW B.woff2") format("woff2"),
+                    url("../../styles/fonts/mbc_fonts/MBC NEW B.woff") format("woff");
+                font-weight: 600;
+                font-style: normal;
+            }
+        </style>
+    </defs>
+    <rect data-name="사각형 22" width="58" height="35" rx="6" style="fill:#f55a5a" />
+    <text transform="translate(24 22)" font-family="MBCNEW" style="fill:#fff;font-size:13px;letter-spacing:-.04em">
+        <tspan x="0" y="0">구독</tspan>
+    </text>
+    <path data-name="패스 182" d="M0 8.831V0h12.384L7.965 4.5l4.9 4.329L0 8.828V0" transform="rotate(90 3.914 14.915)"
+        style="fill:none;stroke:#fff;stroke-linejoin:round" />
+
+</svg>

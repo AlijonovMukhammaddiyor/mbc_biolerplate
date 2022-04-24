@@ -1,0 +1,128 @@
+@import "../general/general";
+
+.video__container {
+  background: black;
+  position: absolute;
+  height: auto;
+  width: 100%;
+  left: 0;
+  bottom: 0;
+  @include flex($just: center, $align: center);
+
+  &:fullscreen {
+    width: 100vw;
+    height: 100vh;
+  }
+  &:-webkit-full-screen {
+    width: 100vw;
+    height: 80vh;
+  }
+
+  img {
+    position: absolute;
+    cursor: pointer;
+    margin: auto;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    visibility: hidden;
+  }
+
+  .video__playing {
+    opacity: 1;
+    &:hover {
+      opacity: 0.7;
+    }
+  }
+
+  .video__darken,
+  .video__paused {
+    opacity: 0.7;
+  }
+
+  .video__volume {
+    position: absolute;
+    bottom: 25px;
+    left: 25px;
+    width: 25px;
+    height: 25px;
+    visibility: hidden;
+  }
+
+  .play__icon,
+  .pause__icon {
+    position: absolute;
+    width: 66px;
+    height: 66px;
+  }
+
+  .pause__icon {
+    &:hover {
+      visibility: visible;
+    }
+  }
+
+  video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .video__resize {
+    width: min-content;
+    height: min-content;
+    position: absolute;
+    bottom: 50px;
+    right: 35px;
+
+    img {
+      width: 20px;
+      height: 20px;
+      object-fit: contain;
+    }
+  }
+
+  .video__pop {
+    width: min-content;
+    height: min-content;
+    position: absolute;
+    bottom: 50px;
+    right: 75px;
+
+    .pop__icon {
+      width: 20px;
+      height: 20px;
+      object-fit: contain;
+    }
+  }
+
+  .video__close {
+    width: min-content;
+    height: min-content;
+    position: absolute;
+    top: 10px;
+    cursor: pointer;
+    right: 30px;
+
+    img {
+      width: 15px;
+      height: 15px;
+      object-fit: contain;
+    }
+  }
+
+  .play__icon__paused {
+    img {
+      visibility: visible;
+    }
+  }
+  &:hover {
+    img {
+      visibility: visible;
+    }
+
+    .video__volume {
+      visibility: visible;
+    }
+  }
+}

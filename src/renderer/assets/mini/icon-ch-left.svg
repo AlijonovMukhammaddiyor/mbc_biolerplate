@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+    <g transform="translate(5 5)">
+        <circle data-name="타원 34" cx="10" cy="10" r="10" transform="translate(-5 -5)" style="fill:#dcdcdc;opacity:.9"/>
+        <rect data-name="사각형 12" width="7.393" height="1.236" rx=".618" transform="rotate(-45 6.81 1.406)" style="fill:#7742cc"/>
+        <rect data-name="사각형 13" width="7.393" height="1.236" rx=".618" transform="rotate(45 -4.465 4.5)" style="fill:#7742cc"/>
+    </g>
+</svg>

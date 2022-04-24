@@ -1,0 +1,86 @@
+@import "../general/general.scss";
+
+.subpodcast_info__container {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	background: linear-gradient(to top, rgba(0, 0, 0, 0.604), rgba(0, 0, 0, 0.003));
+	padding: 10px 30px 30px;
+	@include flex($dir: column, $just: flex-start, $align: flex-start);
+	height: 70px;
+	overflow: hidden;
+
+	.date {
+		@include font($weight: $light, $size: 9px);
+		flex-shrink: 0;
+	}
+
+	.title {
+		@include font();
+		max-width: calc(100% - 21px);
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		padding: 5px 0 10px;
+		flex-shrink: 0;
+	}
+
+	.description {
+		flex-shrink: 0;
+		@include font($weight: $light, $size: 12px);
+		line-height: 1.3;
+	}
+
+	.icons {
+		position: absolute;
+		bottom: 30px;
+		right: 30px;
+
+		.view__icon {
+			width: 20.1px;
+			height: 22.1px;
+			object-fit: contain;
+			cursor: pointer;
+			z-index: 100;
+		}
+
+		.plus__icon {
+			position: absolute;
+			padding: 1.8px 4px;
+			font-size: 10px;
+			background-color: #f8f8f8;
+			border-radius: 50%;
+			top: -8px;
+			right: -8px;
+			cursor: pointer;
+		}
+
+		.close__icon {
+			width: 12px;
+			height: 12px;
+			object-fit: contain;
+			cursor: pointer;
+			z-index: 100;
+		}
+	}
+
+	.disclosed {
+		cursor: pointer;
+		width: 28px;
+		height: 28px;
+		background-color: #f8f8f8;
+		border-radius: 50%;
+		@include flex($just: center);
+	}
+}
+
+.subpodcast_info__container.show__info {
+	height: 100%;
+	padding-top: 100px;
+	.title {
+		white-space: unset;
+		overflow: visible;
+		text-overflow: unset;
+		max-width: unset;
+	}
+}

@@ -1,0 +1,83 @@
+@import '../general/general.scss';
+
+.message {
+  padding: 10px 12px;
+  background-color: white;
+  border-radius: 5px;
+  border: 1px solid hsl(0, 0%, 90%);
+  margin: 0 0 14.3px 10px;
+  height: min-content;
+  max-width: calc(100% - 20px);
+  position: relative;
+  width: calc(100% - 20px);
+
+  .message__arrow {
+    position: absolute;
+    height: 10px;
+    width: 10px;
+    background-color: #fff;
+    left: 0;
+    top: 70%;
+
+    /* Border */
+    border-bottom: 1px solid hsl(0, 0%, 90%);
+    border-left: 1px solid hsl(0, 0%, 90%);
+    transform: translate(-50%, -50%) rotate(45deg);
+  }
+
+  .title {
+    max-width: 100%;
+    line-height: 22px;
+    letter-spacing: -0.28px;
+    @include font($color: #484848, $size: $small_font);
+    span {
+      font-stretch: normal;
+      font-style: normal;
+      line-height: 1.83;
+      letter-spacing: -0.24px;
+      text-align: left;
+      margin-left: 5px;
+      @include font($weight: $light, $color: hsl(0, 0%, 38%), $size: 11px);
+    }
+  }
+
+  .content {
+    font-size: 13px;
+    font-weight: 300;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.57;
+    letter-spacing: -0.28px;
+    text-align: left;
+    color: #484848;
+    max-width: 100%;
+  }
+}
+
+.my__message {
+  @include flex($just: flex-end);
+  .message {
+    background-color: $main_color;
+    border-color: $main_color;
+    padding: 10px 15px;
+    .message__arrow {
+      background-color: $main_color;
+      border-color: $main_color;
+      right: 0;
+      left: auto;
+      transform: translate(50%, -50%) rotate(135deg);
+    }
+
+    .title {
+      margin-bottom: 5px;
+    }
+    .title,
+    .content {
+      color: white;
+
+      span {
+        color: white;
+      }
+    }
+  }
+}

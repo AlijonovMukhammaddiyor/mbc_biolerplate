@@ -1,0 +1,149 @@
+* {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "MBCNEW";
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: auto;
+  height: 100%;
+  background: -webkit-gradient(linear, left top, left bottom, from(#3e3e5a), to(#333333));
+  background: linear-gradient(to bottom, #3e3e5a, #333333);
+}
+
+@media screen and (max-width: 1080px) {
+  body {
+    display: block;
+    height: auto;
+  }
+}
+
+svg {
+  font-family: 'MBCNEW';
+}
+
+.message__write__container {
+  height: 49px !important;
+  height: 49px;
+  border-top: 1px solid #d3d3d3;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: auto;
+  z-index: 11;
+}
+
+.message__write__container input,
+.message__write__container button {
+  height: 100%;
+}
+
+.message__write__container .register {
+  width: 75px;
+  height: calc(100% + 2px);
+  color: white;
+  background-color: #333;
+  border: none;
+  cursor: pointer;
+}
+
+.message__write__container .text {
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.57;
+  letter-spacing: -0.28px;
+  text-align: left;
+  outline: none;
+  border: none;
+  width: 100%;
+  padding: 0 10px 0 32px;
+  font-family: "MBCNEW";
+  font-size: 13px;
+  color: #484848;
+  font-weight: 300;
+}
+
+.message__write__container .text button {
+  border: none;
+  background-color: transparent;
+  margin-right: 5px;
+}
+
+.message__write__container .text p {
+  cursor: pointer;
+  text-decoration: underline;
+  display: inline-block;
+  color: #7742cc;
+  font-weight: 400;
+}
+
+.message__write__container .text::-webkit-input-placeholder {
+  color: #7742cc;
+}
+
+.message__write__container .text:-ms-input-placeholder {
+  color: #7742cc;
+}
+
+.message__write__container .text::-ms-input-placeholder {
+  color: #7742cc;
+}
+
+.message__write__container .text::placeholder {
+  color: #7742cc;
+}
+
+.message__write__container .text:focus::-webkit-input-placeholder {
+  color: transparent;
+}
+
+.message__write__container .text:focus:-ms-input-placeholder {
+  color: transparent;
+}
+
+.message__write__container .text:focus::-ms-input-placeholder {
+  color: transparent;
+}
+
+.message__write__container .text:focus::placeholder {
+  color: transparent;
+}
+
+.message__write__container .is__user {
+  background-color: #7742cc;
+  color: white;
+}
+/*# sourceMappingURL=msgWrite.css.map */

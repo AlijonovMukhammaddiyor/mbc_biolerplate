@@ -1,0 +1,71 @@
+@import "../general//general";
+
+.schedule__container {
+  background-color: #f8f8f8;
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  height: calc(100% - 50px);
+  min-height: calc(100% - 50px);
+  @include flex($dir: column, $gap: 0, $just: flex-start);
+  overflow: hidden;
+  border-radius: $player_extra_div_height $player_extra_div_height 0 0;
+  //   padding-top: 15px;
+
+  .title__schedule {
+    width: 100%;
+    text-align: center;
+    padding: 15px 0 12px;
+    p {
+      @include font($color: #333, $size: 16px);
+    }
+  }
+
+  .close__icon {
+    position: absolute;
+    width: 16px;
+    object-fit: contain;
+    top: 7px;
+    right: 12px;
+    cursor: pointer;
+    padding: 2px;
+    border-radius: 50%;
+    border: 1px solid white;
+    &:hover {
+      border-color: black;
+    }
+  }
+
+  .programs {
+    flex-basis: auto;
+    margin-top: 10px;
+    width: 100%;
+    overflow: auto scroll;
+    position: relative;
+    &::-webkit-scrollbar {
+      width: 9px;
+    }
+    /* width */
+    &::-webkit-scrollbar {
+      width: 7px;
+    }
+
+    /* Track */
+    &::-webkit-scrollbar-track {
+      background: #ebebeb;
+      border-radius: 4px;
+    }
+
+    /* Handle */
+    &::-webkit-scrollbar-thumb {
+      background: hsl(0, 0%, 69%);
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    /* Handle on hover */
+    &::-webkit-scrollbar-thumb:hover {
+      background: #555;
+    }
+  }
+}

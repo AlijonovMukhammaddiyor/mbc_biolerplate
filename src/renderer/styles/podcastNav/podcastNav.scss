@@ -1,0 +1,34 @@
+@import "../general/general";
+
+.podcast__navbar {
+	width: 100%;
+	padding: 18px 30px 0;
+	@include flex($just: space-around);
+	p {
+		padding: 6px 4px;
+		position: relative;
+		@include font($color: #7e7e7e);
+		cursor: pointer;
+
+		&::after {
+			display: none;
+			position: absolute;
+			height: 4px;
+			width: 100%;
+			left: 0;
+			bottom: 0;
+			content: "";
+			background-color: $main_color;
+			border-radius: 10px;
+		}
+	}
+	.home {
+		margin: 0 15px;
+	}
+	#podcast__current__channel {
+		color: $main_color;
+		&::after {
+			display: block;
+		}
+	}
+}

@@ -1,0 +1,45 @@
+@import '../general/general.scss';
+
+.middle__container {
+  position: relative;
+  height: 100%;
+  flex-basis: $middle_width;
+  width: $middle_width;
+  background-color: #ebebeb;
+  overflow: hidden;
+
+  .middle__navbar {
+    height: 50px;
+    background-color: #ebebeb;
+    padding: 0 28px;
+    @include flex($just: flex-end);
+    -webkit-app-region: drag;
+
+    .icons {
+      -webkit-app-region: no-drag;
+      cursor: pointer;
+      @include flex($just: space-between, $gap: 16px, $align: flex-end);
+      div {
+        cursor: pointer;
+        @include flex($just: center, $align: flex-end);
+        width: 16px;
+        height: 16px;
+        border-radius: 8px;
+      }
+      img {
+        cursor: pointer !important;
+        height: auto;
+        width: 14px;
+        object-fit: contain;
+        z-index: 12;
+
+        &:hover {
+          // background-color: red;
+        }
+      }
+    }
+  }
+}
+.login__visible {
+  opacity: 0.5;
+}

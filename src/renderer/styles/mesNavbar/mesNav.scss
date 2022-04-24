@@ -1,0 +1,63 @@
+@import '../general/general.scss';
+
+.message__navbar__container {
+  padding: 20px 64px 8px;
+  width: 100%;
+  flex-basis: 58px !important;
+  @include flex($just: space-between);
+  min-height: 58px;
+  border-radius: $player_extra_div_height $player_extra_div_height 0 0;
+  margin-bottom: 8px;
+
+  .left {
+    button {
+      border: none;
+      background-color: transparent;
+      img {
+        cursor: pointer;
+      }
+    }
+
+    @include flex($just: space-between, $gap: 10px);
+
+    .my_writings {
+      width: 41.1px;
+      height: 28.8px;
+      border: none;
+      background-color: transparent;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+    }
+
+    .message__on_off {
+      @include flex($just: flex-start, $gap: 10px);
+      color: #7e7e7e;
+      .message_tab {
+        color: $main_color;
+      }
+    }
+  }
+
+  .right {
+    button {
+      border: none;
+      background-color: transparent;
+      img {
+        cursor: pointer;
+      }
+    }
+
+    @include flex($just: space-between);
+    .audio_list {
+      @include flex($just: flex-end, $gap: 10px);
+      color: #7e7e7e;
+      .audio_list_on {
+        color: $main_color;
+      }
+    }
+  }
+}

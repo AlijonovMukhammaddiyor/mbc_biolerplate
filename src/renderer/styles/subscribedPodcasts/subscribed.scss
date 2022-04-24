@@ -1,0 +1,44 @@
+@import "../general/general";
+
+.subscribed__podcasts {
+	width: 100%;
+	padding: 14px 22px 15px;
+	@include flex($just: flex-start, $dir: column, $gap: 16px);
+	overflow: hidden;
+	border-bottom: 1px solid #ebebeb;
+	flex-grow: 1;
+	flex-shrink: 0;
+	height: 175px;
+	max-height: 175px;
+	min-height: 175px;
+
+	.title {
+		width: 100%;
+		p {
+			text-align: left;
+			@include font($color: #333);
+		}
+	}
+
+	.podcasts__carousel {
+		width: 100%;
+	}
+
+	.no__podcasts {
+		@include font($color: #707070, $weight: $light);
+		@include flex($just: center);
+		min-height: 101px;
+	}
+
+	.not__subscribed {
+		@include font($color: #707070, $weight: $light);
+		@include flex($just: center);
+		min-height: 101px;
+		span {
+			padding: 3px;
+			color: $main_color;
+			text-decoration: underline;
+			cursor: pointer;
+		}
+	}
+}

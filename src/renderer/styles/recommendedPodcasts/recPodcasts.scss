@@ -1,0 +1,27 @@
+@import "../general/general";
+
+.recommended__podcasts {
+	width: 100%;
+	padding: 20px 22px 12px;
+	@include flex($just: flex-start, $dir: column, $gap: 16px);
+	overflow: hidden;
+	border-bottom: 1px solid #ebebeb;
+	flex-grow: 1;
+	flex-shrink: 0;
+	height: 144px;
+	max-height: 144px;
+	height: 144px;
+
+	.title {
+		text-align: left;
+		width: 100%;
+		p {
+			text-align: left;
+			@include font($color: #333);
+		}
+	}
+
+	.podcasts__carousel {
+		width: 100%;
+	}
+}
