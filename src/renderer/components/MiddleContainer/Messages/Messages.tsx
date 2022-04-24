@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable promise/always-return */
 import { useEffect, useState, useContext, useRef } from 'react';
 import jsonp from 'jsonp';
@@ -31,6 +32,9 @@ export default function Messages({ navbarVisible }: Props) {
     null
   );
   const [myMessOn, setMyMessOn] = useState(false);
+  const [myMessages, setMyMessages] = useState<MessagesType['MsgList']>([]);
+  const [deletedMsgs, setDeletedMsgs] = useState<MessagesType['MsgList']>([]);
+  const [render, setNewRender] = useState(false);
 
   const currentBrodID =
     state.main_state.general.currentPrograms[state.main_state.general.channel]
@@ -67,14 +71,104 @@ export default function Messages({ navbarVisible }: Props) {
           }
 
           setVisibility(res.MiniMsgView);
-          if (res.MiniMsgView === 'N' || myMessOn) {
-            temp = temp.filter((elem) => {
-              if (state.user.mainUser) {
-                return elem.UserID === state.user.mainUser.UserInfo.UserID;
-              }
-              return false;
-            });
+          if (res.MiniMsgView === 'N') {
+            if (state.user.cookieAvailable) {
+              jsonp(
+                `${Data.urls.myMsgListApi}?bid=${
+                  programs[channel]?.BroadCastID
+                }&gid=${programs[channel]?.ProgramGroupID}&page=1&pagesize=${
+                  page * 50
+                }`,
+                {},
+                // eslint-disable-next-line @typescript-eslint/no-shadow
+                (err, res) => {
+                  const arr: typeof myMessages = [];
+                  let msgs = res.MsgList || [];
+                  for (let i = 0; i < myMessages.length; i += 1) {
+                    if (!isAppendedByServer(msgs, myMessages[i])) {
+                      msgs = [myMessages[i], ...msgs];
+                    } else {
+                      arr.push(myMessages[i]);
+                    }
+                  }
+                  setMyMessages(
+                    myMessages.filter((msg) => {
+                      for (let i = 0; i < arr.length; i += 1) {
+                        if (arr[i].RegDate === msg.RegDate) {
+                          return false;
+                        }
+                      }
+                      return true;
+                    })
+                  );
+
+                  const arr2: typeof deletedMsgs = [];
+
+                  for (let i = 0; i < deletedMsgs.length; i += 1) {
+                    if (isDeletedMessage(msgs, deletedMsgs[i])) {
+                      msgs = [...msgs.slice(0, i), ...msgs.slice(i + 1)];
+                    } else {
+                      arr2.push(deletedMsgs[i]);
+                    }
+                  }
+                  setDeletedMsgs(
+                    deletedMsgs.filter((msg) => {
+                      for (let i = 0; i < arr2.length; i += 1) {
+                        if (arr2[i].SeqID === msg.SeqID) {
+                          return false;
+                        }
+                      }
+                      return true;
+                    })
+                  );
+
+                  setMessages(msgs);
+                }
+              );
+            } else {
+              setMessages([]);
+            }
           } else {
+            const discard: typeof myMessages = [];
+            for (let i = 0; i < myMessages.length; i += 1) {
+              if (!isAppendedByServer(temp, myMessages[i])) {
+                temp = [myMessages[i], ...temp];
+              } else {
+                discard.push(myMessages[i]);
+              }
+            }
+
+            setMyMessages(
+              myMessages.filter((msg) => {
+                for (let i = 0; i < discard.length; i += 1) {
+                  if (discard[i].RegDate === msg.RegDate) {
+                    return false;
+                  }
+                }
+                return true;
+              })
+            );
+
+            const discard2: typeof deletedMsgs = [];
+            for (let i = 0; i < deletedMsgs.length; i += 1) {
+              if (isDeletedMessage(temp, deletedMsgs[i])) {
+                temp = [...temp.slice(0, i), ...temp.slice(i + 1)];
+              } else {
+                discard2.push(deletedMsgs[i]);
+              }
+            }
+
+            setDeletedMsgs(
+              deletedMsgs.filter((msg) => {
+                for (let i = 0; i < discard2.length; i += 1) {
+                  if (discard2[i].RegDate === msg.RegDate) {
+                    return false;
+                  }
+                }
+                return true;
+              })
+            );
+
             setMessages(temp);
           }
         })
@@ -98,7 +192,7 @@ export default function Messages({ navbarVisible }: Props) {
     }
     return () => {};
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state.main_state.general.channel, currentBrodID, page, myMessOn]);
+  }, [state.main_state.general.channel, currentBrodID, page, myMessOn, render]);
 
   useEffect(() => {
     setPage(1);
@@ -157,6 +251,9 @@ export default function Messages({ navbarVisible }: Props) {
                       message={message}
                       key={message.SeqID}
                       checkIfWrittenToday={checkIfWrittenToday}
+                      appendDeletedMsg={appendDeletedMsg}
+                      render={render}
+                      setNewRender={setNewRender}
                     />
                   );
                 })}
@@ -170,10 +267,19 @@ export default function Messages({ navbarVisible }: Props) {
             state={state}
             messages={messages || []}
             checkIfWrittenToday={checkIfWrittenToday}
+            appendDeletedMsg={appendDeletedMsg}
+            render={render}
+            setNewRender={setNewRender}
           />
         )}
         {visibility !== 'X' && (
-          <MessageWrite dispatch={dispatch} state={state} />
+          <MessageWrite
+            dispatch={dispatch}
+            state={state}
+            render={render}
+            setNewRender={setNewRender}
+            appendMyMessage={appendMyMessage}
+          />
         )}
       </div>
     </div>
@@ -204,5 +310,59 @@ export default function Messages({ navbarVisible }: Props) {
 
   function getMyMessagesOnly(param: boolean) {
     setMyMessOn(param);
+  }
+
+  function isAppendedByServer(
+    // eslint-disable-next-line @typescript-eslint/no-shadow
+    messages: MessagesType['MsgList'],
+    msg: MessagesType['MsgList'][0]
+  ) {
+    for (let i = 0; i < messages.length; i += 1) {
+      if (
+        messages[i].Comment === msg.Comment &&
+        messages[i].UserNm === msg.UserNm &&
+        isTimeTheSame(messages[i].RegDate.slice(14), msg.RegDate.slice(14))
+      ) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  function isTimeTheSame(time1: string, time2: string): boolean {
+    const time1_arr = time1.split(':');
+    const time2_arr = time2.split(':');
+    const time1_num =
+      parseInt(time1_arr[0], 10) * 3600 +
+      parseInt(time1_arr[1], 10) * 60 +
+      parseInt(time1_arr[2], 10);
+
+    const time2_num =
+      parseInt(time2_arr[0], 10) * 3600 +
+      parseInt(time2_arr[1], 10) * 60 +
+      parseInt(time2_arr[2], 10);
+    return Math.abs(time1_num - time2_num) < 3;
+  }
+
+  function appendMyMessage(message: MessagesType['MsgList'][0]) {
+    setMyMessages([...myMessages, message]);
+  }
+
+  function isDeletedMessage(
+    // eslint-disable-next-line @typescript-eslint/no-shadow
+    messages: MessagesType['MsgList'],
+    msg: MessagesType['MsgList'][0]
+  ) {
+    for (let i = 0; i < messages.length; i += 1) {
+      if (msg.SeqID === messages[i].SeqID) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  function appendDeletedMsg(message: MessagesType['MsgList'][0]) {
+    setDeletedMsgs([...deletedMsgs, message]);
   }
 }

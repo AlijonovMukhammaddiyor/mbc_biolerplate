@@ -53,6 +53,9 @@ svg {
   max-width: calc(100% - 20px);
   position: relative;
   width: calc(100% - 20px);
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
 }
 
 .message .message__arrow {
@@ -77,6 +80,20 @@ svg {
   font-size: 13px;
   color: #484848;
   font-weight: 400;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: auto;
 }
 
 .message .title span {
@@ -105,6 +122,7 @@ svg {
 }
 
 .my__message {
+  width: 100%;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -115,13 +133,16 @@ svg {
   -webkit-box-pack: end;
       -ms-flex-pack: end;
           justify-content: flex-end;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
   gap: auto;
 }
 
 .my__message .message {
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
   background-color: #7742cc;
   border-color: #7742cc;
   padding: 10px 15px;

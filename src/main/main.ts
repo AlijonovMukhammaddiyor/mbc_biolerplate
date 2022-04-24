@@ -246,7 +246,7 @@ const createWindow = async () => {
     show: false,
     height: windowSize.height,
     width: windowSize.width,
-    resizable: false,
+    // resizable: false,
     useContentSize: true,
     frame: false,
     webPreferences: {

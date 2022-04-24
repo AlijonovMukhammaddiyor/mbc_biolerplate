@@ -1,16 +1,25 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import { useState } from 'react';
 import $ from 'jquery';
-import { STATE } from '../../../../context/utils/types';
+import { MessagesType, STATE } from '../../../../context/utils/types';
 import '../../../../styles/messageWrite/msgWrite.css';
 import Data from '../../../../context/utils/data';
 
 type Props = {
   state: STATE;
   dispatch: <T extends object>(obj: T) => void;
+  setNewRender: Function;
+  render: boolean;
+  appendMyMessage: Function;
 };
 
-export default function MessageWrite({ state, dispatch }: Props) {
+export default function MessageWrite({
+  setNewRender,
+  render,
+  state,
+  dispatch,
+  appendMyMessage,
+}: Props) {
   const [myMessage, setMyMessage] = useState<string>('');
 
   return (
@@ -94,9 +103,39 @@ export default function MessageWrite({ state, dispatch }: Props) {
           withCredentials: true,
         },
         success: (data: any) => {
+          const date = new Date();
+          const year = date.getFullYear();
+          const month = date.getMonth() + 1;
+          const day = date.getDate();
+
+          const part1 = `${year}-${month < 10 ? `0${month}` : month}-${
+            day < 10 ? `0${day}` : day
+          }`;
+
+          const seconds = date.getSeconds();
+          const minutes = date.getMinutes();
+          let hour = date.getHours();
+          const ampm = hour >= 12 ? '오후' : '오전';
+          if (hour > 12) {
+            hour -= 12;
+          }
+
+          const msg: MessagesType['MsgList'][0] = {
+            Rank: '0',
+            Comment: myMessage,
+            RegDate: `${part1} ${ampm} ${hour}:${
+              minutes < 10 ? `0${minutes}` : minutes
+            }:${seconds < 10 ? `0${seconds}` : seconds}`,
+            SeqID: -1,
+            Uno: 0,
+            UserID: readCookie('IMBCMAIN') || '',
+            UserNm: `${unescape(readCookie('IMBCNAME') || '')}`,
+          };
+          appendMyMessage(msg);
           console.log(data);
           console.log('registered message');
           setMyMessage('');
+          setNewRender(!render);
         },
         error: (request, status, error) => {
           console.log(

@@ -10,6 +10,18 @@
   max-width: calc(100% - 20px);
   position: relative;
   width: calc(100% - 20px);
+  width: max-content;
+
+  .close__icon {
+    position: absolute;
+    top: 2px;
+    width: 15px;
+    height: 15px;
+    right: 2px;
+    cursor: pointer;
+    padding: 3px;
+    @include font($color: #fff, $size: 14px, $weight: $light);
+  }
 
   .message__arrow {
     position: absolute;
@@ -30,6 +42,7 @@
     line-height: 22px;
     letter-spacing: -0.28px;
     @include font($color: #484848, $size: $small_font);
+    @include flex($just: flex-start);
     span {
       font-stretch: normal;
       font-style: normal;
@@ -55,8 +68,10 @@
 }
 
 .my__message {
-  @include flex($just: flex-end);
+  width: 100%;
+  @include flex($just: flex-end, $align: flex-end);
   .message {
+    width: max-content;
     background-color: $main_color;
     border-color: $main_color;
     padding: 10px 15px;

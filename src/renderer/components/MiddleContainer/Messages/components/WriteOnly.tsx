@@ -7,12 +7,20 @@ type Props = {
   messages: MessagesType['MsgList'];
   checkIfWrittenToday: (date: string) => string;
   state: STATE;
+  render: boolean;
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  setNewRender: Function;
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  appendDeletedMsg: Function;
 };
 
 export default function WriteOnly({
   messages,
   checkIfWrittenToday,
   state,
+  render,
+  setNewRender,
+  appendDeletedMsg,
 }: Props) {
   return (
     <div className="write_only__container">
@@ -24,6 +32,9 @@ export default function WriteOnly({
               checkIfWrittenToday={checkIfWrittenToday}
               message={msg}
               key={msg.SeqID}
+              render={render}
+              setNewRender={setNewRender}
+              appendDeletedMsg={appendDeletedMsg}
             />
           );
         })

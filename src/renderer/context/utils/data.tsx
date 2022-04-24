@@ -46,6 +46,12 @@ export default class Data<T> {
     deleteMsgApiPC: `https://miniapi.imbc.com/minimsg/msgDel_pc`,
     noticeApi: `http://miniapi.imbc.com/notice/newNotice`,
     guestCornerApi: `https://miniapi.imbc.com/notice/guestCorner`,
+    myMsgListApi: window.location.href.includes('https')
+      ? `https://miniapi.imbc.com/minimsg/mymsgList`
+      : `http://miniapi.imbc.com/minimsg/mymsgList`,
+    messageDelApi: window.location.href.includes('https')
+      ? `https://miniapi.imbc.com/minimsg/msgDel`
+      : `http://miniapi.imbc.com/minimsg/msgDel`,
   };
 
   static user = {
