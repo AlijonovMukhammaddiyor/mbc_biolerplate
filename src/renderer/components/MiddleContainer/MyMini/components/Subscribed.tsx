@@ -21,31 +21,31 @@ export default function Subscribed() {
   const [update, setUpdate] = useState(false);
 
   useEffect(() => {
-    if (state.user.cookieAvailable) {
-      $.ajax({
-        url: Data.urls.subscribedProgramLIstApi,
-        type: 'POST',
-        dataType: 'jsonp',
-        crossDomain: true,
-        data: {
-          cookieinfo: utils.readCookie('IMBCSession'),
-        },
-        xhrFields: {
-          withCredentials: true,
-        },
-        success: (data: any, status: any, xhr: any) => {
-          const temp = data;
-          data.every((podcast: RecommendedPodcast) => {
-            podcast.gettingDeleted = false;
-            return true;
-          });
-          setPrograms(data);
-        },
-        error: (err: any) => {
-          console.log(err);
-        },
-      });
-    }
+    const getSubsPodcasts = async () => {
+      if (state.user.cookieAvailable) {
+        const rawResponse = await fetch(
+          `${
+            Data.urls.subscribedProgramLIstApiPC
+          }?cookieinfo=${utils.readCookie('IMBCSession')}`,
+          {
+            method: 'POST',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+
+        const content = await rawResponse.json();
+        content.every((podcast: RecommendedPodcast) => {
+          podcast.gettingDeleted = false;
+          return true;
+        });
+        setPrograms(content);
+      }
+    };
+
+    getSubsPodcasts();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [update]);
 
@@ -132,6 +132,10 @@ export default function Subscribed() {
             );
           })}
         </div>
+      ) : state.user.cookieAvailable ? (
+        <div className="no__subscribed">
+          <p>현재 구독 중인 프로그램이 없습니다.</p>
+        </div>
       ) : (
         <div className="no__program">
           <div>
@@ -179,7 +183,13 @@ export default function Subscribed() {
     if (param && deleting.length > 0) {
       const temp = programs.filter(async (val) => {
         if (val.gettingDeleted) {
-          await utils.handleSubsClick(val.BroadCastID.toString(), false);
+          await utils.handleSubsClick(
+            val.BroadCastID.toString(),
+            false,
+            setUpdate,
+            update,
+            (s: string) => {}
+          );
         }
         return !val.gettingDeleted;
       });

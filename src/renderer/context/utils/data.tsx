@@ -39,9 +39,9 @@ export default class Data<T> {
     dailyScheduleApi: `https://miniapi.imbc.com/schedule/dailyprogramschedulelist`,
     recommendedPodcastsApi: `https://miniapi.imbc.com/podcast/recommendedprogramlist`,
     subscribedProgramLIstApi: `https://miniapi.imbc.com/podcast/subscribedprogramlist`,
-    subscribedProgramLIstApiPC: `https://miniapi.imbc.com/podcast/subscribedprogramlist_pc`,
+    subscribedProgramLIstApiPC: `http://miniapi.imbc.com/podcast/subscribedprogramlist_pc`,
     recentPodcastLIstApi: `https://miniapi.imbc.com/podcast/recentitemlist`,
-    subscribeProgramApi: `https://miniapi.imbc.com/podcast/subscribe`,
+    subscribeProgramApi: `https://miniapi.imbc.com/podcast/subscribe_pc`,
     trackLikeApi: `https://miniapi.imbc.com/music/liketrack`,
     deleteMsgApiPC: `https://miniapi.imbc.com/minimsg/msgDel_pc`,
     noticeApi: `http://miniapi.imbc.com/notice/newNotice`,
@@ -50,8 +50,8 @@ export default class Data<T> {
       ? `https://miniapi.imbc.com/minimsg/mymsgList`
       : `http://miniapi.imbc.com/minimsg/mymsgList`,
     messageDelApi: window.location.href.includes('https')
-      ? `https://miniapi.imbc.com/minimsg/msgDel`
-      : `http://miniapi.imbc.com/minimsg/msgDel`,
+      ? `https://miniapi.imbc.com/minimsg/msgDel_pc`
+      : `http://miniapi.imbc.com/minimsg/msgDel_pc`,
   };
 
   static user = {

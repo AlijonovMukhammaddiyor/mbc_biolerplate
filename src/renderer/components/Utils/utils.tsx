@@ -370,13 +370,13 @@ export default class Utils {
   ) => {
     if (username) {
       const url = `${Data.urls.loginAPI}`;
-
+      console.log(username, password);
       $.ajax({
         url,
         type: 'POST',
         data: $.param({
-          UID: Data.user.name,
-          PASSWORD: Data.user.password,
+          UID: username,
+          PASSWORD: password,
           Type: isLogIn ? 1 : 2, // login or logout
           ReturnType: 'JSON',
           Agent: window.navigator.userAgent,
@@ -390,6 +390,8 @@ export default class Utils {
         success: (data) => {
           if (isLogIn)
             if (data.State && data.State[0] !== 'E') {
+              console.log(data);
+              console.log(this.dispatch);
               this.dispatch({ type: 'LOGIN', mainUser: data });
               console.log('setting cookie', data.UserInfo.IMBCCookie, data);
               window.electron.ipcRenderer.send('set-cookie', {
@@ -397,6 +399,22 @@ export default class Utils {
                 domain: 'https://miniapi.imbc.com',
               });
               this.dispatch({ type: 'HIDE_LOGIN_SCREEN' });
+              if (
+                this.state.main_state.login.IDremember ||
+                this.state.main_state.login.autoLogin
+              )
+                this.dispatch({
+                  type: 'LOGIN_CREDENTIALS',
+                  id: username,
+                  password,
+                });
+
+              if (this.state.main_state.login.autoLogin) {
+                setTimeout(
+                  () => this.dispatch({ type: 'LOGIN', mainUser: data }),
+                  1000
+                );
+              }
             } else {
               console.log('Could not get user data');
             }
@@ -545,22 +563,38 @@ export default class Utils {
     });
   };
 
-  getSubscribedPrograms = () => {
-    return $.ajax({
-      url: Data.urls.subscribedProgramLIstApi,
-      dataType: 'jsonp',
-      type: 'GET',
-      data: {
-        cookieinfo: this.readCookie('IMBCSession'),
-      },
-      crossDomain: true,
-      xhrFields: {
-        withCredentials: true,
-      },
-    });
-  };
+  // getSubscribedPrograms = () => {
+  //   const getSubsPodcasts = async () => {
+  //     if (this.state.user.cookieAvailable) {
+  //       const rawResponse = await fetch(
+  //         `${Data.urls.subscribedProgramLIstApiPC}?cookieinfo=${this.readCookie(
+  //           'IMBCSession'
+  //         )}`,
+  //         {
+  //           method: 'POST',
+  //           headers: {
+  //             Accept: 'application/json',
+  //             'Content-Type': 'application/json',
+  //           },
+  //         }
+  //       );
+  //       const content = await rawResponse.json();
+  //       console.log('content', content);
+  //       return content;
+  //     }
+  //     return [];
+  //   };
 
-  async handleSubsClick(id: string | undefined, stateSubs: boolean) {
+  //   return getSubsPodcasts();
+  // };
+
+  async handleSubsClick(
+    id: string | undefined,
+    stateSubs: boolean,
+    setUpdate: (par: boolean) => void,
+    update: boolean,
+    setRender: (p: string) => void
+  ) {
     if (this.state.user.cookieAvailable && id) {
       await $.ajax({
         url: Data.urls.subscribeProgramApi,
@@ -568,6 +602,17 @@ export default class Utils {
         data: {
           bid: id,
           state: stateSubs,
+          CookieInfo: this.readCookie('IMBCSession'),
+        },
+        success: () => {
+          if (stateSubs) {
+            console.log('rendering subs');
+            setRender('subs');
+          } else {
+            console.log('rendering unsubs');
+            setRender('unsubs');
+          }
+          setUpdate(!update);
         },
         crossDomain: true,
         xhrFields: {

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-types */
 import writeonlyIcon from '../../../../assets/middle/message/img_write.svg';
 import { MessagesType, STATE } from '../../../../context/utils/types';
 import Message from './Message';
@@ -8,10 +9,9 @@ type Props = {
   checkIfWrittenToday: (date: string) => string;
   state: STATE;
   render: boolean;
-  // eslint-disable-next-line @typescript-eslint/ban-types
   setNewRender: Function;
-  // eslint-disable-next-line @typescript-eslint/ban-types
   appendDeletedMsg: Function;
+  readCookie: Function;
 };
 
 export default function WriteOnly({
@@ -21,12 +21,13 @@ export default function WriteOnly({
   render,
   setNewRender,
   appendDeletedMsg,
+  readCookie,
 }: Props) {
   return (
     <div className="write_only__container">
       {messages.length > 0 ? (
         messages.map((msg) => {
-          return (
+          return isMyMessage(msg) ? (
             <Message
               state={state}
               checkIfWrittenToday={checkIfWrittenToday}
@@ -35,7 +36,10 @@ export default function WriteOnly({
               render={render}
               setNewRender={setNewRender}
               appendDeletedMsg={appendDeletedMsg}
+              readCookie={readCookie}
             />
+          ) : (
+            <></>
           );
         })
       ) : (
@@ -52,4 +56,16 @@ export default function WriteOnly({
       )}
     </div>
   );
+
+  function isMyMessage(message: MessagesType['MsgList'][0]) {
+    if (state.user.mainUser) {
+      if (
+        state.user.mainUser.UserInfo &&
+        message.UserID === state.user.mainUser.UserInfo.UserID
+      ) {
+        return true;
+      }
+    }
+    return false;
+  }
 }

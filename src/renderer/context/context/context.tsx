@@ -75,7 +75,7 @@ export const ContextProvider = ({
       });
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [state.user.cookieAvailable]);
 
   useEffect(() => {
     /**
@@ -170,7 +170,11 @@ export const ContextProvider = ({
       JSON.stringify({
         main_state: {
           ...state.main_state,
-          general: { ...state.main_state.general, autoplay: false },
+          general: {
+            ...state.main_state.general,
+            autoplay: false,
+            settingsOpen: false,
+          },
           podcast: {
             ...state.main_state.podcast,
             subpodcast: {

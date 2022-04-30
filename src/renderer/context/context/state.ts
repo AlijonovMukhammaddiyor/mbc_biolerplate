@@ -35,7 +35,12 @@ const DEFAULT_STATE = {
       isMini: false,
       isMessageOpen: false,
     },
-
+    login: {
+      IDremember: false,
+      autoLogin: false,
+      id: '',
+      password: '',
+    },
     settings: {
       autostart: false,
       onTop: false,

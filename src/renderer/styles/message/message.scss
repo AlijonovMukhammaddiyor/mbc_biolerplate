@@ -9,7 +9,6 @@
   height: min-content;
   max-width: calc(100% - 20px);
   position: relative;
-  width: calc(100% - 20px);
   width: max-content;
 
   .close__icon {
@@ -43,6 +42,7 @@
     letter-spacing: -0.28px;
     @include font($color: #484848, $size: $small_font);
     @include flex($just: flex-start);
+    flex-shrink: 0;
     span {
       font-stretch: normal;
       font-style: normal;
@@ -50,6 +50,7 @@
       letter-spacing: -0.24px;
       text-align: left;
       margin-left: 5px;
+      flex-shrink: 0;
       @include font($weight: $light, $color: hsl(0, 0%, 38%), $size: 11px);
     }
   }
@@ -63,7 +64,7 @@
     letter-spacing: -0.28px;
     text-align: left;
     color: #484848;
-    max-width: 100%;
+    // max-width: 100%;
   }
 }
 
@@ -74,7 +75,8 @@
     width: max-content;
     background-color: $main_color;
     border-color: $main_color;
-    padding: 10px 15px;
+    padding: 10px 20px;
+    max-width: 100%;
     .message__arrow {
       background-color: $main_color;
       border-color: $main_color;
@@ -95,4 +97,9 @@
       }
     }
   }
+}
+
+.message__others {
+  width: 100%;
+  position: relative;
 }

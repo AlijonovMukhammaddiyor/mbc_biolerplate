@@ -130,6 +130,29 @@ svg {
   cursor: pointer;
 }
 
+.subscribed__programs__container .no__subscribed {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 26px;
+  padding-top: 3rem;
+  font-family: "MBCNEW";
+  font-size: 15px;
+  color: #707070;
+  font-weight: 300;
+}
+
 .subscribed__programs__container .no__program {
   width: 100%;
   display: -webkit-box;

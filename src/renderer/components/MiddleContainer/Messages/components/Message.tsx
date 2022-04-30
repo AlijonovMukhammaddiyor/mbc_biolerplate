@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/ban-types */
+import $ from 'jquery';
 import Data from '../../../../context/utils/data';
 import { MessagesType, STATE } from '../../../../context/utils/types';
 import '../../../../styles/message/message.css';
@@ -7,11 +9,10 @@ type Props = {
   message: MessagesType['MsgList'][0];
   checkIfWrittenToday: (date: string) => string;
   state: STATE;
-  // eslint-disable-next-line @typescript-eslint/ban-types
   appendDeletedMsg: Function;
-  // eslint-disable-next-line @typescript-eslint/ban-types
   setNewRender: Function;
   render: boolean;
+  readCookie: Function;
 };
 
 export default function Message({
@@ -21,9 +22,10 @@ export default function Message({
   appendDeletedMsg,
   setNewRender,
   render,
+  readCookie,
 }: Props) {
   return (
-    <div className={isMyMessage() ? ' my__message' : ''}>
+    <div className={isMyMessage() ? ' my__message' : 'message__others'}>
       <div className="message">
         {isMyMessage() && (
           <img
@@ -59,7 +61,9 @@ export default function Message({
       state.main_state.general.currentPrograms[
         state.main_state.general.channel
       ];
-    if (program)
+
+    if (program) {
+      console.log('deleting...');
       $.ajax({
         url: Data.urls.messageDelApi,
         type: 'POST',
@@ -67,6 +71,7 @@ export default function Message({
           bid: parseInt(program?.BroadCastID, 10),
           gid: parseInt(program?.ProgramGroupID, 10),
           seqID: message.SeqID,
+          cookieinfo: readCookie('IMBCSession'),
         }),
         dataType: 'json',
         crossDomain: true,
@@ -74,11 +79,12 @@ export default function Message({
           withCredentials: true,
         },
         success: (data: any) => {
-          // console.log("Deleted message", data);
+          console.log('Deleted message', data);
           if (data.Success === 'OK') {
+            console.log('OK...');
             appendDeletedMsg(message);
+            setNewRender(!render);
           }
-          setNewRender(!render);
         },
         error: (request, status, error) => {
           console.log(
@@ -88,5 +94,6 @@ export default function Message({
           );
         },
       });
+    }
   }
 }

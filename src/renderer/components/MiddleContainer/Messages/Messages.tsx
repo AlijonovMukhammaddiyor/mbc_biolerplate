@@ -95,6 +95,7 @@ export default function Messages({ navbarVisible }: Props) {
                     myMessages.filter((msg) => {
                       for (let i = 0; i < arr.length; i += 1) {
                         if (arr[i].RegDate === msg.RegDate) {
+                          console.log('removing', arr[i]);
                           return false;
                         }
                       }
@@ -132,6 +133,7 @@ export default function Messages({ navbarVisible }: Props) {
             const discard: typeof myMessages = [];
             for (let i = 0; i < myMessages.length; i += 1) {
               if (!isAppendedByServer(temp, myMessages[i])) {
+                console.log('not appended by server yet');
                 temp = [myMessages[i], ...temp];
               } else {
                 discard.push(myMessages[i]);
@@ -142,6 +144,7 @@ export default function Messages({ navbarVisible }: Props) {
               myMessages.filter((msg) => {
                 for (let i = 0; i < discard.length; i += 1) {
                   if (discard[i].RegDate === msg.RegDate) {
+                    console.log('appended by server');
                     return false;
                   }
                 }
@@ -151,23 +154,26 @@ export default function Messages({ navbarVisible }: Props) {
 
             const discard2: typeof deletedMsgs = [];
             for (let i = 0; i < deletedMsgs.length; i += 1) {
-              if (isDeletedMessage(temp, deletedMsgs[i])) {
-                temp = [...temp.slice(0, i), ...temp.slice(i + 1)];
+              const a = isDeletedMessage(temp, deletedMsgs[i]);
+              if (a >= 0) {
+                console.log('not deleted by server yet');
+                temp = [...temp.slice(0, a), ...temp.slice(a + 1)];
               } else {
                 discard2.push(deletedMsgs[i]);
               }
             }
-
-            setDeletedMsgs(
-              deletedMsgs.filter((msg) => {
-                for (let i = 0; i < discard2.length; i += 1) {
-                  if (discard2[i].RegDate === msg.RegDate) {
-                    return false;
-                  }
+            const newDeletedMsgs = deletedMsgs.filter((msg) => {
+              for (let i = 0; i < discard2.length; i += 1) {
+                if (discard2[i].RegDate === msg.RegDate) {
+                  console.log('already deleted by server');
+                  return false;
                 }
-                return true;
-              })
-            );
+              }
+              return true;
+            });
+            // console.log(newDeletedMsgs);
+
+            setDeletedMsgs(newDeletedMsgs);
 
             setMessages(temp);
           }
@@ -254,6 +260,7 @@ export default function Messages({ navbarVisible }: Props) {
                       appendDeletedMsg={appendDeletedMsg}
                       render={render}
                       setNewRender={setNewRender}
+                      readCookie={readCookie}
                     />
                   );
                 })}
@@ -269,6 +276,7 @@ export default function Messages({ navbarVisible }: Props) {
             checkIfWrittenToday={checkIfWrittenToday}
             appendDeletedMsg={appendDeletedMsg}
             render={render}
+            readCookie={readCookie}
             setNewRender={setNewRender}
           />
         )}
@@ -279,6 +287,7 @@ export default function Messages({ navbarVisible }: Props) {
             render={render}
             setNewRender={setNewRender}
             appendMyMessage={appendMyMessage}
+            readCookie={readCookie}
           />
         )}
       </div>
@@ -356,13 +365,27 @@ export default function Messages({ navbarVisible }: Props) {
   ) {
     for (let i = 0; i < messages.length; i += 1) {
       if (msg.SeqID === messages[i].SeqID) {
-        return true;
+        return i;
       }
     }
-    return false;
+    return -1;
   }
 
   function appendDeletedMsg(message: MessagesType['MsgList'][0]) {
     setDeletedMsgs([...deletedMsgs, message]);
+  }
+
+  function readCookie(name: string) {
+    if (state.user.mainUser) {
+      const nameEQ = `${name}=`;
+      const ca = state.user.mainUser.UserInfo.IMBCCookie.split(';');
+      for (let i = 0; i < ca.length; i += 1) {
+        let c = ca[i];
+        while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) === 0)
+          return c.substring(nameEQ.length, c.length);
+      }
+    }
+    return null;
   }
 }

@@ -31,7 +31,14 @@ export default function Settings() {
               <p className="name">
                 {state.user.mainUser?.UserInfo?.UserName} 님
               </p>
-              <button type="button" className="logout">
+              <button
+                onClick={() => {
+                  window.electron.ipcRenderer.send('logout', {});
+                  dispatch({ type: 'LOGOUT' });
+                }}
+                type="button"
+                className="logout"
+              >
                 로그아웃
               </button>
               <button className="modify" type="button">

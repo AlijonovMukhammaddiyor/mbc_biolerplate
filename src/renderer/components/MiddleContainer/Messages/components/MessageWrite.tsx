@@ -11,12 +11,14 @@ type Props = {
   setNewRender: Function;
   render: boolean;
   appendMyMessage: Function;
+  readCookie: Function;
 };
 
 export default function MessageWrite({
   setNewRender,
   render,
   state,
+  readCookie,
   dispatch,
   appendMyMessage,
 }: Props) {
@@ -120,6 +122,8 @@ export default function MessageWrite({
             hour -= 12;
           }
 
+          console.log('name:', readCookie('IMBCMAIN'));
+
           const msg: MessagesType['MsgList'][0] = {
             Rank: '0',
             Comment: myMessage,
@@ -145,19 +149,5 @@ export default function MessageWrite({
           );
         },
       });
-  }
-
-  function readCookie(name: string) {
-    if (state.user.mainUser) {
-      const nameEQ = `${name}=`;
-      const ca = state.user.mainUser.UserInfo.IMBCCookie.split(';');
-      for (let i = 0; i < ca.length; i += 1) {
-        let c = ca[i];
-        while (c.charAt(0) === ' ') c = c.substring(1, c.length);
-        if (c.indexOf(nameEQ) === 0)
-          return c.substring(nameEQ.length, c.length);
-      }
-    }
-    return null;
   }
 }

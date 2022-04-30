@@ -1,5 +1,6 @@
 import { useState, useContext, useEffect, useRef } from 'react';
 import '../../../../styles/podcastsByChannel/podcastsByChannel.css';
+import Data from 'renderer/context/utils/data';
 import DropDown from './DropDown';
 import Radio from './SelectRadio';
 import { Context } from '../../../../context/context/context';
@@ -42,19 +43,219 @@ export default function Podcast({ isByCatgory }: Props) {
   const listInnerRef = useRef<HTMLDivElement>(null);
   const [subsPodcasts, setSubsPodcasts] = useState<RecommendedPodcast[]>([]);
   const [category, setCategory] = useState(2);
+  const [render, setRender] = useState<string>('');
+  const [subsRender, setSubsRender] = useState(false);
+  const [unsubsRender, setUnSubsRender] = useState(false);
+  const [update, setUpdate] = useState(false);
+  const [newUpdate, setNewUpdate] = useState(false);
+  const [subscribed, setSubscribed] = useState<RecommendedPodcast[]>([]);
+  const [unsubscribed, setUnsubscribed] = useState<RecommendedPodcast[]>([]);
+
   const utils = new Utils(state, dispatch);
 
   useEffect(() => {
     async function getResponse() {
-      const util = new Utils(state, dispatch);
-      const data: RecommendedPodcast[] = await util.getSubscribedPrograms();
-      if (data.length > 0) {
-        setSubsPodcasts(data);
+      if (state.user.cookieAvailable) {
+        const rawResponse = await fetch(
+          `${
+            Data.urls.subscribedProgramLIstApiPC
+          }?cookieinfo=${utils.readCookie('IMBCSession')}`,
+          {
+            method: 'POST',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+
+        rawResponse
+          .json()
+          .then((content) => {
+            setSubsPodcasts(content);
+            setNewUpdate(!newUpdate);
+          })
+          .then((_) => {
+            // setNewUpdate(!newUpdate);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       }
     }
-    if (state.user.cookieAvailable) getResponse();
+
+    if (state.user.cookieAvailable) {
+      console.log('again??');
+      getResponse();
+      console.log('render is', render);
+      if (render === 'subs') {
+        setSubsRender(!subsRender);
+      } else if (render === 'unsubs') {
+        setUnSubsRender(!unsubsRender);
+      }
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [update]);
+
+  useEffect(() => {
+    /**
+     *Here, I will check if the server added subscribed podcast already.
+     *If yes, remove it from the local array
+     */
+    // console.log('before subs:', subsPodcasts, subscribed, unsubscribed);
+    let temp = subscribed;
+    for (let i = 0; i < subscribed.length; i += 1) {
+      for (let k = 0; k < subsPodcasts.length; k += 1) {
+        if (
+          subsPodcasts[k].BroadCastID.toString() ===
+          subscribed[i].BroadCastID.toString()
+        ) {
+          // it is already processed by the server. So I can remove from local array
+          temp = temp.filter((pod) => {
+            if (
+              pod.BroadCastID.toString() ===
+              subsPodcasts[i].BroadCastID.toString()
+            )
+              return false;
+            return true;
+          });
+        }
+      }
+    }
+
+    // /**
+    //  * Here, I will make sure all elements of subscribed is in subsPodcasts
+    //  */
+    const t = subsPodcasts;
+    t.concat(temp);
+
+    /**
+     * Here, I will check if unsubscribed array containsany subscribed element
+     */
+    let arr = unsubscribed;
+    for (let i = 0; i < unsubscribed.length; i += 1) {
+      for (let k = 0; k < subscribed.length; k += 1) {
+        if (
+          unsubscribed[i].BroadCastID.toString() ===
+          subscribed[k].BroadCastID.toString()
+        ) {
+          arr = arr.filter((e) => {
+            if (
+              e.BroadCastID.toString() === subscribed[k].BroadCastID.toString()
+            )
+              return false;
+            return true;
+          });
+          break;
+        }
+      }
+    }
+
+    setUnsubscribed(arr);
+    setSubsPodcasts(subsPodcasts);
+    setSubscribed(temp);
+    // setNewUpdate(!newUpdate);
+    console.log('end subs:', subsPodcasts, temp, arr);
+    // console.log('after subs:', subsPodcasts, subscribed, unsubscribed);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [subsRender]);
+
+  useEffect(() => {
+    /**
+     * Check if subsPodcasts already dos not contain elements unsubscribed
+     * If yes, remove that element from local unsubscribed array
+     */
+
+    const tempSubs = [...subsPodcasts, ...subscribed];
+    console.log('before 1:', unsubscribed, subsPodcasts);
+    let arr = unsubscribed;
+    for (let i = 0; i < unsubscribed.length; i += 1) {
+      let contains = false;
+      for (let k = 0; k < tempSubs.length; k += 1) {
+        if (
+          unsubscribed[i].BroadCastID.toString() ===
+          tempSubs[k].BroadCastID.toString()
+        ) {
+          // contains unsubscribed podcast
+          contains = true;
+          break;
+        }
+      }
+      if (!contains) {
+        arr = arr.filter((e) => {
+          if (
+            e.BroadCastID.toString() === unsubscribed[i].BroadCastID.toString()
+          )
+            return false;
+          return true;
+        });
+      }
+    }
+
+    console.log('after:', arr);
+
+    /**
+     * if subspodcasts contains element from unsubscribed, remove it
+     */
+    console.log('before subspodcasts:', subsPodcasts);
+    let tempData = subsPodcasts;
+    for (let i = 0; i < subsPodcasts.length; i += 1) {
+      for (let k = 0; k < unsubscribed.length; k += 1) {
+        if (
+          unsubscribed[k].BroadCastID.toString() ===
+          subsPodcasts[i].BroadCastID.toString()
+        ) {
+          // contains unsubscribed podcast
+          tempData = tempData.filter((e) => {
+            if (
+              e.BroadCastID.toString() ===
+              subsPodcasts[i].BroadCastID.toString()
+            )
+              return false;
+            return true;
+          });
+          break;
+        }
+      }
+    }
+
+    console.log('after', tempData);
+
+    /**
+     * if subscribed contains element from unsubscribed, remove it
+     */
+    console.log('before 2:', subscribed);
+    let arr2 = subscribed;
+    for (let i = 0; i < subscribed.length; i += 1) {
+      for (let k = 0; k < unsubscribed.length; k += 1) {
+        if (
+          unsubscribed[k].BroadCastID.toString() ===
+          subscribed[i].BroadCastID.toString()
+        ) {
+          // contains unsubscribed podcast
+          arr2 = arr2.filter((e) => {
+            if (
+              e.BroadCastID.toString() === subscribed[i].BroadCastID.toString()
+            )
+              return false;
+            return true;
+          });
+          break;
+        }
+      }
+    }
+    console.log('after 2:', arr2);
+
+    console.log('end:', tempData, arr2, arr);
+
+    setSubscribed(arr2);
+    setUnsubscribed(arr);
+    setSubsPodcasts(tempData);
+    // setNewUpdate(!newUpdate);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [unsubsRender]);
 
   useEffect(() => {
     /**
@@ -63,6 +264,8 @@ export default function Podcast({ isByCatgory }: Props) {
      * we will fetch another 50 podcasts like we did for messages
      *
      */
+    console.log('exectuing ittt', subsPodcasts, subscribed, unsubscribed);
+
     const util = new Utils(state, dispatch);
     async function setResponse() {
       const data: PodcastResponse = !isByCatgory
@@ -81,12 +284,43 @@ export default function Podcast({ isByCatgory }: Props) {
           );
       if (data) {
         setTotal(data.Total);
+        // console.log(data);
+        /**
+         * Assign is Subscribed variable to every podcast according to subscribed and unsubcribed arrays
+         */
+
         const temp: ExtendedPodcast[] = [];
         for (let i = 0; i < data.list.length; i += 1) {
           let added = false;
           subsPodcasts.every((podcast) => {
-            if (podcast.BroadCastID.toString() === data.list[i].BroadCastID) {
+            if (
+              podcast.BroadCastID.toString() ===
+              data.list[i].BroadCastID.toString()
+            ) {
               temp.push({ ...data.list[i], isSubscribed: true });
+              added = true;
+              return false;
+            }
+            return true;
+          });
+
+          /**
+           * I am also checking if subsPodcasts and subscribed arrays contain the same element.
+           * If yes, push only one
+           */
+
+          subscribed.every((podcast) => {
+            if (
+              podcast.BroadCastID.toString() ===
+              data.list[i].BroadCastID.toString()
+            ) {
+              if (
+                !temp.some(
+                  (e) =>
+                    e.BroadCastID.toString() === podcast.BroadCastID.toString()
+                )
+              )
+                temp.push({ ...data.list[i], isSubscribed: true });
               added = true;
               return false;
             }
@@ -96,11 +330,13 @@ export default function Podcast({ isByCatgory }: Props) {
             temp.push({ ...data.list[i], isSubscribed: false });
           }
         }
+        console.log('setting podcatsssss');
         setPodcasts(temp);
       }
     }
 
     setResponse();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     selectedChannel,
@@ -108,9 +344,9 @@ export default function Podcast({ isByCatgory }: Props) {
     selectedSort,
     order,
     currentCount,
-    subsPodcasts,
     category,
     isByCatgory,
+    subsPodcasts,
   ]);
 
   useEffect(() => {
@@ -154,26 +390,64 @@ export default function Podcast({ isByCatgory }: Props) {
       <div onScroll={onScroll} ref={listInnerRef} className="podcasts">
         {podcasts.map((podcast) => {
           return (
-            <div
-              key={podcast.BroadCastID}
-              onClick={() => {
-                enterPodcast(podcast);
-              }}
-              className="podcast"
-              role="list"
-            >
-              <img className="title__img" src={podcast.ITunesImageURL} alt="" />
+            <div key={podcast.BroadCastID} className="podcast" role="list">
+              <img
+                onClick={() => {
+                  enterPodcast(podcast);
+                }}
+                className="title__img"
+                src={podcast.ITunesImageURL}
+                alt=""
+              />
               <div className="podcast__details">
-                <div className="info">
+                <div
+                  onClick={() => {
+                    enterPodcast(podcast);
+                  }}
+                  role="list"
+                  className="info"
+                >
                   <p className="title">{podcast.Title}</p>
                   <p className="subtitle">{podcast.SubTitle}</p>
                 </div>
                 <img
-                  onClick={() =>
+                  onClick={() => {
+                    if (podcast.isSubscribed) {
+                      console.log('unsubscribe clicked');
+                      setUnsubscribed([
+                        ...unsubscribed,
+                        {
+                          ...podcast,
+                          gettingDeleted: false,
+                        } as unknown as RecommendedPodcast,
+                      ]);
+                    } else {
+                      console.log('subscribe clicked');
+                      setSubscribed([
+                        ...subscribed,
+                        {
+                          ...podcast,
+                          gettingDeleted: false,
+                        } as unknown as RecommendedPodcast,
+                      ]);
+                    }
+                    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
                     podcast.isSubscribed
-                      ? utils.handleSubsClick(podcast.BroadCastID, false)
-                      : utils.handleSubsClick(podcast.BroadCastID, true)
-                  }
+                      ? utils.handleSubsClick(
+                          podcast.BroadCastID,
+                          false,
+                          setUpdate,
+                          update,
+                          setRender
+                        )
+                      : utils.handleSubsClick(
+                          podcast.BroadCastID,
+                          true,
+                          setUpdate,
+                          update,
+                          setRender
+                        );
+                  }}
                   className="icon__subs"
                   src={podcast.isSubscribed ? iconSubsDone : iconSubs}
                   alt=""

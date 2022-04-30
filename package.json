@@ -91,8 +91,14 @@
       "./assets/**"
     ],
     "publish": {
-      "provider": "github"
+      "provider": "github",
+      "owner": "mbc",
+      "repo": "mbc mini"
     }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlijonovMukhammaddiyor/mbc_biolerplate.git"
   },
   "license": "MIT",
   "keywords": [

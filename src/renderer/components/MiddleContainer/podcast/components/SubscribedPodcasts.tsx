@@ -1,5 +1,4 @@
 import { useState, useEffect, useContext } from 'react';
-import $ from 'jquery';
 import Carousel from './Carousel';
 import { RecommendedPodcast } from '../../../../context/utils/types';
 import Data from '../../../../context/utils/data';
@@ -11,27 +10,29 @@ export default function SubscribedPodcasts() {
   const { state, dispatch } = useContext(Context);
 
   useEffect(() => {
-    if (state.user.cookieAvailable)
-      $.ajax({
-        url: Data.urls.subscribedProgramLIstApi,
-        dataType: 'jsonp',
-        type: 'GET',
-        data: {
-          cookieinfo: readCookie('IMBCSession'),
-        },
-        crossDomain: true,
-        xhrFields: {
-          withCredentials: true,
-        },
-        success: (data: RecommendedPodcast[], status, xhr) => {
-          if (data.length > 0) {
-            setPodcasts(data);
+    const getSubsPodcasts = async () => {
+      if (state.user.cookieAvailable) {
+        const rawResponse = await fetch(
+          `${Data.urls.subscribedProgramLIstApiPC}?cookieinfo=${readCookie(
+            'IMBCSession'
+          )}`,
+          {
+            method: 'POST',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
           }
-        },
-        error: (err: any) => {
-          console.log(err);
-        },
-      });
+        );
+
+        const content = await rawResponse.json();
+
+        if (content.length > 0) {
+          setPodcasts(content);
+        }
+      }
+    };
+    getSubsPodcasts();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.user.cookieAvailable, state.user.mainUser?.UserInfo.IMBCCookie]);
 

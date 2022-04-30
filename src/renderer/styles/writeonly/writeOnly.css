@@ -43,6 +43,8 @@ svg {
 
 .write_only__container {
   padding: 0 40px 0 20px;
+  height: 100%;
+  width: 100%;
 }
 
 .write_only__container .no__messages_yet {

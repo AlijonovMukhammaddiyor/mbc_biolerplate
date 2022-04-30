@@ -68,6 +68,24 @@
       cursor: pointer;
       border-radius: 6px;
     }
+
+    .checks {
+      width: 100%;
+      @include flex($just: flex-start, $gap: 10px);
+      .id__remember,
+      .autologin {
+        @include flex($just: flex-start, $gap: 5px);
+        img {
+          cursor: pointer;
+          width: 14px;
+          height: 14px;
+          object-fit: contain;
+        }
+        p {
+          @include font($color: #0e0e0e, $size: 12px, $weight: $light);
+        }
+      }
+    }
   }
 
   .options {

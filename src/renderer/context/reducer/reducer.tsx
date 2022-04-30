@@ -3,6 +3,40 @@ import { STATE } from '../utils/types';
 
 const Reducer = (state: STATE, action: any): STATE => {
   switch (action.type) {
+    case 'LOGIN_CREDENTIALS':
+      return {
+        ...state,
+        main_state: {
+          ...state.main_state,
+          login: {
+            ...state.main_state.login,
+            id: action.id,
+            password: action.password,
+          },
+        },
+      };
+    case 'LOGIN_ID_REMEMBER':
+      return {
+        ...state,
+        main_state: {
+          ...state.main_state,
+          login: {
+            ...state.main_state.login,
+            IDremember: action.remember,
+          },
+        },
+      };
+    case 'LOGIN_AUTOLOGIN':
+      return {
+        ...state,
+        main_state: {
+          ...state.main_state,
+          login: {
+            ...state.main_state.login,
+            autoLogin: action.autoLogin,
+          },
+        },
+      };
     case 'PAUSE_SET':
       return {
         ...state,
@@ -70,7 +104,7 @@ const Reducer = (state: STATE, action: any): STATE => {
       return {
         ...state,
         user: {
-          mainUser: null,
+          mainUser: state.user.mainUser,
           cookieAvailable: false,
         },
       };

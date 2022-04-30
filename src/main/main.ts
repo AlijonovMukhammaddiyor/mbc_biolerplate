@@ -63,6 +63,8 @@ function launchAtStartup(start: boolean, hidden: boolean) {
 
 let mainWindow: BrowserWindow | null = null;
 
+ipcMain.on('app-quit', async (_, args) => {});
+
 ipcMain.on('mini-no-message', async (event, args: { mini: boolean }) => {
   if (args.mini && mainWindow) {
     mainWindow.setSize(420, 110);
@@ -163,6 +165,28 @@ ipcMain.on('check-user', async (event, args) => {
     });
 });
 
+function setCookieOnStart() {
+  const cookieStored: any = store.get('cookie-info');
+  const cookieJar = session.defaultSession.cookies;
+
+  if (cookieStored?.cookie) {
+    const cookie = strObj(cookieStored.cookie);
+
+    for (const key in cookie) {
+      if (key && cookie[key] !== ';')
+        cookieJar
+          .set({
+            url: cookieStored.domain,
+            name: key,
+            value: cookie[key],
+            sameSite: 'strict',
+          })
+          .then(() => {})
+          .catch((err: Error) => console.log(err));
+    }
+  }
+}
+
 function strObj(cookieStr: string) {
   return cookieStr.split('; ').reduce((prev: any, current) => {
     const [name, ...value] = current.split('=');
@@ -171,11 +195,26 @@ function strObj(cookieStr: string) {
   }, {});
 }
 
+ipcMain.on('logout', (event, _) => {
+  session.defaultSession
+    .clearStorageData({ storages: ['cookies'] })
+    .then(() => {
+      console.log('All cookies cleared');
+      event.sender.send('logout-complete', { success: 'ok' });
+    })
+    .catch((error) => {
+      console.error('Failed to clear cookies: ', error);
+    });
+
+  store.set('cookie-info', { cookie: null, domain: null });
+});
+
 ipcMain.on('set-cookie', async (_, args) => {
   const cookieJar = session.defaultSession.cookies;
 
-  if (mainWindow) mainWindow.webContents.send('reply-cookie', args);
+  // if (mainWindow) mainWindow.webContents.send('reply-cookie', args);
   const cookie = strObj(args.cookie);
+  store.set('cookie-info', { cookie: args.cookie, domain: args.domain });
   for (const key in cookie) {
     if (key && cookie[key] !== ';')
       cookieJar
@@ -188,15 +227,6 @@ ipcMain.on('set-cookie', async (_, args) => {
         .then(() => {})
         .catch((err: Error) => console.log(err));
   }
-
-  session.defaultSession.cookies
-    .get({})
-    .then((cookies) => {
-      if (mainWindow) mainWindow.webContents.send('reply-cookie', cookies);
-    })
-    .catch((err) => {
-      if (mainWindow) mainWindow.webContents.send('reply-cookie', err);
-    });
 });
 
 if (process.env.NODE_ENV === 'production') {
@@ -257,6 +287,7 @@ const createWindow = async () => {
 
   mainWindow.webContents.on('did-finish-load', () => {
     if (mainWindow) {
+      setCookieOnStart();
       const isOnTop = store.get('onTop');
       if (isOnTop) {
         mainWindow.setAlwaysOnTop(true);

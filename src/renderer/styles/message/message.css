@@ -52,10 +52,23 @@ svg {
   height: min-content;
   max-width: calc(100% - 20px);
   position: relative;
-  width: calc(100% - 20px);
   width: -webkit-max-content;
   width: -moz-max-content;
   width: max-content;
+}
+
+.message .close__icon {
+  position: absolute;
+  top: 2px;
+  width: 15px;
+  height: 15px;
+  right: 2px;
+  cursor: pointer;
+  padding: 3px;
+  font-family: "MBCNEW";
+  font-size: 14px;
+  color: #fff;
+  font-weight: 300;
 }
 
 .message .message__arrow {
@@ -94,6 +107,8 @@ svg {
       -ms-flex-align: center;
           align-items: center;
   gap: auto;
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
 }
 
 .message .title span {
@@ -103,6 +118,8 @@ svg {
   letter-spacing: -0.24px;
   text-align: left;
   margin-left: 5px;
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
   font-family: "MBCNEW";
   font-size: 11px;
   color: #616161;
@@ -118,7 +135,6 @@ svg {
   letter-spacing: -0.28px;
   text-align: left;
   color: #484848;
-  max-width: 100%;
 }
 
 .my__message {
@@ -145,7 +161,8 @@ svg {
   width: max-content;
   background-color: #7742cc;
   border-color: #7742cc;
-  padding: 10px 15px;
+  padding: 10px 20px;
+  max-width: 100%;
 }
 
 .my__message .message .message__arrow {
@@ -169,5 +186,10 @@ svg {
 .my__message .message .title span,
 .my__message .message .content span {
   color: white;
+}
+
+.message__others {
+  width: 100%;
+  position: relative;
 }
 /*# sourceMappingURL=message.css.map */

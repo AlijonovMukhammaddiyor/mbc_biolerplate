@@ -289,6 +289,12 @@ export type STATE = {
       isMini: boolean;
       isMessageOpen: boolean;
     };
+    login: {
+      IDremember: boolean;
+      autoLogin: boolean;
+      id: string;
+      password: string;
+    };
     settings: { autostart: boolean; onTop: boolean; videoNotice: boolean };
     schedule: {
       isScheduleScreen: boolean;

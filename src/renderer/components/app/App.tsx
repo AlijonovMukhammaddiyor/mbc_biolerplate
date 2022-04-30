@@ -57,6 +57,11 @@ export default function App() {
       });
     });
 
+    window.onbeforeunload = (e) => {
+      window.electron.ipcRenderer.send('app-quit', {});
+      window.onbeforeunload = null;
+    };
+
     return () => {
       window.electron.ipcRenderer.removeListener('app-info', (args) => {
         if (args.windowSize.width === 960) {
