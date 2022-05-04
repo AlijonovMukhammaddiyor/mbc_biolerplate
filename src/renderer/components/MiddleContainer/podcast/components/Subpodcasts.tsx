@@ -44,6 +44,9 @@ export default function Subpodcasts() {
   const listInnerRef = useRef<HTMLDivElement>(null);
   const [backHover, setBackHover] = useState(false);
   const utils = new Utils(state, dispatch);
+  const [render, setRender] = useState(
+    state.main_state.podcast.currentPodcast?.isSubscribed ? 'subs' : 'unsubs'
+  );
 
   useEffect(() => {
     // console.log("useEffect subpodcasts");
@@ -128,22 +131,44 @@ export default function Subpodcasts() {
             </button>
 
             <img
-              onClick={() =>
-                state.main_state.podcast.currentPodcast?.isSubscribed
+              onClick={() => {
+                // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+                render === 'subs'
                   ? utils.handleSubsClick(
                       state.main_state.podcast.currentPodcast?.BroadCastID,
-                      false
+                      false,
+                      () => {},
+                      true,
+                      setRender
                     )
                   : utils.handleSubsClick(
                       state.main_state.podcast.currentPodcast?.BroadCastID,
-                      true
-                    )
-              }
-              src={
-                state.main_state.podcast.currentPodcast?.isSubscribed
-                  ? iconNotSubs
-                  : iconSubs
-              }
+                      true,
+                      (p: boolean) => {},
+                      true,
+                      setRender
+                    );
+                if (state.main_state.podcast.currentPodcast?.isSubscribed) {
+                  dispatch({
+                    type: 'PODCAST_IN',
+                    payload: {
+                      ...state.main_state.podcast.currentPodcast,
+                      isSubscribed: false,
+                    },
+                    channel: state.main_state.podcast.PodcastIn.channel,
+                  });
+                } else {
+                  dispatch({
+                    type: 'PODCAST_IN',
+                    payload: {
+                      ...state.main_state.podcast.currentPodcast,
+                      isSubscribed: true,
+                    },
+                    channel: state.main_state.podcast.PodcastIn.channel,
+                  });
+                }
+              }}
+              src={render === 'subs' ? iconNotSubs : iconSubs}
               alt=""
             />
           </div>

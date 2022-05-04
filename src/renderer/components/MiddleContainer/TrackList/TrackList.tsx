@@ -66,7 +66,7 @@ export default function TrackList() {
 
   return (
     <div className="tracklist__container">
-      <Navbar messageVisibility="" />
+      <Navbar messageVisibility="" getMyMessages={() => {}} myMess={false} />
       {tracklist.length > 0 ? (
         <div className="tracks">
           {tracklist.map((track) => {

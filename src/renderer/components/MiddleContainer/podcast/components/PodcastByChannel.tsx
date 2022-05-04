@@ -30,7 +30,6 @@ export default function Podcast({ isByCatgory }: Props) {
   ]);
   const [podcastState, setState] = useState(['방송중', '방송종료']);
   const [selectedState, setSelectedState] = useState(2);
-  // const [sorts, setSorts] = useState(["인기순", "방송시간순", "가나다순"]);
   const sorts = ['인기순', '방송시간순', '가나다순'];
   const [selectedSort, setSelectedSort] = useState(0); // index of sorts
   const { state, dispatch } = useContext(Context);
@@ -73,7 +72,6 @@ export default function Podcast({ isByCatgory }: Props) {
           .json()
           .then((content) => {
             setSubsPodcasts(content);
-            setNewUpdate(!newUpdate);
           })
           .then((_) => {
             // setNewUpdate(!newUpdate);
@@ -89,173 +87,311 @@ export default function Podcast({ isByCatgory }: Props) {
       getResponse();
       console.log('render is', render);
       if (render === 'subs') {
-        setSubsRender(!subsRender);
+        let temp = subscribed;
+        for (let i = 0; i < subscribed.length; i += 1) {
+          for (let k = 0; k < subsPodcasts.length; k += 1) {
+            if (
+              subsPodcasts[k].BroadCastID.toString() ===
+              subscribed[i].BroadCastID.toString()
+            ) {
+              // it is already processed by the server. So I can remove from local array
+              temp = temp.filter((pod) => {
+                if (
+                  pod.BroadCastID.toString() ===
+                  subsPodcasts[i].BroadCastID.toString()
+                )
+                  return false;
+                return true;
+              });
+            }
+          }
+        }
+
+        // /**
+        //  * Here, I will make sure all elements of subscribed is in subsPodcasts
+        //  */
+        const t = subsPodcasts;
+        t.concat(temp);
+
+        /**
+         * Here, I will check if unsubscribed array containsany subscribed element
+         */
+        let arr = unsubscribed;
+        for (let i = 0; i < unsubscribed.length; i += 1) {
+          for (let k = 0; k < subscribed.length; k += 1) {
+            if (
+              unsubscribed[i].BroadCastID.toString() ===
+              subscribed[k].BroadCastID.toString()
+            ) {
+              arr = arr.filter((e) => {
+                if (
+                  e.BroadCastID.toString() ===
+                  subscribed[k].BroadCastID.toString()
+                )
+                  return false;
+                return true;
+              });
+              break;
+            }
+          }
+        }
+
+        setUnsubscribed(arr);
+        setSubsPodcasts(subsPodcasts);
+        setSubscribed(temp);
+        // setNewUpdate(!newUpdate);
+        console.log('end subs:', subsPodcasts, temp, arr);
       } else if (render === 'unsubs') {
-        setUnSubsRender(!unsubsRender);
+        const tempSubs = [...subsPodcasts, ...subscribed];
+        console.log('before 1:', unsubscribed, subsPodcasts);
+        let arr = unsubscribed;
+        for (let i = 0; i < unsubscribed.length; i += 1) {
+          let contains = false;
+          for (let k = 0; k < tempSubs.length; k += 1) {
+            if (
+              unsubscribed[i].BroadCastID.toString() ===
+              tempSubs[k].BroadCastID.toString()
+            ) {
+              // contains unsubscribed podcast
+              contains = true;
+              break;
+            }
+          }
+          if (!contains) {
+            arr = arr.filter((e) => {
+              if (
+                e.BroadCastID.toString() ===
+                unsubscribed[i].BroadCastID.toString()
+              )
+                return false;
+              return true;
+            });
+          }
+        }
+
+        console.log('after:', arr);
+
+        /**
+         * if subspodcasts contains element from unsubscribed, remove it
+         */
+        console.log('before subspodcasts:', subsPodcasts);
+        let tempData = subsPodcasts;
+        for (let i = 0; i < subsPodcasts.length; i += 1) {
+          for (let k = 0; k < unsubscribed.length; k += 1) {
+            if (
+              unsubscribed[k].BroadCastID.toString() ===
+              subsPodcasts[i].BroadCastID.toString()
+            ) {
+              // contains unsubscribed podcast
+              tempData = tempData.filter((e) => {
+                if (
+                  e.BroadCastID.toString() ===
+                  subsPodcasts[i].BroadCastID.toString()
+                )
+                  return false;
+                return true;
+              });
+              break;
+            }
+          }
+        }
+
+        console.log('after', tempData);
+
+        /**
+         * if subscribed contains element from unsubscribed, remove it
+         */
+        console.log('before 2:', subscribed);
+        let arr2 = subscribed;
+        for (let i = 0; i < subscribed.length; i += 1) {
+          for (let k = 0; k < unsubscribed.length; k += 1) {
+            if (
+              unsubscribed[k].BroadCastID.toString() ===
+              subscribed[i].BroadCastID.toString()
+            ) {
+              // contains unsubscribed podcast
+              arr2 = arr2.filter((e) => {
+                if (
+                  e.BroadCastID.toString() ===
+                  subscribed[i].BroadCastID.toString()
+                )
+                  return false;
+                return true;
+              });
+              break;
+            }
+          }
+        }
+        console.log('after 2:', arr2);
+
+        console.log('end:', tempData, arr2, arr);
+
+        setSubscribed(arr2);
+        setUnsubscribed(arr);
+        setSubsPodcasts(tempData);
       }
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [update]);
 
-  useEffect(() => {
-    /**
-     *Here, I will check if the server added subscribed podcast already.
-     *If yes, remove it from the local array
-     */
-    // console.log('before subs:', subsPodcasts, subscribed, unsubscribed);
-    let temp = subscribed;
-    for (let i = 0; i < subscribed.length; i += 1) {
-      for (let k = 0; k < subsPodcasts.length; k += 1) {
-        if (
-          subsPodcasts[k].BroadCastID.toString() ===
-          subscribed[i].BroadCastID.toString()
-        ) {
-          // it is already processed by the server. So I can remove from local array
-          temp = temp.filter((pod) => {
-            if (
-              pod.BroadCastID.toString() ===
-              subsPodcasts[i].BroadCastID.toString()
-            )
-              return false;
-            return true;
-          });
-        }
-      }
-    }
+  // useEffect(() => {
+  //   /**
+  //    *Here, I will check if the server added subscribed podcast already.
+  //    *If yes, remove it from the local array
+  //    */
+  //   let temp = subscribed;
+  //   for (let i = 0; i < subscribed.length; i += 1) {
+  //     for (let k = 0; k < subsPodcasts.length; k += 1) {
+  //       if (
+  //         subsPodcasts[k].BroadCastID.toString() ===
+  //         subscribed[i].BroadCastID.toString()
+  //       ) {
+  //         // it is already processed by the server. So I can remove from local array
+  //         temp = temp.filter((pod) => {
+  //           if (
+  //             pod.BroadCastID.toString() ===
+  //             subsPodcasts[i].BroadCastID.toString()
+  //           )
+  //             return false;
+  //           return true;
+  //         });
+  //       }
+  //     }
+  //   }
 
-    // /**
-    //  * Here, I will make sure all elements of subscribed is in subsPodcasts
-    //  */
-    const t = subsPodcasts;
-    t.concat(temp);
+  //   // /**
+  //   //  * Here, I will make sure all elements of subscribed is in subsPodcasts
+  //   //  */
+  //   const t = subsPodcasts;
+  //   t.concat(temp);
 
-    /**
-     * Here, I will check if unsubscribed array containsany subscribed element
-     */
-    let arr = unsubscribed;
-    for (let i = 0; i < unsubscribed.length; i += 1) {
-      for (let k = 0; k < subscribed.length; k += 1) {
-        if (
-          unsubscribed[i].BroadCastID.toString() ===
-          subscribed[k].BroadCastID.toString()
-        ) {
-          arr = arr.filter((e) => {
-            if (
-              e.BroadCastID.toString() === subscribed[k].BroadCastID.toString()
-            )
-              return false;
-            return true;
-          });
-          break;
-        }
-      }
-    }
+  //   /**
+  //    * Here, I will check if unsubscribed array containsany subscribed element
+  //    */
+  //   let arr = unsubscribed;
+  //   for (let i = 0; i < unsubscribed.length; i += 1) {
+  //     for (let k = 0; k < subscribed.length; k += 1) {
+  //       if (
+  //         unsubscribed[i].BroadCastID.toString() ===
+  //         subscribed[k].BroadCastID.toString()
+  //       ) {
+  //         arr = arr.filter((e) => {
+  //           if (
+  //             e.BroadCastID.toString() === subscribed[k].BroadCastID.toString()
+  //           )
+  //             return false;
+  //           return true;
+  //         });
+  //         break;
+  //       }
+  //     }
+  //   }
 
-    setUnsubscribed(arr);
-    setSubsPodcasts(subsPodcasts);
-    setSubscribed(temp);
-    // setNewUpdate(!newUpdate);
-    console.log('end subs:', subsPodcasts, temp, arr);
-    // console.log('after subs:', subsPodcasts, subscribed, unsubscribed);
+  //   setUnsubscribed(arr);
+  //   setSubsPodcasts(subsPodcasts);
+  //   setSubscribed(temp);
+  //   // setNewUpdate(!newUpdate);
+  //   console.log('end subs:', subsPodcasts, temp, arr);
+  //   // console.log('after subs:', subsPodcasts, subscribed, unsubscribed);
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [subsRender]);
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [subsRender]);
 
-  useEffect(() => {
-    /**
-     * Check if subsPodcasts already dos not contain elements unsubscribed
-     * If yes, remove that element from local unsubscribed array
-     */
+  // useEffect(() => {
+  //   /**
+  //    * Check if subsPodcasts already dos not contain elements unsubscribed
+  //    * If yes, remove that element from local unsubscribed array
+  //    */
 
-    const tempSubs = [...subsPodcasts, ...subscribed];
-    console.log('before 1:', unsubscribed, subsPodcasts);
-    let arr = unsubscribed;
-    for (let i = 0; i < unsubscribed.length; i += 1) {
-      let contains = false;
-      for (let k = 0; k < tempSubs.length; k += 1) {
-        if (
-          unsubscribed[i].BroadCastID.toString() ===
-          tempSubs[k].BroadCastID.toString()
-        ) {
-          // contains unsubscribed podcast
-          contains = true;
-          break;
-        }
-      }
-      if (!contains) {
-        arr = arr.filter((e) => {
-          if (
-            e.BroadCastID.toString() === unsubscribed[i].BroadCastID.toString()
-          )
-            return false;
-          return true;
-        });
-      }
-    }
+  //   const tempSubs = [...subsPodcasts, ...subscribed];
+  //   console.log('before 1:', unsubscribed, subsPodcasts);
+  //   let arr = unsubscribed;
+  //   for (let i = 0; i < unsubscribed.length; i += 1) {
+  //     let contains = false;
+  //     for (let k = 0; k < tempSubs.length; k += 1) {
+  //       if (
+  //         unsubscribed[i].BroadCastID.toString() ===
+  //         tempSubs[k].BroadCastID.toString()
+  //       ) {
+  //         // contains unsubscribed podcast
+  //         contains = true;
+  //         break;
+  //       }
+  //     }
+  //     if (!contains) {
+  //       arr = arr.filter((e) => {
+  //         if (
+  //           e.BroadCastID.toString() === unsubscribed[i].BroadCastID.toString()
+  //         )
+  //           return false;
+  //         return true;
+  //       });
+  //     }
+  //   }
 
-    console.log('after:', arr);
+  //   console.log('after:', arr);
 
-    /**
-     * if subspodcasts contains element from unsubscribed, remove it
-     */
-    console.log('before subspodcasts:', subsPodcasts);
-    let tempData = subsPodcasts;
-    for (let i = 0; i < subsPodcasts.length; i += 1) {
-      for (let k = 0; k < unsubscribed.length; k += 1) {
-        if (
-          unsubscribed[k].BroadCastID.toString() ===
-          subsPodcasts[i].BroadCastID.toString()
-        ) {
-          // contains unsubscribed podcast
-          tempData = tempData.filter((e) => {
-            if (
-              e.BroadCastID.toString() ===
-              subsPodcasts[i].BroadCastID.toString()
-            )
-              return false;
-            return true;
-          });
-          break;
-        }
-      }
-    }
+  //   /**
+  //    * if subspodcasts contains element from unsubscribed, remove it
+  //    */
+  //   console.log('before subspodcasts:', subsPodcasts);
+  //   let tempData = subsPodcasts;
+  //   for (let i = 0; i < subsPodcasts.length; i += 1) {
+  //     for (let k = 0; k < unsubscribed.length; k += 1) {
+  //       if (
+  //         unsubscribed[k].BroadCastID.toString() ===
+  //         subsPodcasts[i].BroadCastID.toString()
+  //       ) {
+  //         // contains unsubscribed podcast
+  //         tempData = tempData.filter((e) => {
+  //           if (
+  //             e.BroadCastID.toString() ===
+  //             subsPodcasts[i].BroadCastID.toString()
+  //           )
+  //             return false;
+  //           return true;
+  //         });
+  //         break;
+  //       }
+  //     }
+  //   }
 
-    console.log('after', tempData);
+  //   console.log('after', tempData);
 
-    /**
-     * if subscribed contains element from unsubscribed, remove it
-     */
-    console.log('before 2:', subscribed);
-    let arr2 = subscribed;
-    for (let i = 0; i < subscribed.length; i += 1) {
-      for (let k = 0; k < unsubscribed.length; k += 1) {
-        if (
-          unsubscribed[k].BroadCastID.toString() ===
-          subscribed[i].BroadCastID.toString()
-        ) {
-          // contains unsubscribed podcast
-          arr2 = arr2.filter((e) => {
-            if (
-              e.BroadCastID.toString() === subscribed[i].BroadCastID.toString()
-            )
-              return false;
-            return true;
-          });
-          break;
-        }
-      }
-    }
-    console.log('after 2:', arr2);
+  //   /**
+  //    * if subscribed contains element from unsubscribed, remove it
+  //    */
+  //   console.log('before 2:', subscribed);
+  //   let arr2 = subscribed;
+  //   for (let i = 0; i < subscribed.length; i += 1) {
+  //     for (let k = 0; k < unsubscribed.length; k += 1) {
+  //       if (
+  //         unsubscribed[k].BroadCastID.toString() ===
+  //         subscribed[i].BroadCastID.toString()
+  //       ) {
+  //         // contains unsubscribed podcast
+  //         arr2 = arr2.filter((e) => {
+  //           if (
+  //             e.BroadCastID.toString() === subscribed[i].BroadCastID.toString()
+  //           )
+  //             return false;
+  //           return true;
+  //         });
+  //         break;
+  //       }
+  //     }
+  //   }
+  //   console.log('after 2:', arr2);
 
-    console.log('end:', tempData, arr2, arr);
+  //   console.log('end:', tempData, arr2, arr);
 
-    setSubscribed(arr2);
-    setUnsubscribed(arr);
-    setSubsPodcasts(tempData);
-    // setNewUpdate(!newUpdate);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [unsubsRender]);
+  //   setSubscribed(arr2);
+  //   setUnsubscribed(arr);
+  //   setSubsPodcasts(tempData);
+  //   // setNewUpdate(!newUpdate);
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [unsubsRender]);
 
   useEffect(() => {
     /**

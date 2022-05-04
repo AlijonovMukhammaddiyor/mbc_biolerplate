@@ -9,6 +9,7 @@ import MiddleContainer from '../MiddleContainer/MiddleContainer';
 import Login from '../login/Login';
 import Mini from '../Mini/Mini';
 import { Context } from '../../context/context/context';
+import Utils from '../Utils/utils';
 
 export default function App() {
   const { state, dispatch } = useContext(Context);
@@ -23,6 +24,17 @@ export default function App() {
         dispatch({
           type: 'MINIMIZE_OFF',
         });
+      }
+    });
+
+    window.electron.ipcRenderer.receive('login-again', (_, args) => {
+      if (state.main_state.login.password && state.main_state.login.id) {
+        const util = new Utils(state, dispatch);
+        util.logInOut(
+          state.main_state.login.id,
+          state.main_state.login.password,
+          true
+        );
       }
     });
 
@@ -78,6 +90,17 @@ export default function App() {
           if (!state.main_state.mini.isMessageOpen) {
             dispatch({ type: 'TOGGLE_MINI_MESSAGE' });
           }
+        }
+      });
+
+      window.electron.ipcRenderer.removeListener('login-again', () => {
+        if (state.main_state.login.password && state.main_state.login.id) {
+          const util = new Utils(state, dispatch);
+          util.logInOut(
+            state.main_state.login.id,
+            state.main_state.login.password,
+            true
+          );
         }
       });
 

@@ -351,7 +351,7 @@ export default function Messages({ navbarVisible }: Props) {
       parseInt(time2_arr[0], 10) * 3600 +
       parseInt(time2_arr[1], 10) * 60 +
       parseInt(time2_arr[2], 10);
-    return Math.abs(time1_num - time2_num) < 3;
+    return Math.abs(time1_num - time2_num) <= 5;
   }
 
   function appendMyMessage(message: MessagesType['MsgList'][0]) {

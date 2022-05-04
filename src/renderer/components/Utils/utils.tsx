@@ -416,6 +416,7 @@ export default class Utils {
                 );
               }
             } else {
+              window.electron.ipcRenderer.send('logout', {});
               console.log('Could not get user data');
             }
           else {
@@ -534,6 +535,9 @@ export default class Utils {
         SubCategoryID: categoryId,
         SortType: sortType,
         SortOption: order,
+      },
+      success: (err, res) => {
+        console.log(res, 'response from api');
       },
       dataType: 'jsonp',
       type: 'GET',

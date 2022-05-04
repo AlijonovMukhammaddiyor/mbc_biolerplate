@@ -3,13 +3,18 @@
 import { useEffect, useState, useContext } from 'react';
 import $ from 'jquery';
 import Utils from 'renderer/components/Utils/utils';
-import { RecommendedPodcast } from '../../../../context/utils/types';
+import {
+  PodcastResponse,
+  RecommendedPodcast,
+} from '../../../../context/utils/types';
 import iconCheckboxOff from '../../../../assets/middle/mymini/check-box-off.svg';
 import iconCheckboxOn from '../../../../assets/middle/mymini/check-box-on.svg';
 import { Context } from '../../../../context/context/context';
 import Data from '../../../../context/utils/data';
 import '../../../../styles/subscribedPrograms/subscribed.css';
 import DeletePrompt from './DeletePrompt';
+
+type ExtendedPodcast = PodcastResponse['list'][0] & { isSubscribed: boolean };
 
 export default function Subscribed() {
   const [programs, setPrograms] = useState<RecommendedPodcast[]>([]);
@@ -41,7 +46,9 @@ export default function Subscribed() {
           podcast.gettingDeleted = false;
           return true;
         });
-        setPrograms(content);
+        if (content.length > 50) {
+          setPrograms(content.slice(0, 50));
+        } else setPrograms(content);
       }
     };
 
@@ -122,9 +129,24 @@ export default function Subscribed() {
                   className="program__img"
                   src={program.ItunesImageURL || program.ITunesImageURL}
                   alt=""
+                  onClick={() =>
+                    enterPodcast({
+                      ...program,
+                      isSubscribed: true,
+                    } as unknown as ExtendedPodcast)
+                  }
                 />
 
-                <div className={isDeleting ? 'info deleting' : 'info'}>
+                <div
+                  className={isDeleting ? 'info deleting' : 'info'}
+                  onClick={() =>
+                    enterPodcast({
+                      ...program,
+                      isSubscribed: true,
+                    } as unknown as ExtendedPodcast)
+                  }
+                  role="list"
+                >
                   <p className="program__title">{program.Title}</p>
                   <p className="program__subtitle">{program.SubTitle}</p>
                 </div>
@@ -209,6 +231,19 @@ export default function Subscribed() {
     programs.every((program) => {
       program.gettingDeleted = false;
       return true;
+    });
+  }
+
+  function enterPodcast(podcast: ExtendedPodcast) {
+    dispatch({ type: 'PODCAST_TAB' });
+    dispatch({ type: 'CHANGE_PODCAST_CHANNEL', channel: 'home' });
+    dispatch({
+      type: 'PODCAST_IN',
+      payload: podcast,
+      channel: state.main_state.podcast.channel,
+    });
+    dispatch({
+      type: 'CLOSE_MY_MINI',
     });
   }
 }

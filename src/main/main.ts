@@ -287,6 +287,7 @@ const createWindow = async () => {
 
   mainWindow.webContents.on('did-finish-load', () => {
     if (mainWindow) {
+      mainWindow.webContents.send('login-again', {});
       setCookieOnStart();
       const isOnTop = store.get('onTop');
       if (isOnTop) {
