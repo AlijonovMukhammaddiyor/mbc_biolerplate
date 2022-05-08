@@ -111,6 +111,7 @@ export default function TimeProgress({
           </div>
         ) : (
           <input
+            tabIndex={-1}
             type="range"
             name=""
             id="program__progress"

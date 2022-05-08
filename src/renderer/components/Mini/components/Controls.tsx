@@ -15,14 +15,20 @@ export default function Controls() {
   const [pause, setPause] = useState(!state.main_state.general.autoplay);
 
   useEffect(() => {
-    dispatch({ type: 'PAUSE_SET', pause });
+    dispatch({ type: 'PAUSE_SET_AUDIO', pause });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pause]);
 
   return (
     <div className="mini__controls__container">
       <div className="left">
-        <PlayPause pause={pause} setPause={setPause} state={state} isMini />
+        <PlayPause
+          dispatch={dispatch}
+          pause={pause}
+          setPause={setPause}
+          state={state}
+          isMini
+        />
         <AudioInfo util={utils} />
         <Audio getDuration={() => {}} setPause={setPause} />
       </div>

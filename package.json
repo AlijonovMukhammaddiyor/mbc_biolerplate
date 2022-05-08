@@ -54,7 +54,7 @@
       "entitlements": "assets/entitlements.mac.plist",
       "entitlementsInherit": "assets/entitlements.mac.plist",
       "gatekeeperAssess": false,
-      "icon": "./assets/icon.png"
+      "icon": "./assets/icon512.png"
     },
     "dmg": {
       "contents": [

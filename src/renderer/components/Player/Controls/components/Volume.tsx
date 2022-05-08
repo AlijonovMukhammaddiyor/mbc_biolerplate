@@ -67,6 +67,7 @@ export default function Volume({
       />
 
       <input
+        tabIndex={-1}
         onChange={(e) => {
           setVolume(e.currentTarget.valueAsNumber);
         }}

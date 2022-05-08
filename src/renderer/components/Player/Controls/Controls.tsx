@@ -16,7 +16,7 @@ export default function Controls() {
   const util = new Utils(state, dispatch);
 
   useEffect(() => {
-    dispatch({ type: 'PAUSE_SET', pause });
+    dispatch({ type: 'PAUSE_SET_AUDIO', pause });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pause]);
 
@@ -49,6 +49,7 @@ export default function Controls() {
           />
         ) : (
           <PlayPause
+            dispatch={dispatch}
             state={state}
             pause={pause}
             setPause={setPause}

@@ -1,4 +1,4 @@
-@import "../general/general";
+@import '../general/general';
 
 $audio_controls_height: 60px;
 $track-h: 5px;
@@ -8,158 +8,163 @@ $filll-c: $main_color;
 $track-w: 100%;
 
 .audio__controls {
-	height: $audio_controls_height;
-	width: 100%;
-	@include flex($dir: row, $just: space-between, $gap: 8px);
-	margin-inline: auto;
-	background-color: #ebebeb;
-	padding: 0 30px 0;
-	.volume {
-		margin-bottom: 10px;
-	}
-	.time__progress {
-		flex-basis: 100%;
-		margin-top: 10px;
-		@include flex($dir: column, $just: center, $gap: 8px);
+  height: $audio_controls_height;
+  width: 100%;
+  @include flex($dir: row, $just: space-between, $gap: 8px);
+  margin-inline: auto;
+  background-color: #ebebeb;
+  padding: 0 30px 0;
+  .volume {
+    margin-bottom: 10px;
+  }
+  .time__progress {
+    flex-basis: 100%;
+    margin-top: 10px;
+    @include flex($dir: column, $just: center, $gap: 8px);
 
-		.program__interval {
-			@include flex($just: space-between);
-			width: $track-w;
-			p {
-				font-stretch: normal;
-				font-style: normal;
-				line-height: 1.08;
-				letter-spacing: -0.12px;
-				text-align: left;
-				@include font($size: $xsmal_font, $weight: $light, $color: #3e3e5a);
-			}
+    .program__interval {
+      @include flex($just: space-between);
+      width: $track-w;
+      p {
+        font-stretch: normal;
+        font-style: normal;
+        line-height: 1.08;
+        letter-spacing: -0.12px;
+        text-align: left;
+        @include font($size: $xsmal_font, $weight: $light, $color: #3e3e5a);
+      }
 
-			.start_time__subpodcast,
-			.end_time__subpodcast {
-				color: #fff;
-			}
-		}
+      .start_time__subpodcast,
+      .end_time__subpodcast {
+        color: #fff;
+      }
+    }
 
-		@mixin track($fill: 0) {
-			box-sizing: border-box;
-			border: none;
-			width: $track-w;
-			height: $track-h;
-			border-radius: 5px;
-			background: $track-c;
+    @mixin track($fill: 0) {
+      box-sizing: border-box;
+      border: none;
+      width: $track-w;
+      height: $track-h;
+      border-radius: 5px;
+      background: $track-c;
 
-			@if $fill == 1 {
-				.js & {
-					background: linear-gradient($filll-c, $filll-c) 0 / var(--sx) 100% no-repeat $track-c;
-				}
-			}
-		}
+      @if $fill == 1 {
+        .js & {
+          background: linear-gradient($filll-c, $filll-c)
+            0 /
+            var(--sx)
+            100%
+            no-repeat
+            $track-c;
+        }
+      }
+    }
 
-		@mixin fill() {
-			height: $track-h;
-			background: $filll-c;
-		}
+    @mixin fill() {
+      height: $track-h;
+      background: $filll-c;
+    }
 
-		.onair__range {
-			&,
-			&::-webkit-slider-thumb {
-				-webkit-appearance: none;
-				@include animation();
-			}
+    .onair__range {
+      &,
+      &::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        @include animation();
+      }
 
-			--range: calc(var(--max) - var(--min));
-			--ratio: calc((var(--val) - var(--min)) / var(--range));
-			--sx: calc(0.5 *#{$thumb-d} + var(--ratio) * (100% - #{$thumb-d}));
-			padding: 0;
-			border-radius: 5px;
-			width: $track-w;
-			height: $track-h;
-			background: lightgray;
+      --range: calc(var(--max) - var(--min));
+      --ratio: calc((var(--val) - var(--min)) / var(--range));
+      --sx: calc(0.5 *#{$thumb-d} + var(--ratio) * (100% - #{$thumb-d}));
+      padding: 0;
+      border-radius: 5px;
+      width: $track-w;
+      height: $track-h;
+      background: lightgray;
 
-			&::-webkit-slider-runnable-track {
-				@include track(1);
-			}
-			&::-moz-range-track {
-				@include track;
-			}
-			&::-ms-track {
-				@include track;
-			}
+      &::-webkit-slider-runnable-track {
+        @include track(1);
+      }
+      &::-moz-range-track {
+        @include track;
+      }
+      &::-ms-track {
+        @include track;
+      }
 
-			&::-moz-range-progress {
-				@include fill;
-			}
-			&::-ms-fill-lower {
-				@include fill;
-			}
+      &::-moz-range-progress {
+        @include fill;
+      }
+      &::-ms-fill-lower {
+        @include fill;
+      }
 
-			&::-ms-tooltip {
-				display: none;
-			}
-		}
+      &::-ms-tooltip {
+        display: none;
+      }
+    }
 
-		.subpodcast__range {
-			width: 100%;
-			height: 10px;
-			overflow: hidden;
-			border-radius: 10px;
-			&:hover {
-				height: 20px;
-				border-radius: 0;
-			}
-			.buffered {
-				height: 10px;
-				position: relative;
-				background: #c9c9c9;
-				width: 100%;
-				border-radius: 10px;
-			}
-			#buffered__amount {
-				display: block;
-				height: 100%;
-				border-radius: 10px;
-				background-color: #b8a2db;
-				width: 0;
-				display: none;
-			}
+    .subpodcast__range {
+      width: 100%;
+      height: 10px;
+      overflow: hidden;
+      border-radius: 10px;
+      &:hover {
+        height: 20px;
+        border-radius: 0;
+      }
+      .buffered {
+        height: 10px;
+        position: relative;
+        background: #c9c9c9;
+        width: 100%;
+        border-radius: 10px;
+      }
+      #buffered__amount {
+        display: block;
+        height: 100%;
+        border-radius: 10px;
+        background-color: #b8a2db;
+        width: 0;
+        display: none;
+      }
 
-			.progress {
-				margin-top: -10px;
-				height: 100%;
-				border-radius: 10px;
-				position: relative;
-				width: 100%;
-			}
+      .progress {
+        margin-top: -10px;
+        height: 100%;
+        border-radius: 10px;
+        position: relative;
+        width: 100%;
+      }
 
-			#progress__amount {
-				display: block;
-				height: 100%;
-				border-radius: 10px;
-				background-color: white;
-				width: 0;
-			}
+      #progress__amount {
+        display: block;
+        height: 100%;
+        border-radius: 10px;
+        background-color: white;
+        width: 0;
+      }
 
-			&:hover .buffered {
-				height: 20px;
-				border-radius: 0;
-			}
+      &:hover .buffered {
+        height: 20px;
+        border-radius: 0;
+      }
 
-			&:hover #buffered__amount {
-				display: block;
-				height: 20px;
-				border-radius: 10px;
-				border-radius: 0;
-			}
+      &:hover #buffered__amount {
+        display: block;
+        height: 20px;
+        border-radius: 10px;
+        border-radius: 0;
+      }
 
-			&:hover #progress__amount {
-				margin-top: -20px;
-				border-radius: 0px;
-				// margin-bottom: 20px;
-			}
-		}
-	}
+      &:hover #progress__amount {
+        margin-top: -20px;
+        border-radius: 0px;
+        // margin-bottom: 20px;
+      }
+    }
+  }
 }
 
 .audio__controls.controls__podcast__in {
-	background-color: $main_color;
+  background-color: $main_color;
 }

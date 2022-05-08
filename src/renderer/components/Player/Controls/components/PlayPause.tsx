@@ -12,9 +12,16 @@ type Props = {
   pause: boolean;
   setPause: (param: boolean) => void;
   isMini: boolean;
+  dispatch: (p: any) => void;
 };
 
-export default function PlayPause({ state, pause, setPause, isMini }: Props) {
+export default function PlayPause({
+  state,
+  pause,
+  setPause,
+  isMini,
+  dispatch,
+}: Props) {
   const [currentPlayIcon, setIcon] = useState(
     state.main_state.general.autoplay ? pauseIcon : playIcon
   );
@@ -25,6 +32,7 @@ export default function PlayPause({ state, pause, setPause, isMini }: Props) {
     } else if (currentPlayIcon === pauseIcon) setIcon(playIcon);
     else if (currentPlayIcon === pauseIconOver) setIcon(playIconOver);
   }, [pause, currentPlayIcon]);
+
   return (
     <div className="play__pause__container">
       <img
@@ -73,6 +81,13 @@ export default function PlayPause({ state, pause, setPause, isMini }: Props) {
             console.log(error);
           });
       }
+      dispatch({ type: 'PAUSE_SET_VIDEO', vodPlay: false });
+      // const video: HTMLVideoElement = document.getElementById(
+      //   'video'
+      // ) as HTMLVideoElement;
+      // if (video) {
+      //   video.pause();
+      // }
     }
     setPause(!pause);
   }

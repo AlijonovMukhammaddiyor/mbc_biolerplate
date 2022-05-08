@@ -9,7 +9,6 @@ import videoPauseIcon from '../../../../assets/player/video/main-icon-stop.svg';
 import resizeVideoIcon from '../../../../assets/player/video/bora-icon-full.svg';
 import popIcon from '../../../../assets/player/video/bt-bora-pop.svg';
 import videoCloseIcon from '../../../../assets/player/video/pop-icon-close.svg';
-import Data from '../../../../context/utils/data';
 import '../../../../styles/video/video.css';
 
 export default function Audio() {
@@ -17,7 +16,6 @@ export default function Audio() {
   const [darken, setDarken] = useState(false);
   const { state, dispatch } = useContext(Context);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [pause, setPause] = useState(true);
   const [fullSize, setFullSize] = useState(false);
   const [isPoped, setPopped] = useState(false);
   const [minHeight, setMinHeight] = useState('370px');
@@ -50,7 +48,7 @@ export default function Audio() {
             newPlayer.loadSource(response);
             if (videoRef.current !== null) {
               newPlayer.attachMedia(videoRef.current);
-              if (!pause)
+              if (state.main_state.vod.vodPlay)
                 newPlayer.on(HLs.Events.MANIFEST_PARSED, () => {
                   if (videoRef.current) {
                     videoRef.current.volume =
@@ -111,7 +109,7 @@ export default function Audio() {
 
   useEffect(() => {
     const video = videoRef.current;
-    if (pause && video) {
+    if (!state.main_state.vod.vodPlay && video) {
       video.pause();
     } else if (video) {
       const playPromise = video.play();
@@ -121,7 +119,7 @@ export default function Audio() {
           video.play();
         });
     }
-  }, [pause]);
+  }, [state.main_state.vod.vodPlay]);
 
   useEffect(() => {
     function changeMinHeight() {
@@ -146,13 +144,11 @@ export default function Audio() {
     // Video left Picture-in-Picture mode.
     video?.addEventListener('leavepictureinpicture', () => {
       setPopped(false);
-      setPause(true);
     });
 
     return () => {
       video?.removeEventListener('leavepictureinpicture', () => {
         setPopped(false);
-        setPause(true);
       });
       video?.removeEventListener('enterpictureinpicture', () => {});
     };
@@ -168,7 +164,7 @@ export default function Audio() {
       <video
         ref={videoRef}
         className={
-          !pause
+          state.main_state.vod.vodPlay
             ? darken
               ? 'video__playing video__darken'
               : 'video__playing'
@@ -182,11 +178,15 @@ export default function Audio() {
         Your browser does not support the HTML5 video tag. Use a better browser!
       </video>
 
-      {pause ? (
+      {!state.main_state.vod.vodPlay ? (
         <div
           onMouseOver={() => setDarken(true)}
           onClick={toggleVideo}
-          className={pause ? 'play__icon play__icon__paused' : 'play__icon'}
+          className={
+            !state.main_state.vod.vodPlay
+              ? 'play__icon play__icon__paused'
+              : 'play__icon'
+          }
           onFocus={() => {}}
           role="list"
         >
@@ -291,26 +291,40 @@ export default function Audio() {
   }
 
   function toggleVideo() {
-    setPause(!pause);
+    if (state.main_state.vod.vodPlay) {
+      dispatch({ type: 'PAUSE_SET_VIDEO', vodPlay: false });
+    } else {
+      dispatch({ type: 'PAUSE_SET_AUDIO', pause: true });
+      dispatch({ type: 'PAUSE_SET_VIDEO', vodPlay: true });
+    }
   }
 
   function closeVideo() {
     dispatch({ type: 'VIDEO_CLOSE' });
     if (videoPlayer) videoPlayer.destroy();
-    setPause(true);
+    dispatch({ type: 'PAUSE_SET_VIDEO', vodPlay: false });
   }
 
   function makeVideoPop() {
-    window.open(
-      `${
-        Data.urls.mbcPopUpPlayerApi
-      }?isPopup=${'Y'}&mediaType=${'ONAIR'}&channelId=1`,
-      '_blank',
-      'height=600px,width=800'
-    );
+    const video = document.getElementById('video')! as HTMLVideoElement;
+    try {
+      if (!document.pictureInPictureElement) {
+        video.requestPictureInPicture();
+        setPopped(true);
+      } else {
+        document.exitPictureInPicture();
+      }
+    } catch (reason) {
+      console.error(reason);
+    }
   }
 
-  function makeVideoUnpop() {}
+  function makeVideoUnpop() {
+    if (document.pictureInPictureElement) {
+      document.exitPictureInPicture();
+      setPopped(false);
+    }
+  }
 
   function requestFullSize() {
     const docElmWithBrowsersFullScreenFunctions = document.getElementById(
@@ -322,14 +336,22 @@ export default function Audio() {
     };
 
     if (docElmWithBrowsersFullScreenFunctions.requestFullscreen) {
+      makeVideoUnpop();
+
       docElmWithBrowsersFullScreenFunctions.requestFullscreen();
     } else if (docElmWithBrowsersFullScreenFunctions.mozRequestFullScreen) {
+      makeVideoUnpop();
+
       /* Firefox */
       docElmWithBrowsersFullScreenFunctions.mozRequestFullScreen();
     } else if (docElmWithBrowsersFullScreenFunctions.webkitRequestFullscreen) {
+      makeVideoUnpop();
+
       /* Chrome, Safari and Opera */
       docElmWithBrowsersFullScreenFunctions.webkitRequestFullscreen();
     } else if (docElmWithBrowsersFullScreenFunctions.msRequestFullscreen) {
+      makeVideoUnpop();
+
       /* IE/Edge */
       docElmWithBrowsersFullScreenFunctions.msRequestFullscreen();
     }

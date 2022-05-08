@@ -19,6 +19,7 @@ export default function ChanButton({
   return (
     <div className="channel__button">
       <button
+        tabIndex={-1}
         type="submit"
         className={`channel__btn ${type}`}
         id={

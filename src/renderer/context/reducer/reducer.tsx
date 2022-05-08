@@ -37,7 +37,18 @@ const Reducer = (state: STATE, action: any): STATE => {
           },
         },
       };
-    case 'PAUSE_SET':
+    case 'PAUSE_SET_VIDEO':
+      return {
+        ...state,
+        main_state: {
+          ...state.main_state,
+          vod: {
+            ...state.main_state.vod,
+            vodPlay: action.vodPlay,
+          },
+        },
+      };
+    case 'PAUSE_SET_AUDIO':
       return {
         ...state,
         main_state: {

@@ -10,354 +10,85 @@
  * When running `npm run build` or `npm run build:main`, this file is compiled to
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
-import path from 'path';
-import {
-  app,
-  BrowserWindow,
-  shell,
-  ipcMain,
-  session,
-  Notification,
-} from 'electron';
-import { autoUpdater } from 'electron-updater';
-import log from 'electron-log';
-import Store from 'electron-store';
-import MenuBuilder from './menu';
-import { resolveHtmlPath } from './util';
+import { app, dialog } from 'electron';
 
-const appFolder = path.dirname(process.execPath);
-const updateExe = path.resolve(appFolder, '..', 'Update.exe');
-const exeName = path.basename(process.execPath);
+import { createWindow, getWindow } from './windowHandler';
 
-const store = new Store();
-// let notice: Notification | null;
+let isQuitting = false;
 
-export default class AppUpdater {
-  constructor() {
-    log.transports.file.level = 'info';
-    autoUpdater.logger = log;
-    autoUpdater.checkForUpdatesAndNotify();
-  }
-}
-
-function launchAtStartup(start: boolean, hidden: boolean) {
-  if (process.platform === 'darwin') {
-    app.setLoginItemSettings({
-      openAtLogin: start,
-      openAsHidden: hidden,
-    });
-  } else {
-    app.setLoginItemSettings({
-      openAtLogin: start,
-      openAsHidden: hidden,
-      path: updateExe,
-      args: [
-        '--processStart',
-        `"${exeName}"`,
-        '--process-start-args',
-        `"--hidden"`,
-      ],
-    });
-  }
-}
-
-let mainWindow: BrowserWindow | null = null;
-
-ipcMain.on('app-quit', async (_, args) => {});
-
-ipcMain.on('mini-no-message', async (event, args: { mini: boolean }) => {
-  if (args.mini && mainWindow) {
-    mainWindow.setSize(420, 110);
-    store.set('windowSize', { width: 420, height: 110 });
-  } else if (mainWindow) {
-    mainWindow.setSize(420, 600);
-    store.set('windowSize', { width: 420, height: 600 });
-  }
-});
-
-ipcMain.on('toMain', async (event, args) => {
-  if (args.close && mainWindow) {
-    mainWindow.destroy();
-  } else if (args.hide && mainWindow) {
-    mainWindow.minimize();
-  } else if (args.minimize && mainWindow) {
-    if (args.noMessage) {
-      mainWindow.setSize(420, 110);
-      store.set('windowSize', { width: 420, height: 110 });
-    } else {
-      mainWindow.setSize(420, 600);
-      store.set('windowSize', { width: 420, height: 600 });
+const gotTheLock = app.requestSingleInstanceLock();
+console.log(getWindow());
+if (getWindow()) {
+  // app.quit();
+  getWindow()?.show();
+  getWindow()?.focus();
+} else {
+  app.on('second-instance', (event, commandLine, workingDirectory) => {
+    // Someone tried to run a second instance, we should focus our window.
+    if (getWindow()) {
+      if (getWindow()?.isMinimized()) getWindow()?.restore();
+      getWindow()?.focus();
     }
-    store.set('windowSize', { width: 420, height: 600 });
-    event.sender.send('minimize-screen', { minimize: true });
-  } else if (args.maximize && mainWindow) {
-    mainWindow.setSize(960, 600);
-    store.set('windowSize', { width: 960, height: 600 });
+  });
+  if (process.env.NODE_ENV === 'production') {
+    const sourceMapSupport = require('source-map-support');
+    sourceMapSupport.install();
   }
-});
 
-ipcMain.on('auto-start', async (event, args) => {
-  launchAtStartup(args.autoStart, false);
-});
+  const isDevelopment =
+    process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true';
 
-ipcMain.on('always-top', async (event, args) => {
-  if (mainWindow) {
-    if (args.onTop) mainWindow.setAlwaysOnTop(args.onTop, 'main-menu');
-    else {
-      mainWindow.setAlwaysOnTop(args.onTop);
-    }
-    store.set('onTop', args.onTop);
+  if (isDevelopment) {
+    require('electron-debug')();
   }
-});
 
-ipcMain.on(
-  'video-notification',
-  async (
-    _,
-    args: {
-      title: string;
-      guest: string;
-      icon: string | null;
-      body: string;
-    }
-  ) => {
-    // console.log(args);
-    const notice = new Notification({
-      subtitle: args.title,
-      body: args.guest,
-      icon: args.icon || path.join(__dirname, '../../assets/icon.png'),
-    });
-    if (mainWindow) {
-      if (process.platform === 'win32') {
-        app.setAppUserModelId(app.name);
-      }
-      notice.show();
-    }
-  }
-);
+  /**
+   * Add event listeners...
+   */
 
-ipcMain.on('check-user', async (event, args) => {
-  session.defaultSession.cookies
-    .get({ url: 'http://miniapi.imbc.com' })
-    .then((cookies) => {
-      if (cookies.length > 0) {
-        for (let i = 0; i < cookies.length; i += 1) {
-          if (cookies[i].name === args.name) {
-            event.sender.send('take-cookie', {
-              name: cookies[i].value,
-              cookie: cookies,
-            });
-            return;
-          }
-        }
-        event.sender.send('take-cooki', {
-          name: null,
-          cookie: cookies,
+  app.on('window-all-closed', () => {
+    // Respect the OSX convention of having the application in memory even
+    // after all windows have been closed
+    if (process.platform !== 'darwin') {
+      app.quit();
+    }
+  });
+
+  app.on('before-quit', (e) => {
+    if (!isQuitting) {
+      let choice = -1;
+      if (getWindow())
+        choice = dialog.showMessageBoxSync(getWindow()!, {
+          type: 'question',
+          buttons: ['종료', '취소'],
+          title: 'Confirm',
+          message: 'MBC mini를 종료하시겠습니까?',
         });
+      if (choice === 1) {
+        e.preventDefault();
+      } else {
+        isQuitting = true;
+        app.quit();
       }
-      event.sender.send('take-cookie', {
-        name: null,
-        cookie: cookies,
+    }
+  });
+
+  app
+    .whenReady()
+    .then(() => {
+      // eslint-disable-next-line promise/no-nesting
+      createWindow().then(() => {
+        // console.log('window is ', getWindow());
+        app.on('activate', () => {
+          // On macOS it's common to re-create a window in the app when the
+          // dock icon is clicked and there are no other windows open.
+          if (getWindow() === null) {
+            createWindow();
+          }
+        });
+        require('./ipcHandlers');
       });
     })
-    .catch((err) => {
-      console.log('Error occured while checking the cookie');
-    });
-});
-
-function setCookieOnStart() {
-  const cookieStored: any = store.get('cookie-info');
-  const cookieJar = session.defaultSession.cookies;
-
-  if (cookieStored?.cookie) {
-    const cookie = strObj(cookieStored.cookie);
-
-    for (const key in cookie) {
-      if (key && cookie[key] !== ';')
-        cookieJar
-          .set({
-            url: cookieStored.domain,
-            name: key,
-            value: cookie[key],
-            sameSite: 'strict',
-          })
-          .then(() => {})
-          .catch((err: Error) => console.log(err));
-    }
-  }
-}
-
-function strObj(cookieStr: string) {
-  return cookieStr.split('; ').reduce((prev: any, current) => {
-    const [name, ...value] = current.split('=');
-    prev[name] = value.join('=');
-    return prev;
-  }, {});
-}
-
-ipcMain.on('logout', (event, _) => {
-  session.defaultSession
-    .clearStorageData({ storages: ['cookies'] })
-    .then(() => {
-      console.log('All cookies cleared');
-      event.sender.send('logout-complete', { success: 'ok' });
-    })
-    .catch((error) => {
-      console.error('Failed to clear cookies: ', error);
-    });
-
-  store.set('cookie-info', { cookie: null, domain: null });
-});
-
-ipcMain.on('set-cookie', async (_, args) => {
-  const cookieJar = session.defaultSession.cookies;
-
-  // if (mainWindow) mainWindow.webContents.send('reply-cookie', args);
-  const cookie = strObj(args.cookie);
-  store.set('cookie-info', { cookie: args.cookie, domain: args.domain });
-  for (const key in cookie) {
-    if (key && cookie[key] !== ';')
-      cookieJar
-        .set({
-          url: args.domain,
-          name: key,
-          value: cookie[key],
-          sameSite: 'strict',
-        })
-        .then(() => {})
-        .catch((err: Error) => console.log(err));
-  }
-});
-
-if (process.env.NODE_ENV === 'production') {
-  const sourceMapSupport = require('source-map-support');
-  sourceMapSupport.install();
-}
-
-const isDevelopment =
-  process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true';
-
-if (isDevelopment) {
-  require('electron-debug')();
-}
-
-const installExtensions = async () => {
-  const installer = require('electron-devtools-installer');
-  const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
-  const extensions = ['REACT_DEVELOPER_TOOLS'];
-
-  return installer
-    .default(
-      extensions.map((name) => installer[name]),
-      forceDownload
-    )
     .catch(console.log);
-};
-
-const createWindow = async () => {
-  if (isDevelopment) {
-    await installExtensions();
-  }
-
-  const RESOURCES_PATH = app.isPackaged
-    ? path.join(process.resourcesPath, 'assets')
-    : path.join(__dirname, '../../assets');
-
-  const getAssetPath = (...paths: string[]): string => {
-    return path.join(RESOURCES_PATH, ...paths);
-  };
-
-  const windowSize: { width: number; height: number } = (store.get(
-    'windowSize'
-  ) as { width: number; height: number }) || { width: 960, height: 600 };
-  console.log(windowSize);
-
-  mainWindow = new BrowserWindow({
-    show: false,
-    height: windowSize.height,
-    width: windowSize.width,
-    // resizable: false,
-    useContentSize: true,
-    frame: false,
-    webPreferences: {
-      contextIsolation: true,
-      preload: path.join(__dirname, 'preload.js'),
-    },
-  });
-
-  mainWindow.webContents.on('did-finish-load', () => {
-    if (mainWindow) {
-      mainWindow.webContents.send('login-again', {});
-      setCookieOnStart();
-      const isOnTop = store.get('onTop');
-      if (isOnTop) {
-        mainWindow.setAlwaysOnTop(true);
-      } else if (isOnTop === false) {
-        mainWindow.setAlwaysOnTop(false);
-      }
-      const settings = {
-        autoStart: app.getLoginItemSettings().openAtLogin,
-        onTop: isOnTop || false,
-      };
-      mainWindow.webContents.send('app-info', { windowSize, settings });
-    }
-  });
-
-  if (mainWindow) mainWindow.webContents.openDevTools();
-
-  mainWindow.setMenuBarVisibility(false);
-
-  mainWindow.loadURL(resolveHtmlPath('index.html'));
-
-  mainWindow.on('ready-to-show', () => {
-    if (!mainWindow) {
-      throw new Error('"mainWindow" is not defined');
-    }
-    if (process.env.START_MINIMIZED) {
-      mainWindow.minimize();
-    } else {
-      mainWindow.show();
-    }
-  });
-
-  mainWindow.on('closed', () => {
-    mainWindow = null;
-  });
-
-  const menuBuilder = new MenuBuilder(mainWindow);
-  menuBuilder.buildMenu();
-
-  // Open urls in the user's browser
-  mainWindow.webContents.setWindowOpenHandler((edata) => {
-    shell.openExternal(edata.url);
-    return { action: 'deny' };
-  });
-
-  // Remove this if your app does not use auto updates
-  // eslint-disable-next-line
-  new AppUpdater();
-};
-
-/**
- * Add event listeners...
- */
-
-app.on('window-all-closed', () => {
-  // Respect the OSX convention of having the application in memory even
-  // after all windows have been closed
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
-});
-
-app
-  .whenReady()
-  .then(() => {
-    createWindow();
-    app.on('activate', () => {
-      // On macOS it's common to re-create a window in the app when the
-      // dock icon is clicked and there are no other windows open.
-      if (mainWindow === null) createWindow();
-    });
-  })
-  .catch(console.log);
+}
+// let notice: Notification | null;
