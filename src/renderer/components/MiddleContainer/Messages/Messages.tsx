@@ -2,6 +2,7 @@
 /* eslint-disable promise/always-return */
 import { useEffect, useState, useContext, useRef } from 'react';
 import jsonp from 'jsonp';
+import $ from 'jquery';
 import Data from '../../../context/utils/data';
 import { Context } from '../../../context/context/context';
 import { MessagesType } from '../../../context/utils/types';
@@ -12,6 +13,8 @@ import NoMessage from './components/NoMessage';
 import WriteOnly from './components/WriteOnly';
 import '../../../styles/messages/messages.css';
 import MessageWrite from './components/MessageWrite';
+import writeonlyIcon from '../../../assets/middle/message/img_write.svg';
+
 /**
  * We update current messages every three seconds. You can change it by changing time in setInterval inside useEffect
  */
@@ -46,18 +49,43 @@ export default function Messages({ navbarVisible }: Props) {
       const { channel } = state.main_state.general;
       const programs = state.main_state.general.currentPrograms;
       const promise = new Promise<MessagesType>((resolve, reject) => {
-        const url = `${Data.urls.messageListApi}?rtype=jsonp&bid=${
-          programs[channel]?.BroadCastID
-        }&gid=${programs[channel]?.ProgramGroupID}&page=1&pagesize=${
-          page * 50
-        }`;
-        jsonp(url, {}, (err, data) => {
-          if (err) reject(err);
-          else {
-            resolve(data);
-            // console.log(data);
-          }
-        });
+        if (myMessOn) {
+          $.ajax({
+            url: `${Data.urls.myMsgListApi}`,
+            data: $.param({
+              Bid: parseInt(programs[channel]!.BroadCastID, 10),
+              Gid: parseInt(programs[channel]!.ProgramGroupID, 10),
+              Page: 1,
+              PageSize: page * 50,
+              Cookieinfo: readCookie('IMBCSession'),
+            }),
+            method: 'POST',
+            // dataType: 'application/json',
+            // contentType: 'application/json',
+            success: (data) => {
+              resolve(data);
+            },
+            error: (err) => {
+              console.log('rejecting', err);
+              reject(err);
+            },
+          });
+        } else
+          $.ajax({
+            url: `${Data.urls.messageListApi}?rtype=jsonp&bid=${
+              programs[channel]?.BroadCastID
+            }&gid=${programs[channel]?.ProgramGroupID}&page=1&pagesize=${
+              page * 50
+            }`,
+            method: 'POST',
+            dataType: 'jsonp',
+            success: (data) => {
+              resolve(data);
+            },
+            error: (err) => {
+              reject(err);
+            },
+          });
       });
 
       promise
@@ -73,15 +101,17 @@ export default function Messages({ navbarVisible }: Props) {
           setVisibility(res.MiniMsgView);
           if (res.MiniMsgView === 'N') {
             if (state.user.cookieAvailable) {
-              jsonp(
-                `${Data.urls.myMsgListApi}?bid=${
-                  programs[channel]?.BroadCastID
-                }&gid=${programs[channel]?.ProgramGroupID}&page=1&pagesize=${
-                  page * 50
-                }`,
-                {},
-                // eslint-disable-next-line @typescript-eslint/no-shadow
-                (err, res) => {
+              $.ajax({
+                url: `${Data.urls.myMsgListApi}`,
+                data: $.param({
+                  Bid: parseInt(programs[channel]!.BroadCastID, 10),
+                  Gid: parseInt(programs[channel]!.ProgramGroupID, 10),
+                  Page: 1,
+                  PageSize: page * 50,
+                  Cookieinfo: readCookie('IMBCSession'),
+                }),
+                method: 'POST',
+                success: (data) => {
                   const arr: typeof myMessages = [];
                   let msgs = res.MsgList || [];
                   for (let i = 0; i < myMessages.length; i += 1) {
@@ -124,8 +154,11 @@ export default function Messages({ navbarVisible }: Props) {
                   );
 
                   setMessages(msgs);
-                }
-              );
+                },
+                error: (err) => {
+                  console.log(err);
+                },
+              });
             } else {
               setMessages([]);
             }
@@ -239,8 +272,7 @@ export default function Messages({ navbarVisible }: Props) {
         className="messages"
       >
         {visibility && visibility === 'Y' ? (
-          messages &&
-          messages.length > 0 && (
+          messages && messages.length > 0 ? (
             <>
               <div className="msg__people">
                 {titleMsg && (
@@ -261,11 +293,23 @@ export default function Messages({ navbarVisible }: Props) {
                       render={render}
                       setNewRender={setNewRender}
                       readCookie={readCookie}
+                      myMessOn={myMessOn}
                     />
                   );
                 })}
               </div>
             </>
+          ) : (
+            myMessOn && (
+              <div className="no__message_yet">
+                <div className="info__text">
+                  <p>최근 등록한 mini메시지가 없습니다.</p>
+                </div>
+                <div className="no_message_icon">
+                  <img src={writeonlyIcon} alt="" />
+                </div>
+              </div>
+            )
           )
         ) : visibility === 'X' ? (
           <NoMessage />

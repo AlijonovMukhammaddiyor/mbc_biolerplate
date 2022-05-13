@@ -199,7 +199,7 @@ export default class Utils {
                 parseInt(data.StartTime.substring(0, 2), 10) * 60 +
                 parseInt(data.StartTime.substring(3, 4), 10);
 
-              if (startTime - now.time === 1) {
+              if (startTime - now.time <= 1 / 30 && startTime - now.time > 0) {
                 // console.log(data);
                 window.electron.ipcRenderer.send('video-notification', {
                   title: data.ProgramTitle,

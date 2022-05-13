@@ -4,6 +4,7 @@ import Data from '../../../../context/utils/data';
 import { MessagesType, STATE } from '../../../../context/utils/types';
 import '../../../../styles/message/message.css';
 import iconClose from '../../../../assets/middle/message/mini-icon-close.svg';
+import iconCloseDark from '../../../../assets/middle/message/icon_close_black.svg';
 
 type Props = {
   message: MessagesType['MsgList'][0];
@@ -13,6 +14,7 @@ type Props = {
   setNewRender: Function;
   render: boolean;
   readCookie: Function;
+  myMessOn: boolean;
 };
 
 export default function Message({
@@ -23,18 +25,30 @@ export default function Message({
   setNewRender,
   render,
   readCookie,
+  myMessOn,
 }: Props) {
+  console.log(myMessOn);
+  const classMyMessOn = myMessOn ? 'my_mess_on' : '';
   return (
-    <div className={isMyMessage() ? ' my__message' : 'message__others'}>
+    <div
+      className={
+        isMyMessage()
+          ? myMessOn
+            ? `message__others ${classMyMessOn}`
+            : `my__message`
+          : `message__others `
+      }
+    >
       <div className="message">
-        {isMyMessage() && (
-          <img
-            onClick={() => deleteMessage()}
-            src={iconClose}
-            alt="삭제"
-            className="close__icon"
-          />
-        )}
+        {isMyMessage() ||
+          (myMessOn && (
+            <img
+              onClick={() => deleteMessage()}
+              src={myMessOn ? iconCloseDark : iconClose}
+              alt="삭제"
+              className="close__icon"
+            />
+          ))}
         <div className="message__arrow" />
         <p className="title">
           {message.UserNm} <span>{checkIfWrittenToday(message.RegDate)}</span>

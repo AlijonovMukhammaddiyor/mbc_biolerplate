@@ -75,7 +75,7 @@
     width: max-content;
     background-color: $main_color;
     border-color: $main_color;
-    padding: 10px 20px;
+    padding: 10px 25px;
     max-width: 100%;
     .message__arrow {
       background-color: $main_color;
@@ -96,6 +96,12 @@
         color: white;
       }
     }
+  }
+}
+
+.my_mess_on {
+  .message {
+    padding-right: 30px;
   }
 }
 

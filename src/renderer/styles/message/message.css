@@ -161,7 +161,7 @@ svg {
   width: max-content;
   background-color: #7742cc;
   border-color: #7742cc;
-  padding: 10px 20px;
+  padding: 10px 25px;
   max-width: 100%;
 }
 
@@ -186,6 +186,10 @@ svg {
 .my__message .message .title span,
 .my__message .message .content span {
   color: white;
+}
+
+.my_mess_on .message {
+  padding-right: 30px;
 }
 
 .message__others {

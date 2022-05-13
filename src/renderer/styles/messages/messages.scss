@@ -56,6 +56,38 @@
       @include flex($dir: column, $align: flex-start, $just: flex-start);
       width: 100%;
     }
+
+    .no__message_yet {
+      width: 100%;
+      @include flex($dir: column, $gap: 26px, $just: flex-start);
+      height: calc(100% - 170px);
+      position: absolute;
+      top: 9rem;
+      left: 0;
+
+      .info__text {
+        text-align: center;
+        p {
+          line-height: 1.5;
+          color: #646464;
+        }
+      }
+
+      .no_message_icon {
+        width: 130px;
+        height: 130px;
+        background-color: #ebebeb;
+        border-radius: 50%;
+        @include flex($just: center);
+        img {
+          -webkit-user-drag: none;
+          object-fit: contain;
+          width: 83.9px;
+          height: 74.2px;
+          margin: 0 0 5px 10px;
+        }
+      }
+    }
   }
 }
 
