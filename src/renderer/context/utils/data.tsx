@@ -47,8 +47,8 @@ export default class Data<T> {
     noticeApi: `http://miniapi.imbc.com/notice/newNotice`,
     guestCornerApi: `https://miniapi.imbc.com/notice/guestCorner`,
     myMsgListApi: window.location.href.includes('https')
-      ? `https://miniapi.imbc.com/minimsg/mymsgList`
-      : `http://miniapi.imbc.com/minimsg/mymsgList`,
+      ? `https://miniapi.imbc.com/minimsg/mymsgList_PC`
+      : `http://miniapi.imbc.com/minimsg/mymsgList_PC`,
     messageDelApi: window.location.href.includes('https')
       ? `https://miniapi.imbc.com/minimsg/msgDel_pc`
       : `http://miniapi.imbc.com/minimsg/msgDel_pc`,
