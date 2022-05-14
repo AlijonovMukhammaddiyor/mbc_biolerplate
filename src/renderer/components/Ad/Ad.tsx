@@ -14,6 +14,7 @@ export default function Ad() {
       >
         <a href="http://ads.imbc.com/RealMedia/ads/click_nx.ads/www.imbc.com/mini@Frame1">
           <img
+            style={{ height: '600px', width: '120px' }}
             src="http://ads.imbc.com/RealMedia/ads/adstream_nx.ads/www.imbc.com/mini@Frame1"
             alt="광고"
           />

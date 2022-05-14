@@ -81,7 +81,9 @@ export default function Image() {
       {state.main_state.podcast.subpodcast.isSubpodcastPlaying && (
         <SubpodcastInfo />
       )}
-      {isVod() && !state.main_state.vod.videoClosed && <Video />}
+      <div className="temp">
+        {isVod() && !state.main_state.vod.videoClosed && <Video />}
+      </div>
     </div>
   );
 

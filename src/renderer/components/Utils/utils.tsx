@@ -24,6 +24,8 @@ export default class Utils {
 
   public currentVod: CurrentVod | null;
 
+  private NotificationSent = false;
+
   constructor(
     private state: STATE,
     private dispatch: (param: unknown) => void
@@ -184,6 +186,22 @@ export default class Utils {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const that = this;
 
+    // that.currentVod = {
+    //   ScheduleSeq: '5381',
+    //   WeekSeq: '667',
+    //   Date: '2022-05-16',
+    //   WeekDay: '월',
+    //   Channel: 'FM4U',
+    //   BroadCastID: '1001919100000100000',
+    //   ProgramTitle: '정오의 희망곡 김신영입니다',
+    //   StartTime: '13:00',
+    //   EndTime: '14:00',
+    //   Picture:
+    //     'https://img.imbc.com/adams/Program/201910/132149057208456873_Big_C.png',
+    //   Guest: 'with 정승환, 정세운',
+    //   HomePageURL: null,
+    // };
+
     const promise = new Promise<boolean>((resolve, reject) => {
       jsonp(
         Data.urls.currentVodApi,
@@ -199,8 +217,16 @@ export default class Utils {
                 parseInt(data.StartTime.substring(0, 2), 10) * 60 +
                 parseInt(data.StartTime.substring(3, 4), 10);
 
-              if (startTime - now.time <= 1 / 30 && startTime - now.time > 0) {
-                // console.log(data);
+              if (
+                startTime - now.time <= 1 / 30 &&
+                startTime - now.time > 0 &&
+                !this.NotificationSent
+              ) {
+                that.NotificationSent = true;
+                setTimeout(() => {
+                  that.NotificationSent = false;
+                }, 2 * 60 * 1000);
+                console.log(data.ProgramTitle);
                 window.electron.ipcRenderer.send('video-notification', {
                   title: data.ProgramTitle,
                   guest: data.Guest,
@@ -209,6 +235,7 @@ export default class Utils {
               }
               if (startTime <= now.time && now.time <= endTime) {
                 that.currentVod = data;
+
                 resolve(true);
               }
             }
@@ -506,34 +533,20 @@ export default class Utils {
   }
 
   getFilteredPodcastsByChannel = (
-    selectedChannel: string,
-    selectedSort: number,
+    selectedChannel: number,
+    selectedSort: string,
     currentCount: number,
     selectedState: number,
     order: string
   ) => {
-    const cat = selectedChannel;
-    const categoryId =
-      cat === '표준FM'
-        ? 6
-        : cat === 'FM4U'
-        ? 7
-        : cat === '오리지널'
-        ? 333
-        : cat === '코너 다시듣기'
-        ? 334
-        : 335;
-    const sortType =
-      selectedSort === 0 ? 'Imp' : selectedSort === 1 ? 'StartTime' : 'Title';
-
     return $.ajax({
       url: Data.urls.podcastListByFilterApi,
       data: {
         page: 0,
         pageSize: currentCount,
         BroadStateID: selectedState,
-        SubCategoryID: categoryId,
-        SortType: sortType,
+        SubCategoryID: selectedChannel,
+        SortType: selectedSort,
         SortOption: order,
       },
       success: (err, res) => {
@@ -546,20 +559,17 @@ export default class Utils {
 
   getFilteredPodcastsByCategory = (
     category: number,
-    selectedSort: number,
+    selectedSort: string,
     currentCount: number,
     order: string
   ) => {
-    const sortType =
-      selectedSort === 0 ? 'Imp' : selectedSort === 1 ? 'StartTime' : 'Title';
-
     return $.ajax({
       url: Data.urls.podcastListByFilterApi,
       data: {
         page: 0,
         GenreID: category,
         pageSize: currentCount,
-        SortType: sortType,
+        SortType: selectedSort,
         SortOption: order,
       },
       dataType: 'jsonp',

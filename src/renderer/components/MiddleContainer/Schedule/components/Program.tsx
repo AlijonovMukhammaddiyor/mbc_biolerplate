@@ -1,4 +1,6 @@
-import React, { CSSProperties } from 'react';
+import React, { CSSProperties, useContext } from 'react';
+import Utils from 'renderer/components/Utils/utils';
+import { Context } from 'renderer/context/context/context';
 import { ChannelSchedule } from '../../../../context/utils/types';
 import '../../../../styles/program/program.css';
 import iconVideoOff from '../../../../assets/middle/schedule/sch-icon-bora-off.svg';
@@ -20,6 +22,8 @@ type Props = {
 };
 
 export default function Program({ program, slided, setSlided, refer }: Props) {
+  const { state, dispatch } = useContext(Context);
+
   const style = {
     '--val': program.isBora ? '64px' : '52.5px',
     '--slidedVal': program.isBora ? '121.5px' : '106px',
@@ -91,7 +95,8 @@ export default function Program({ program, slided, setSlided, refer }: Props) {
         />
         <img
           onClick={() => {
-            redirect(program.PodCastURL);
+            // redirect(program.PodCastURL);
+            openPodcast();
           }}
           className={program.PodCastURL ? 'cursor' : ''}
           src={program.PodCastURL !== '' ? iconPodcastOn : iconPodcastOff}
@@ -100,6 +105,43 @@ export default function Program({ program, slided, setSlided, refer }: Props) {
       </div>
     </div>
   );
+
+  async function openPodcast() {
+    let temp = ['표준FM', 'FM4U', '오리지널', '코너 다시듣기', '기타'];
+    if (state.main_state.general.channel === 'mfm') {
+      temp = ['FM4U', '표준FM', '오리지널', '코너 다시듣기', '기타'];
+    }
+    dispatch({ type: 'PODCAST_TAB' });
+    dispatch({
+      type: 'PODCAST_SEARCH',
+      search: {
+        channel: state.main_state.general.channel === 'sfm' ? 6 : 7,
+        dropsChannel: temp,
+      },
+    });
+    dispatch({ type: 'CHANGE_PODCAST_CHANNEL', channel: 'byChannel' });
+    // dispatch({ type: 'PODCAST_IN', payload: program, channel: 'byChannel' });
+    const util = new Utils(state, dispatch);
+    const data = await util.getFilteredPodcastsByChannel(
+      state.main_state.podcast.search.channel,
+      state.main_state.podcast.search.sortBy,
+      100,
+      state.main_state.podcast.search.state,
+      state.main_state.podcast.search.sort
+    );
+    for (let i = 0; i < data.list.length; i += 1) {
+      if (
+        data.list[i].BroadCastID.toString() === program.BroadCastID.toString()
+      ) {
+        dispatch({
+          type: 'PODCAST_IN',
+          payload: data.list[i],
+          channel: 'byChannel',
+        });
+        break;
+      }
+    }
+  }
 
   function redirect(url: string) {
     const link = document.getElementById('link') as HTMLAnchorElement;

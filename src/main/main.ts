@@ -10,7 +10,7 @@
  * When running `npm run build` or `npm run build:main`, this file is compiled to
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
-import { app, dialog } from 'electron';
+import { app, dialog, Notification } from 'electron';
 
 import { createWindow, getWindow } from './windowHandler';
 
@@ -75,6 +75,9 @@ if (!gotTheLock) {
   app
     .whenReady()
     .then(() => {
+      // eslint-disable-next-line no-new
+      new Notification();
+
       // eslint-disable-next-line promise/no-nesting
       createWindow().then(() => {
         // console.log('window is ', getWindow());

@@ -3,6 +3,21 @@ import { STATE } from '../utils/types';
 
 const Reducer = (state: STATE, action: any): STATE => {
   switch (action.type) {
+    case 'PODCAST_SEARCH':
+      return {
+        ...state,
+        main_state: {
+          ...state.main_state,
+          podcast: {
+            ...state.main_state.podcast,
+            search: {
+              ...state.main_state.podcast.search,
+              ...action.search,
+            },
+          },
+        },
+      };
+
     case 'LOGIN_CREDENTIALS':
       return {
         ...state,

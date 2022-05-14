@@ -72,7 +72,7 @@ export default function Login() {
           onChange={(e) => {
             setPassword(e.currentTarget.value);
           }}
-          type="text"
+          type="password"
           placeholder="비밀번호를 입력하세요"
           value={password || ''}
         />

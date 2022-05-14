@@ -57,6 +57,17 @@ const DEFAULT_STATE = {
       channel: 'home',
       currentPodcast: null,
       shareScreenOn: false,
+      search: {
+        category: 2,
+        sortBy: 'Imp',
+        sort: 'DESC',
+        channel: 6,
+        state: 2,
+        sorts: ['인기순', '방송시간순', '가나다순'],
+        dropChannels: ['표준FM', 'FM4U', '오리지널', '코너 다시듣기', '기타'],
+        dropStates: ['방송중', '방송종료'],
+        categories: ['음악/예능/오락', '시사/교양', '드라마', '기타'],
+      },
       shareUrl: '',
       subpodcast: {
         isSubpodcastPlaying: false,

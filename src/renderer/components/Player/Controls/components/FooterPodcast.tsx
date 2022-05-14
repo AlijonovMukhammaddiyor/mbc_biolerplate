@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import Data from 'renderer/context/utils/data';
+import $ from 'jquery';
 import iconLike from '../../../../assets/player/podcast/podcast-icon-like_footer.svg';
 import iconLikeOn from '../../../../assets/player/podcast/podcast-icon-like-on_footer.svg';
 import iconShare from '../../../../assets/player/podcast/podcast-icon-share.svg';
@@ -88,35 +90,49 @@ export default function FooterPodcast({ dispatch, state }: Props) {
 
   function toggleLike(subpodcast: ListenedSubpodcast | null) {
     if (subpodcast) {
-      const episodes = window.localStorage.getItem('LikedEpisodes');
-      let parsedEpisodes: ListenedSubpodcast[] = episodes
-        ? JSON.parse(episodes).list
-        : [];
-
       const inList = isInList(subpodcast);
+      $.ajax({
+        url: Data.urls.likeItemApi,
+        type: 'POST',
+        // dataType: 'jsonp',
+        data: {
+          bid: state.main_state.podcast.currentPodcast?.BroadCastID,
+          Itemidx: subpodcast.PodCastItemIdx,
+          state: !inList,
+        },
+        success: (data: any) => {
+          console.log(data);
+          if (data.Success === 'OK') {
+            console.log('OKKKK');
+            const episodes = window.localStorage.getItem('LikedEpisodes');
+            let parsedEpisodes: ListenedSubpodcast[] = episodes
+              ? JSON.parse(episodes).list
+              : [];
 
-      if (!inList) {
-        parsedEpisodes.unshift(subpodcast);
-        setLiked(true);
-        dispatch({ type: 'REFRESH_LIKED_EPISODES' });
-      } else {
-        setLiked(false);
-        parsedEpisodes = parsedEpisodes.filter((val) => {
-          return (
-            val.PodCastItemIdx !==
-            state.main_state.podcast.subpodcast.currentSubpodcast
-              ?.PodCastItemIdx
-          );
-        });
-        dispatch({ type: 'REFRESH_LIKED_EPISODES' });
-      }
-      if (parsedEpisodes.length > 50)
-        parsedEpisodes = parsedEpisodes.slice(0, 50);
+            if (!inList) {
+              parsedEpisodes.unshift(subpodcast);
+              setLiked(true);
+              dispatch({ type: 'REFRESH_LIKED_EPISODES' });
+            } else {
+              setLiked(false);
+              parsedEpisodes = parsedEpisodes.filter((val) => {
+                return val.PodCastItemIdx !== subpodcast.PodCastItemIdx;
+              });
+              dispatch({ type: 'REFRESH_LIKED_EPISODES' });
+            }
+            if (parsedEpisodes.length > 50)
+              parsedEpisodes = parsedEpisodes.slice(0, 50);
 
-      window.localStorage.setItem(
-        'LikedEpisodes',
-        JSON.stringify({ list: parsedEpisodes })
-      );
+            window.localStorage.setItem(
+              'LikedEpisodes',
+              JSON.stringify({ list: parsedEpisodes })
+            );
+          }
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
     }
   }
 

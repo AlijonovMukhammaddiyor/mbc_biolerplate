@@ -106,15 +106,30 @@ export default function RecentEpisodes() {
                   <img
                     onClick={() => {
                       if (episode.GettingDeleted) {
-                        setDeleting(
-                          deleting.filter((val) => {
-                            return episode.PodCastItemIdx !== val;
+                        const temp = deleting.filter((val) => {
+                          return episode.PodCastItemIdx !== val;
+                        });
+
+                        setDeleting(temp);
+                        episode.GettingDeleted = false;
+                        setEpisodes(
+                          episodes.map((e) => {
+                            if (e.PodCastItemIdx === episode.PodCastItemIdx) {
+                              return { ...e, GettingDeleted: false };
+                            }
+                            return e;
                           })
                         );
-                        episode.GettingDeleted = false;
                       } else {
                         setDeleting([...deleting, episode.PodCastItemIdx]);
-                        episode.GettingDeleted = true;
+                        setEpisodes(
+                          episodes.map((e) => {
+                            if (e.PodCastItemIdx === episode.PodCastItemIdx) {
+                              return { ...e, GettingDeleted: true };
+                            }
+                            return e;
+                          })
+                        );
                       }
                     }}
                     className="checkbox"
@@ -168,15 +183,20 @@ export default function RecentEpisodes() {
   function deleteAll() {
     if (deleting.length === episodes.length) {
       setDeleting([]);
-      episodes.every((val) => {
-        val.GettingDeleted = false;
-        return true;
-      });
+      setEpisodes(
+        episodes.map((val) => {
+          return { ...val, GettingDeleted: false };
+        })
+      );
     } else {
       const temp: string[] = [];
+      setEpisodes(
+        episodes.map((val) => {
+          return { ...val, GettingDeleted: true };
+        })
+      );
       episodes.every((val) => {
         temp.push(val.PodCastItemIdx);
-        val.GettingDeleted = true;
         return true;
       });
 
@@ -189,22 +209,24 @@ export default function RecentEpisodes() {
   }
 
   function deleteSelected(param: boolean) {
+    console.log(episodes);
     if (param && deleting.length > 0) {
       const temp = episodes.filter((val) => {
         return !val.GettingDeleted;
       });
-
       setEpisodes(temp);
-
+      console.log('temp is ', temp);
       window.localStorage.setItem(
         'recentListenedEpisodes',
         JSON.stringify({ list: temp })
       );
+      console.log(window.localStorage.getItem('recentListenedEpisodes'));
+
       setDeleting([]);
     }
     setPrompt(false);
     setIsDeleting(false);
-    handleDoneClick();
+    // handleDoneClick();
   }
 
   function isPlayingSubpodcast(subpodcast: ListenedSubpodcast) {
@@ -220,11 +242,6 @@ export default function RecentEpisodes() {
   }
 
   function handleDoneClick() {
-    episodes.every((song) => {
-      song.GettingDeleted = false;
-      return true;
-    });
-
     window.localStorage.setItem(
       'recentListenedEpisodes',
       JSON.stringify({ list: episodes })

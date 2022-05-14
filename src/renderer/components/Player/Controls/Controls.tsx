@@ -11,14 +11,8 @@ import '../../../styles/controls/controls.css';
 
 export default function Controls() {
   const { dispatch, state } = useContext(Context);
-  const [pause, setPause] = useState(!state.main_state.general.autoplay);
 
   const util = new Utils(state, dispatch);
-
-  useEffect(() => {
-    dispatch({ type: 'PAUSE_SET_AUDIO', pause });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pause]);
 
   return (
     <div
@@ -32,29 +26,13 @@ export default function Controls() {
         {!state.main_state.podcast.subpodcast.isSubpodcastPlaying && (
           <AudioInfo state={state} util={util} />
         )}
-        <ProgressBar
-          state={state}
-          dispatch={dispatch}
-          util={util}
-          setPause={setPause}
-        />
+        <ProgressBar state={state} dispatch={dispatch} util={util} />
       </div>
       <div className="play__pause">
         {state.main_state.podcast.subpodcast.isSubpodcastPlaying ? (
-          <PlayPausePodcast
-            dispatch={dispatch}
-            state={state}
-            pause={pause}
-            setPause={setPause}
-          />
+          <PlayPausePodcast dispatch={dispatch} state={state} />
         ) : (
-          <PlayPause
-            dispatch={dispatch}
-            state={state}
-            pause={pause}
-            setPause={setPause}
-            isMini={false}
-          />
+          <PlayPause dispatch={dispatch} state={state} isMini={false} />
         )}
       </div>
       <div className="footer">

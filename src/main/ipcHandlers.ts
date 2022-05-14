@@ -94,11 +94,13 @@ ipcMain.on(
       body: string;
     }
   ) => {
-    // console.log(args);
+    if (process.platform === 'win32') {
+      app.setAppUserModelId(app.name);
+    }
     const notice = new Notification({
       subtitle: args.title,
       body: args.guest,
-      icon: args.icon || path.join(__dirname, '../../assets/icon.png'),
+      icon: path.join(__dirname, '../../assets/icon.png'),
     });
     if (mainWindow) {
       if (process.platform === 'win32') {
@@ -111,7 +113,7 @@ ipcMain.on(
 
 ipcMain.on('opacity-change', async (event, args) => {
   if (mainWindow) {
-    mainWindow.setOpacity(args.opacity < 0.2 ? 0.2 : args.opacity);
+    mainWindow.setOpacity(args.opacity < 0.1 ? 0.1 : args.opacity);
   }
 });
 

@@ -8,16 +8,10 @@ import '../../../../styles/progressBar/progressBar.css';
 type Props = {
   state: STATE;
   util: Utils;
-  setPause: (param: boolean) => void;
   dispatch: (param: unknown) => void;
 };
 
-export default function TimeProgress({
-  state,
-  util,
-  dispatch,
-  setPause,
-}: Props) {
+export default function TimeProgress({ state, util, dispatch }: Props) {
   const [progress, setProgress] = useState(0);
   const [playedTime, setPlayedTime] = useState(0);
   const [subpodcastDuration, setDuration] = useState(0);
@@ -158,7 +152,7 @@ export default function TimeProgress({
             )}
           </div>
         )}
-        <Audio getDuration={getSubpodcastDuration} setPause={setPause} />
+        <Audio getDuration={getSubpodcastDuration} />
       </div>
       {!state.main_state.podcast.subpodcast.isSubpodcastPlaying && (
         <div className="volume">

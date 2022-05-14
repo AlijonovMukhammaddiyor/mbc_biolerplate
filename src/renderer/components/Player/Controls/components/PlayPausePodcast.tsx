@@ -13,25 +13,18 @@ import '../../../../styles/playpausepodcast/playpausepodcast.css';
 type Props = {
   state: STATE;
   dispatch: (param: unknown) => void;
-  pause: boolean;
-  setPause: (param: boolean) => void;
 };
 
-export default function PlayPausePodcast({
-  state,
-  dispatch,
-  pause,
-  setPause,
-}: Props) {
-  const pauseClass = pause ? 'paused' : '';
+export default function PlayPausePodcast({ state, dispatch }: Props) {
+  const pauseClass = state.main_state.player.pause ? 'paused' : '';
   const [currentPlayIcon, setIcon] = useState(
     state.main_state.general.autoplay ? iconPause : iconPlay
   );
   useEffect(() => {
-    if (!pause) {
+    if (!state.main_state.player.pause) {
       if (currentPlayIcon === iconPlay) setIcon(iconPause);
     } else if (currentPlayIcon === iconPause) setIcon(iconPlay);
-  }, [pause, currentPlayIcon]);
+  }, [state.main_state.player.pause, currentPlayIcon]);
 
   return (
     <div className="play__pause__podcast">
@@ -97,20 +90,25 @@ export default function PlayPausePodcast({
     const audio: HTMLAudioElement = document.getElementById(
       'audio'
     ) as HTMLAudioElement;
-    if (!pause) {
+    if (!state.main_state.player.pause) {
       if (audio) audio.pause();
     } else if (audio) {
       const playPromise = audio.play();
       if (playPromise !== undefined) {
         playPromise
           // eslint-disable-next-line promise/always-return
-          .then(() => {})
+          .then(() => {
+            dispatch({ type: 'PAUSE_SET_VIDEO', vodPlay: false });
+          })
           .catch((error) => {
             console.log(error);
           });
       }
     }
-    setPause(!pause);
+    dispatch({
+      type: 'PAUSE_SET_AUDIO',
+      pause: !state.main_state.player.pause,
+    });
   }
 
   function skipAudio(time: number) {

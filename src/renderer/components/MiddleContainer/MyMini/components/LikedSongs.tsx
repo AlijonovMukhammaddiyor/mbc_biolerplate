@@ -1,4 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
+import Data from 'renderer/context/utils/data';
+import $ from 'jquery';
+import { Context } from '../../../../context/context/context';
 import { TrackType } from '../../../../context/utils/types';
 import '../../../../styles/likedSongs/likedSongs.css';
 import iconCheckboxOff from '../../../../assets/middle/mymini/check-box-off.svg';
@@ -9,6 +12,7 @@ import iconSongOff from '../../../../assets/middle/icon-song-off.svg';
 import DeletePrompt from './DeletePrompt';
 
 export default function RecentEpisodes() {
+  const { state } = useContext(Context);
   const [songs, setSongs] = useState<TrackType[]>([]);
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
   const [deleting, setDeleting] = useState<number[]>([]);
@@ -161,6 +165,29 @@ export default function RecentEpisodes() {
   function deleteSelected(param: boolean) {
     if (param && deleting.length > 0) {
       const temp = songs.filter((val) => {
+        if (val.gettingDeleted) {
+          $.ajax({
+            url: Data.urls.trackLikeApi,
+            type: 'POST',
+            // dataType: 'jsonp',
+            data: {
+              bid: state.main_state.general.currentPrograms[
+                state.main_state.general.channel
+              ]?.BroadCastID,
+              gid: state.main_state.general.currentPrograms[
+                state.main_state.general.channel
+              ]?.ProgramGroupID,
+              Tr_no: val.TR_NO,
+              state: false,
+            },
+            success: (_) => {
+              console.log('unliked the song');
+            },
+            error: (err) => {
+              console.log(err);
+            },
+          });
+        }
         return !val.gettingDeleted;
       });
 
@@ -171,7 +198,7 @@ export default function RecentEpisodes() {
     }
     setPrompt(false);
     setIsDeleting(false);
-    handleDoneClick();
+    // handleDoneClick();
   }
 
   function handleDoneClick() {
@@ -179,6 +206,8 @@ export default function RecentEpisodes() {
       song.gettingDeleted = false;
       return true;
     });
+
+    console.log(songs);
     window.localStorage.setItem('LikedSongs', JSON.stringify({ list: songs }));
   }
 }

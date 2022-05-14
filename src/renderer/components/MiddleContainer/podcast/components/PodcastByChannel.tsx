@@ -20,28 +20,16 @@ type Props = {
 };
 
 export default function Podcast({ isByCatgory }: Props) {
-  const [selectedChannel, setChannel] = useState('표준FM');
-  const [channelsCategory, setChannelCategory] = useState([
-    '표준FM',
-    'FM4U',
-    '오리지널',
-    '코너 다시듣기',
-    '기타',
-  ]);
-  const [podcastState, setState] = useState(['방송중', '방송종료']);
-  const [selectedState, setSelectedState] = useState(2);
-  const sorts = ['인기순', '방송시간순', '가나다순'];
-  const [selectedSort, setSelectedSort] = useState(0); // index of sorts
   const { state, dispatch } = useContext(Context);
+
   const [podcasts, setPodcasts] = useState<ExtendedPodcast[]>([]);
-  const [order, setOrder] = useState('DESC');
   const [TotalCount, setTotal] = useState<number>(0);
   // each time user scrolls down the end of podcast container we will load fetchCount more podcasts if available
   const fetchStep = 30;
   const [currentCount, setCurrentCount] = useState(fetchStep);
   const listInnerRef = useRef<HTMLDivElement>(null);
   const [subsPodcasts, setSubsPodcasts] = useState<RecommendedPodcast[]>([]);
-  const [category, setCategory] = useState(2);
+  // const [category, setCategory] = useState(2);
   const [render, setRender] = useState<string>('');
   // const [subsRender, setSubsRender] = useState(false);
   // const [unsubsRender, setUnSubsRender] = useState(false);
@@ -269,17 +257,17 @@ export default function Podcast({ isByCatgory }: Props) {
     async function setResponse() {
       const data: PodcastResponse = !isByCatgory
         ? await util.getFilteredPodcastsByChannel(
-            selectedChannel,
-            selectedSort,
+            state.main_state.podcast.search.channel,
+            state.main_state.podcast.search.sortBy,
             currentCount,
-            selectedState,
-            order
+            state.main_state.podcast.search.state,
+            state.main_state.podcast.search.sort
           )
         : await util.getFilteredPodcastsByCategory(
-            category,
-            selectedSort,
+            state.main_state.podcast.search.category,
+            state.main_state.podcast.search.sortBy,
             currentCount,
-            order
+            state.main_state.podcast.search.sort
           );
       if (data) {
         setTotal(data.Total);
@@ -338,12 +326,12 @@ export default function Podcast({ isByCatgory }: Props) {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
-    selectedChannel,
-    selectedState,
-    selectedSort,
-    order,
+    state.main_state.podcast.search.channel,
+    state.main_state.podcast.search.state,
+    state.main_state.podcast.search.sortBy,
+    state.main_state.podcast.search.sort,
     currentCount,
-    category,
+    state.main_state.podcast.search.category,
     isByCatgory,
     subsPodcasts,
   ]);
@@ -353,37 +341,65 @@ export default function Podcast({ isByCatgory }: Props) {
     if (listInnerRef.current) {
       listInnerRef.current.scrollTop = 0;
     }
-  }, [category]);
+  }, [state.main_state.podcast.search.category]);
 
   return (
     <div className="podcasts__container">
       <div className="filters">
         {isByCatgory ? (
-          <Category category={category} setCategory={setCategory} />
+          <Category
+            dispatch={dispatch}
+            selectedCategory={state.main_state.podcast.search.category}
+          />
         ) : (
           <div className="dropdowns">
-            <DropDown names={podcastState} setName={setStateDrop} />
-            <DropDown names={channelsCategory} setName={setChannelsDrop} />
+            <DropDown
+              dispatch={dispatch}
+              names={state.main_state.podcast.search.dropStates}
+            />
+            <DropDown
+              dispatch={dispatch}
+              names={state.main_state.podcast.search.dropChannels}
+            />
           </div>
         )}
 
         <div className="radio__select">
           <Radio
-            names={sorts}
-            setCat={setSelectedSort}
-            selected={selectedSort}
+            dispatch={dispatch}
+            names={state.main_state.podcast.search.sorts}
+            selected={
+              state.main_state.podcast.search.sortBy as
+                | 'Imp'
+                | 'StartTime'
+                | 'Title'
+            }
           />
         </div>
 
         <button
           type="submit"
           onClick={() => {
-            changeOrder();
+            dispatch({
+              type: 'PODCAST_SEARCH',
+              search: {
+                sort:
+                  state.main_state.podcast.search.sort === 'DESC'
+                    ? 'ASC'
+                    : 'DESC',
+              },
+            });
           }}
           className={isByCatgory ? 'changeOrder by__category' : 'changeOrder'}
         >
-          {order === 'DESC' ? `오름차순` : '내림차순'}
-          {order === 'DESC' ? <span>&uarr;</span> : <span>&darr;</span>}
+          {state.main_state.podcast.search.sort === 'DESC'
+            ? `오름차순`
+            : '내림차순'}
+          {state.main_state.podcast.search.sort === 'DESC' ? (
+            <span>&uarr;</span>
+          ) : (
+            <span>&darr;</span>
+          )}
         </button>
       </div>
       <div onScroll={onScroll} ref={listInnerRef} className="podcasts">
@@ -468,31 +484,6 @@ export default function Podcast({ isByCatgory }: Props) {
       </div>
     </div>
   );
-
-  function swapElements(arr: string[], elem: string): string[] {
-    const idx = arr.indexOf(elem);
-    const temp = arr[0];
-    const tempArr = arr;
-    tempArr[0] = elem;
-    tempArr[idx] = temp;
-    return tempArr;
-  }
-
-  function setChannelsDrop(channel: string) {
-    setChannelCategory(swapElements(channelsCategory, channel));
-    setChannel(channel);
-  }
-
-  function setStateDrop(cat: string) {
-    setState(swapElements(podcastState, cat));
-    if (cat === '방송종료') setSelectedState(3);
-    else setSelectedState(2);
-  }
-
-  function changeOrder() {
-    if (order === 'DESC') setOrder('ASC');
-    else setOrder('DESC');
-  }
 
   function enterPodcast(podcast: ExtendedPodcast) {
     dispatch({

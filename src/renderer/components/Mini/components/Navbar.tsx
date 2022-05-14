@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import '../../../styles/miniNavbar/miniNavbar.css';
 import { Context } from '../../../context/context/context';
 import iconLeft from '../../../assets/mini/icon-ch-left.svg';
@@ -13,6 +13,11 @@ export default function Navbar() {
   const { state, dispatch } = useContext(Context);
   const [leftIcon, setLeftIcon] = useState(iconLeft);
   const [rightIcon, setRightIcon] = useState(iconRight);
+  const [opacity, setOpacity] = useState(1);
+
+  useEffect(() => {
+    window.electron.ipcRenderer.send('opacity-change', { opacity });
+  }, [opacity]);
 
   return (
     <div className="mini__navbar__container">
@@ -41,6 +46,27 @@ export default function Navbar() {
             onClick={moveChannelRight}
             alt=""
           />
+
+          <div className="transparency">
+            <input
+              tabIndex={-1}
+              type="range"
+              id="transparent"
+              min={0}
+              max={10}
+              value={opacity * 10}
+              onChange={(e) => {
+                const target = e.target as HTMLInputElement;
+                const val = target.valueAsNumber;
+                setOpacity(val / 10);
+                console.log(val);
+                console.log(target.style.backgroundSize);
+                target.style.backgroundSize = `${
+                  ((val - 0) * 100) / (10 - 0)
+                }% 100%`;
+              }}
+            />
+          </div>
         </div>
         <div className="right">
           <div>

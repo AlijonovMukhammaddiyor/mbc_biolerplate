@@ -9,16 +9,13 @@ import '../../../../styles/playPause/playPause.css';
 
 type Props = {
   state: STATE;
-  pause: boolean;
-  setPause: (param: boolean) => void;
   isMini: boolean;
   dispatch: (p: any) => void;
 };
 
 export default function PlayPause({
   state,
-  pause,
-  setPause,
+
   isMini,
   dispatch,
 }: Props) {
@@ -26,12 +23,12 @@ export default function PlayPause({
     state.main_state.general.autoplay ? pauseIcon : playIcon
   );
   useEffect(() => {
-    if (!pause) {
+    if (!state.main_state.player.pause) {
       if (currentPlayIcon === playIcon) setIcon(pauseIcon);
       else if (currentPlayIcon === playIconOver) setIcon(pauseIconOver);
     } else if (currentPlayIcon === pauseIcon) setIcon(playIcon);
     else if (currentPlayIcon === pauseIconOver) setIcon(playIconOver);
-  }, [pause, currentPlayIcon]);
+  }, [state.main_state.player.pause, currentPlayIcon]);
 
   return (
     <div className="play__pause__container">
@@ -69,26 +66,24 @@ export default function PlayPause({
     const audio: HTMLAudioElement = document.getElementById(
       'audio'
     ) as HTMLAudioElement;
-    if (!pause) {
+    if (!state.main_state.player.pause) {
       if (audio) audio.pause();
     } else if (audio) {
       const playPromise = audio.play();
       if (playPromise !== undefined) {
         playPromise
           // eslint-disable-next-line promise/always-return
-          .then(() => {})
+          .then(() => {
+            dispatch({ type: 'PAUSE_SET_VIDEO', vodPlay: false });
+          })
           .catch((error) => {
             console.log(error);
           });
       }
-      dispatch({ type: 'PAUSE_SET_VIDEO', vodPlay: false });
-      // const video: HTMLVideoElement = document.getElementById(
-      //   'video'
-      // ) as HTMLVideoElement;
-      // if (video) {
-      //   video.pause();
-      // }
     }
-    setPause(!pause);
+    dispatch({
+      type: 'PAUSE_SET_AUDIO',
+      pause: !state.main_state.player.pause,
+    });
   }
 }

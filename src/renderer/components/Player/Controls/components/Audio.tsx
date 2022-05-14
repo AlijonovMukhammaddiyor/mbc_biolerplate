@@ -11,13 +11,23 @@ import { ListenedSubpodcast } from '../../../../context/utils/types';
 
 type Props = {
   getDuration: (dur: number) => void;
-  setPause: (pause: boolean) => void;
 };
 
-export default function Audio({ getDuration, setPause }: Props) {
-  const [audioPlayer, setPlayer] = useState(new HLs());
+export default function Audio({ getDuration }: Props) {
+  const [audioPlayer, setPlayer] = useState<HLs | null>(new HLs());
   const { state, dispatch } = useContext(Context);
   const audioRef = useRef<HTMLMediaElement>(null);
+  const [reRender, setReRender] = useState(false);
+
+  useEffect(() => {
+    if (state.main_state.player.pause) {
+      if (audioPlayer) audioPlayer.destroy();
+      setPlayer(null);
+    } else {
+      setReRender(!reRender);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.main_state.player.pause]);
 
   useEffect(() => {
     async function getUrl(): Promise<string> {
@@ -55,7 +65,9 @@ export default function Audio({ getDuration, setPause }: Props) {
               newPlayer.on(HLs.Events.MANIFEST_PARSED, () => {
                 if (audioRef.current) {
                   audioRef.current.volume = state.main_state.player.volume / 10;
-                  setPause(false);
+                  dispatch({ type: 'PAUSE_SET_AUDIO', pause: false });
+                  dispatch({ type: 'PAUSE_SET_VIDEO', vodPlay: false });
+
                   const playPromise = audioRef.current.play();
                   if (playPromise !== undefined) {
                     playPromise
@@ -88,6 +100,7 @@ export default function Audio({ getDuration, setPause }: Props) {
     state.main_state.general.channel,
     state.main_state.general.autoplay,
     state.main_state.podcast.subpodcast.isSubpodcastPlaying,
+    reRender,
   ]);
 
   useEffect(() => {
@@ -136,6 +149,7 @@ export default function Audio({ getDuration, setPause }: Props) {
       audio.load();
       audio.src =
         state.main_state.podcast.subpodcast.currentSubpodcast.EncloserURL;
+      console.log('adding');
       addToRecentListenedEpisodes({
         ...state.main_state.podcast.subpodcast.currentSubpodcast,
         GettingDeleted: false,
@@ -165,7 +179,9 @@ export default function Audio({ getDuration, setPause }: Props) {
       if (state.main_state.general.autoplay) {
         const playPromise = audio.play();
         getDuration(audio.duration);
-        setPause(false);
+        dispatch({ type: 'PAUSE_SET_AUDIO', pause: false });
+        dispatch({ type: 'PAUSE_SET_VIDEO', vodPlay: false });
+
         if (playPromise !== undefined) {
           playPromise
             .then(() => {})

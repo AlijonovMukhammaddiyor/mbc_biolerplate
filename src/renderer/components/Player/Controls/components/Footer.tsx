@@ -73,8 +73,12 @@ export default function Footer() {
           src={
             state.main_state.vod.isVod
               ? state.main_state.vod.videoClosed
-                ? videoIconYes
-                : videoIconAir
+                ? isRightChannel()
+                  ? videoIconYes
+                  : videoIconNone
+                : isRightChannel()
+                ? videoIconAir
+                : videoIconNone
               : videoIconNone
           }
           alt=""
@@ -92,6 +96,13 @@ export default function Footer() {
       </div>
     </div>
   );
+
+  function isRightChannel() {
+    if (state.main_state.vod.currentVod?.Channel === 'FM4U') {
+      return state.main_state.general.channel === 'mfm';
+    }
+    return state.main_state.general.channel === 'sfm';
+  }
 
   function handleVideoDisclose() {
     if (state.main_state.vod.isVod) {

@@ -94,25 +94,6 @@ export default function Track({ track, state }: Props) {
   }
 
   function callApi() {
-    // jsonp(
-    //   `${Data.urls.trackLikeApi}?bid=${
-    //     state.main_state.general.currentPrograms[
-    //       state.main_state.general.channel
-    //     ]?.BroadCastID
-    //   }&gid=${
-    //     state.main_state.general.currentPrograms[
-    //       state.main_state.general.channel
-    //     ]?.ProgramGroupID
-    //   }&Tr_no=${track.TR_NO}&state=${!isInList(track)}`,
-    //   {},
-    //   (err, res) => {
-    //     if (err) {
-    //       console.log(err);
-    //     } else {
-    //       console.log(res);
-    //     }
-    //   }
-    // );
     $.ajax({
       url: Data.urls.trackLikeApi,
       type: 'POST',

@@ -1,32 +1,40 @@
-@import "../general/general";
+@import '../general/general';
 
 .program__image__container {
-	grid-row: 1/3;
-	grid-column: 1;
-	background-repeat: no-repeat;
-	background-size: 100% auto;
-	background-color: black;
-	overflow: hidden;
-	position: relative;
-	background-position: 50% 20%;
+  grid-row: 1/3;
+  grid-column: 1;
+  background-repeat: no-repeat;
+  background-size: 100% auto;
+  background-color: black;
+  overflow: hidden;
+  position: relative;
+  background-position: 50% 20%;
 
-	.background__image.is_vod {
-		opacity: 0.2;
-	}
+  .background__image.is_vod {
+    opacity: 0.2;
+  }
 
-	.to_left__icon,
-	.to_right__icon {
-		width: 16.7px;
-		height: 29px;
-		object-fit: contain;
-		position: absolute;
-		top: 50%;
-		left: 15px;
-		cursor: pointer;
-	}
+  .to_left__icon,
+  .to_right__icon {
+    width: 16.7px;
+    height: 29px;
+    object-fit: contain;
+    position: absolute;
+    top: 50%;
+    left: 15px;
+    cursor: pointer;
+  }
 
-	.to_right__icon {
-		left: auto;
-		right: 15px;
-	}
+  .to_right__icon {
+    left: auto;
+    right: 15px;
+  }
+
+  .temp {
+    bottom: 0;
+    position: absolute;
+    left: 0;
+    height: 237px;
+    width: 100%;
+  }
 }

@@ -32,7 +32,6 @@ export default function Message({
   const classMyMessOn = myMessOn ? 'my_mess_on' : '';
   const [prompt, setPrompt] = useState(false);
 
-  console.log(isMyMessage(), myMessOn);
   return (
     <div
       className={

@@ -1,4 +1,5 @@
 import { useEffect, useState, useContext } from 'react';
+import $ from 'jquery';
 import { ListenedSubpodcast } from '../../../../context/utils/types';
 import '../../../../styles/likedEpisodes/likedEpisodes.css';
 import iconCheckboxOff from '../../../../assets/middle/mymini/check-box-off.svg';
@@ -7,6 +8,7 @@ import { Context } from '../../../../context/context/context';
 import iconPlaying from '../../../../assets/middle/mymini/podcast-icon-list-ing.svg';
 import iconNoEpisode from '../../../../assets/middle/mymini/img-no-list.svg';
 import DeletePrompt from './DeletePrompt';
+import Data from '../../../../context/utils/data';
 
 export default function RecentEpisodes() {
   const [episodes, setEpisodes] = useState<ListenedSubpodcast[]>([]);
@@ -188,6 +190,24 @@ export default function RecentEpisodes() {
   function deleteSelected(param: boolean) {
     if (param && deleting.length > 0) {
       const temp = episodes.filter((val) => {
+        if (val.GettingDeleted) {
+          $.ajax({
+            url: Data.urls.likeItemApi,
+            type: 'POST',
+            // dataType: 'jsonp',
+            data: {
+              bid: state.main_state.podcast.currentPodcast?.BroadCastID,
+              Itemidx: val.PodCastItemIdx,
+              state: false,
+            },
+            success: (data: any) => {
+              console.log(data);
+            },
+            error: (err) => {
+              console.log(err);
+            },
+          });
+        }
         return !val.GettingDeleted;
       });
 
@@ -201,7 +221,7 @@ export default function RecentEpisodes() {
     }
     setPrompt(false);
     setIsDeleting(false);
-    handleDoneClick();
+    // handleDoneClick();
   }
 
   function isPlayingSubpodcast(subpodcast: ListenedSubpodcast) {

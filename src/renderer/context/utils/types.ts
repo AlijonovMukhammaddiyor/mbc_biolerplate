@@ -67,6 +67,8 @@ export type Podcast = {
   StartTime: string;
   ItunesImageURL: string;
   isSubscribed: boolean;
+  ThumbnailPicture: string;
+  ProgramTitle: string;
 };
 
 // export type SubscribedPodcasts = {
@@ -234,6 +236,7 @@ export type TrackType = {
 };
 
 export type CurrentVod = {
+  ScheduleSeq: string;
   Date: string;
   WeekSeq: string;
   WeekDay: string;
@@ -244,7 +247,7 @@ export type CurrentVod = {
   EndTime: string;
   Picture: string;
   Guest: string;
-  HomePageURL: string;
+  HomePageURL: string | null;
 };
 
 export type Vod = {
@@ -307,6 +310,17 @@ export type STATE = {
       channel: string;
       currentPodcast: Podcast | null;
       shareScreenOn: boolean;
+      search: {
+        category: number;
+        channel: number;
+        sortBy: string;
+        sort: string;
+        state: number;
+        dropChannels: string[];
+        dropStates: string[];
+        sorts: string[];
+        categories: string[];
+      };
       shareUrl: string;
       subpodcast: {
         isSubpodcastPlaying: boolean;

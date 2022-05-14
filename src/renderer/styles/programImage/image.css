@@ -75,4 +75,12 @@ svg {
   left: auto;
   right: 15px;
 }
+
+.program__image__container .temp {
+  bottom: 0;
+  position: absolute;
+  left: 0;
+  height: 237px;
+  width: 100%;
+}
 /*# sourceMappingURL=image.css.map */

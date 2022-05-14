@@ -19,6 +19,7 @@ export default function Audio() {
   const [fullSize, setFullSize] = useState(false);
   const [isPoped, setPopped] = useState(false);
   const [minHeight, setMinHeight] = useState('370px');
+  const [reRender, setReRender] = useState(false);
 
   useEffect(() => {
     async function getUrl(): Promise<string> {
@@ -37,6 +38,9 @@ export default function Audio() {
       const data: Promise<string> = getUrl();
       data
         .then((response) => {
+          // eslint-disable-next-line no-param-reassign
+          // response =
+          //   'http://qthttp.apple.com.edgesuite.net/1010qwoeiuryfg/sl.m3u8';
           const config = { autoStartLoad: true, debug: false };
 
           if (HLs.isSupported()) {
@@ -100,6 +104,7 @@ export default function Audio() {
   }, [
     state.main_state.general.channel,
     state.main_state.podcast.subpodcast.isSubpodcastPlaying,
+    reRender,
   ]);
 
   useEffect(() => {
@@ -114,11 +119,15 @@ export default function Audio() {
     } else if (video) {
       const playPromise = video.play();
       playPromise
-        .then(() => {})
+        .then(() => {
+          dispatch({ type: 'PAUSE_SET_AUDIO', pause: true });
+        })
         .catch(() => {
-          video.play();
+          // video.play();
+          setReRender(!reRender);
         });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.main_state.vod.vodPlay]);
 
   useEffect(() => {
@@ -144,6 +153,16 @@ export default function Audio() {
     // Video left Picture-in-Picture mode.
     video?.addEventListener('leavepictureinpicture', () => {
       setPopped(false);
+      const wasPlaying = !video.paused;
+
+      console.log(video.paused);
+
+      if (wasPlaying) {
+        dispatch({ type: 'PAUSE_SET_VIDEO', vodPlay: true });
+        dispatch({ type: 'PAUSE_SET_AUDIO', pause: true });
+      } else {
+        dispatch({ type: 'PAUSE_SET_VIDEO', vodPlay: false });
+      }
     });
 
     return () => {
@@ -152,6 +171,7 @@ export default function Audio() {
       });
       video?.removeEventListener('enterpictureinpicture', () => {});
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -217,13 +237,15 @@ export default function Audio() {
           toggleVolume={toggleVolume}
         />
       </div>
-      <div
-        onMouseOver={() => setDarken(true)}
-        onFocus={() => {}}
-        className="video__close"
-      >
-        <img src={videoCloseIcon} onClick={closeVideo} alt="" />
-      </div>
+      {!fullSize && (
+        <div
+          onMouseOver={() => setDarken(true)}
+          onFocus={() => {}}
+          className="video__close"
+        >
+          <img src={videoCloseIcon} onClick={closeVideo} alt="" />
+        </div>
+      )}
       <div
         onMouseOver={() => setDarken(true)}
         onFocus={() => {}}
@@ -292,6 +314,7 @@ export default function Audio() {
 
   function toggleVideo() {
     if (state.main_state.vod.vodPlay) {
+      // videoPlayer?.destroy();
       dispatch({ type: 'PAUSE_SET_VIDEO', vodPlay: false });
     } else {
       dispatch({ type: 'PAUSE_SET_AUDIO', pause: true });
@@ -320,9 +343,22 @@ export default function Audio() {
   }
 
   function makeVideoUnpop() {
+    console.log('unpop');
     if (document.pictureInPictureElement) {
+      console.log('inside');
       document.exitPictureInPicture();
       setPopped(false);
+      const video = document.getElementById('video') as HTMLVideoElement;
+      const wasPlaying = !video.paused;
+
+      console.log(video.paused);
+
+      if (wasPlaying) {
+        dispatch({ type: 'PAUSE_SET_VIDEO', vodPlay: true });
+        dispatch({ type: 'PAUSE_SET_AUDIO', pause: true });
+      } else {
+        dispatch({ type: 'PAUSE_SET_VIDEO', vodPlay: false });
+      }
     }
   }
 

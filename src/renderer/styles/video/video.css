@@ -43,11 +43,8 @@ svg {
 
 .video__container {
   background: black;
-  position: absolute;
   height: auto;
   width: 100%;
-  left: 0;
-  bottom: 0;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;

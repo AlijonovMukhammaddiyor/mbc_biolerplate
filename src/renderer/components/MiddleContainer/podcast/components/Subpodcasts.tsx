@@ -47,6 +47,7 @@ export default function Subpodcasts() {
   const [render, setRender] = useState(
     state.main_state.podcast.currentPodcast?.isSubscribed ? 'subs' : 'unsubs'
   );
+  const [update, setUpdate] = useState(false);
 
   useEffect(() => {
     // console.log("useEffect subpodcasts");
@@ -71,7 +72,11 @@ export default function Subpodcasts() {
       setSubPodcasts(data.Itemlist);
       setCount(data.TotalCount);
     });
-  }, [currentCount, state.main_state.podcast.currentPodcast?.BroadCastID]);
+  }, [
+    currentCount,
+    state.main_state.podcast.currentPodcast?.BroadCastID,
+    update,
+  ]);
 
   useEffect(() => {
     fetchQueryEpisodes(null);
@@ -103,14 +108,16 @@ export default function Subpodcasts() {
         <img
           src={
             state.main_state.podcast.currentPodcast?.ITunesImageURL ||
-            state.main_state.podcast.currentPodcast?.ItunesImageURL
+            state.main_state.podcast.currentPodcast?.ItunesImageURL ||
+            state.main_state.podcast.currentPodcast?.ThumbnailPicture
           }
           alt=""
         />
         <div className="info">
           <div className="contents">
             <p className="title">
-              {state.main_state.podcast.currentPodcast?.Title}
+              {state.main_state.podcast.currentPodcast?.Title ||
+                state.main_state.podcast.currentPodcast?.ProgramTitle}
             </p>
             <p className="subtitle">
               {state.main_state.podcast.currentPodcast?.SubTitle}
@@ -186,29 +193,26 @@ export default function Subpodcasts() {
             className="search__input"
             placeholder="검색어를 입력해주세요"
           />
-          <button type="submit" className="search__submit">
+          <button
+            type="submit"
+            className={
+              searchQuery.length > 0
+                ? 'search__submit onFocus'
+                : 'search__submit'
+            }
+          >
             검색
           </button>
         </form>
 
         <button
           type="submit"
-          className={
-            isSearching
-              ? searchCurCount >= searchTotalCount
-                ? searchTotalCount !== 0
-                  ? 'all all__shown'
-                  : 'all'
-                : 'all'
-              : currentCount >= TotalCount
-              ? TotalCount !== 0
-                ? 'all all__shown'
-                : 'all'
-              : 'all'
-          }
-          // onClick={() => {
-          // 	isSearching ? setSearchCurCount(searchTotalCount) : setCurrentCount(TotalCount);
-          // }}
+          className="all"
+          onClick={() => {
+            setSearching(false);
+            setQeury('');
+            setUpdate(!update);
+          }}
         >
           전체목록
         </button>

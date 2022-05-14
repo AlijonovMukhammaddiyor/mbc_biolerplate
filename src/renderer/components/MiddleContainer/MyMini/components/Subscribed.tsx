@@ -223,7 +223,7 @@ export default function Subscribed() {
 
     setPrompt(false);
     setIsDeleting(false);
-    handleDoneClick();
+    // handleDoneClick();
     setUpdate(!update);
   }
 

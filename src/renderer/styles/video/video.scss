@@ -1,12 +1,12 @@
-@import "../general/general";
+@import '../general/general';
 
 .video__container {
   background: black;
-  position: absolute;
+  // position: absolute;
   height: auto;
   width: 100%;
-  left: 0;
-  bottom: 0;
+  // left: 0;
+  // bottom: 0;
   @include flex($just: center, $align: center);
 
   &:fullscreen {
