@@ -43,10 +43,10 @@ export default function Podcast({ isByCatgory }: Props) {
   const [subsPodcasts, setSubsPodcasts] = useState<RecommendedPodcast[]>([]);
   const [category, setCategory] = useState(2);
   const [render, setRender] = useState<string>('');
-  const [subsRender, setSubsRender] = useState(false);
-  const [unsubsRender, setUnSubsRender] = useState(false);
+  // const [subsRender, setSubsRender] = useState(false);
+  // const [unsubsRender, setUnSubsRender] = useState(false);
   const [update, setUpdate] = useState(false);
-  const [newUpdate, setNewUpdate] = useState(false);
+  // const [newUpdate, setNewUpdate] = useState(false);
   const [subscribed, setSubscribed] = useState<RecommendedPodcast[]>([]);
   const [unsubscribed, setUnsubscribed] = useState<RecommendedPodcast[]>([]);
 
@@ -235,164 +235,6 @@ export default function Podcast({ isByCatgory }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [update]);
 
-  // useEffect(() => {
-  //   /**
-  //    *Here, I will check if the server added subscribed podcast already.
-  //    *If yes, remove it from the local array
-  //    */
-  //   let temp = subscribed;
-  //   for (let i = 0; i < subscribed.length; i += 1) {
-  //     for (let k = 0; k < subsPodcasts.length; k += 1) {
-  //       if (
-  //         subsPodcasts[k].BroadCastID.toString() ===
-  //         subscribed[i].BroadCastID.toString()
-  //       ) {
-  //         // it is already processed by the server. So I can remove from local array
-  //         temp = temp.filter((pod) => {
-  //           if (
-  //             pod.BroadCastID.toString() ===
-  //             subsPodcasts[i].BroadCastID.toString()
-  //           )
-  //             return false;
-  //           return true;
-  //         });
-  //       }
-  //     }
-  //   }
-
-  //   // /**
-  //   //  * Here, I will make sure all elements of subscribed is in subsPodcasts
-  //   //  */
-  //   const t = subsPodcasts;
-  //   t.concat(temp);
-
-  //   /**
-  //    * Here, I will check if unsubscribed array containsany subscribed element
-  //    */
-  //   let arr = unsubscribed;
-  //   for (let i = 0; i < unsubscribed.length; i += 1) {
-  //     for (let k = 0; k < subscribed.length; k += 1) {
-  //       if (
-  //         unsubscribed[i].BroadCastID.toString() ===
-  //         subscribed[k].BroadCastID.toString()
-  //       ) {
-  //         arr = arr.filter((e) => {
-  //           if (
-  //             e.BroadCastID.toString() === subscribed[k].BroadCastID.toString()
-  //           )
-  //             return false;
-  //           return true;
-  //         });
-  //         break;
-  //       }
-  //     }
-  //   }
-
-  //   setUnsubscribed(arr);
-  //   setSubsPodcasts(subsPodcasts);
-  //   setSubscribed(temp);
-  //   // setNewUpdate(!newUpdate);
-  //   console.log('end subs:', subsPodcasts, temp, arr);
-  //   // console.log('after subs:', subsPodcasts, subscribed, unsubscribed);
-
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [subsRender]);
-
-  // useEffect(() => {
-  //   /**
-  //    * Check if subsPodcasts already dos not contain elements unsubscribed
-  //    * If yes, remove that element from local unsubscribed array
-  //    */
-
-  //   const tempSubs = [...subsPodcasts, ...subscribed];
-  //   console.log('before 1:', unsubscribed, subsPodcasts);
-  //   let arr = unsubscribed;
-  //   for (let i = 0; i < unsubscribed.length; i += 1) {
-  //     let contains = false;
-  //     for (let k = 0; k < tempSubs.length; k += 1) {
-  //       if (
-  //         unsubscribed[i].BroadCastID.toString() ===
-  //         tempSubs[k].BroadCastID.toString()
-  //       ) {
-  //         // contains unsubscribed podcast
-  //         contains = true;
-  //         break;
-  //       }
-  //     }
-  //     if (!contains) {
-  //       arr = arr.filter((e) => {
-  //         if (
-  //           e.BroadCastID.toString() === unsubscribed[i].BroadCastID.toString()
-  //         )
-  //           return false;
-  //         return true;
-  //       });
-  //     }
-  //   }
-
-  //   console.log('after:', arr);
-
-  //   /**
-  //    * if subspodcasts contains element from unsubscribed, remove it
-  //    */
-  //   console.log('before subspodcasts:', subsPodcasts);
-  //   let tempData = subsPodcasts;
-  //   for (let i = 0; i < subsPodcasts.length; i += 1) {
-  //     for (let k = 0; k < unsubscribed.length; k += 1) {
-  //       if (
-  //         unsubscribed[k].BroadCastID.toString() ===
-  //         subsPodcasts[i].BroadCastID.toString()
-  //       ) {
-  //         // contains unsubscribed podcast
-  //         tempData = tempData.filter((e) => {
-  //           if (
-  //             e.BroadCastID.toString() ===
-  //             subsPodcasts[i].BroadCastID.toString()
-  //           )
-  //             return false;
-  //           return true;
-  //         });
-  //         break;
-  //       }
-  //     }
-  //   }
-
-  //   console.log('after', tempData);
-
-  //   /**
-  //    * if subscribed contains element from unsubscribed, remove it
-  //    */
-  //   console.log('before 2:', subscribed);
-  //   let arr2 = subscribed;
-  //   for (let i = 0; i < subscribed.length; i += 1) {
-  //     for (let k = 0; k < unsubscribed.length; k += 1) {
-  //       if (
-  //         unsubscribed[k].BroadCastID.toString() ===
-  //         subscribed[i].BroadCastID.toString()
-  //       ) {
-  //         // contains unsubscribed podcast
-  //         arr2 = arr2.filter((e) => {
-  //           if (
-  //             e.BroadCastID.toString() === subscribed[i].BroadCastID.toString()
-  //           )
-  //             return false;
-  //           return true;
-  //         });
-  //         break;
-  //       }
-  //     }
-  //   }
-  //   console.log('after 2:', arr2);
-
-  //   console.log('end:', tempData, arr2, arr);
-
-  //   setSubscribed(arr2);
-  //   setUnsubscribed(arr);
-  //   setSubsPodcasts(tempData);
-  //   // setNewUpdate(!newUpdate);
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [unsubsRender]);
-
   useEffect(() => {
     /**
      * this will fetch podcasts according to the categories chosen by the user
@@ -401,6 +243,27 @@ export default function Podcast({ isByCatgory }: Props) {
      *
      */
     console.log('exectuing ittt', subsPodcasts, subscribed, unsubscribed);
+
+    let tempData = subsPodcasts;
+    for (let i = 0; i < subsPodcasts.length; i += 1) {
+      for (let k = 0; k < unsubscribed.length; k += 1) {
+        if (
+          unsubscribed[k].BroadCastID.toString() ===
+          subsPodcasts[i].BroadCastID.toString()
+        ) {
+          // contains unsubscribed podcast
+          tempData = tempData.filter((e) => {
+            if (
+              e.BroadCastID.toString() ===
+              subsPodcasts[i].BroadCastID.toString()
+            )
+              return false;
+            return true;
+          });
+          break;
+        }
+      }
+    }
 
     const util = new Utils(state, dispatch);
     async function setResponse() {
@@ -428,7 +291,7 @@ export default function Podcast({ isByCatgory }: Props) {
         const temp: ExtendedPodcast[] = [];
         for (let i = 0; i < data.list.length; i += 1) {
           let added = false;
-          subsPodcasts.every((podcast) => {
+          tempData.every((podcast) => {
             if (
               podcast.BroadCastID.toString() ===
               data.list[i].BroadCastID.toString()
@@ -551,7 +414,12 @@ export default function Podcast({ isByCatgory }: Props) {
                     if (podcast.isSubscribed) {
                       console.log('unsubscribe clicked');
                       setUnsubscribed([
-                        ...unsubscribed,
+                        ...unsubscribed.filter((pod) => {
+                          return (
+                            pod.BroadCastID.toString() !==
+                            podcast.BroadCastID.toString()
+                          );
+                        }),
                         {
                           ...podcast,
                           gettingDeleted: false,
@@ -560,7 +428,12 @@ export default function Podcast({ isByCatgory }: Props) {
                     } else {
                       console.log('subscribe clicked');
                       setSubscribed([
-                        ...subscribed,
+                        ...subscribed.filter((pod) => {
+                          return (
+                            pod.BroadCastID.toString() !==
+                            podcast.BroadCastID.toString()
+                          );
+                        }),
                         {
                           ...podcast,
                           gettingDeleted: false,
