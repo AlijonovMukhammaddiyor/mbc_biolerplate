@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import $ from 'jquery';
+import { useState } from 'react';
 import Data from '../../../../context/utils/data';
+import DeletePrompt from '../../MyMini/components/DeletePrompt';
 import { MessagesType, STATE } from '../../../../context/utils/types';
 import '../../../../styles/message/message.css';
 import iconClose from '../../../../assets/middle/message/mini-icon-close.svg';
@@ -27,8 +29,10 @@ export default function Message({
   readCookie,
   myMessOn,
 }: Props) {
-  console.log(myMessOn);
   const classMyMessOn = myMessOn ? 'my_mess_on' : '';
+  const [prompt, setPrompt] = useState(false);
+
+  console.log(isMyMessage(), myMessOn);
   return (
     <div
       className={
@@ -39,16 +43,21 @@ export default function Message({
           : `message__others `
       }
     >
+      {prompt && (
+        <DeletePrompt
+          deleteSelected={deleteSelected}
+          title="삭제하시겠습니까"
+        />
+      )}
       <div className="message">
-        {isMyMessage() ||
-          (myMessOn && (
-            <img
-              onClick={() => deleteMessage()}
-              src={myMessOn ? iconCloseDark : iconClose}
-              alt="삭제"
-              className="close__icon"
-            />
-          ))}
+        {isMyMessage() && (
+          <img
+            onClick={() => setPrompt(true)}
+            src={myMessOn ? iconCloseDark : iconClose}
+            alt="삭제"
+            className="close__icon"
+          />
+        )}
         <div className="message__arrow" />
         <p className="title">
           {message.UserNm} <span>{checkIfWrittenToday(message.RegDate)}</span>
@@ -68,6 +77,13 @@ export default function Message({
       }
     }
     return false;
+  }
+
+  function deleteSelected(confirm: boolean) {
+    if (confirm) {
+      deleteMessage();
+    }
+    setPrompt(false);
   }
 
   function deleteMessage() {

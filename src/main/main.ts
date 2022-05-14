@@ -18,10 +18,9 @@ let isQuitting = false;
 
 const gotTheLock = app.requestSingleInstanceLock();
 console.log(getWindow());
-if (getWindow()) {
+if (!gotTheLock) {
   // app.quit();
-  getWindow()?.show();
-  getWindow()?.focus();
+  app.quit();
 } else {
   app.on('second-instance', (event, commandLine, workingDirectory) => {
     // Someone tried to run a second instance, we should focus our window.
