@@ -22,6 +22,7 @@ const DEFAULT_STATE = {
       isLogInScreen: false,
       myMiniOpen: false,
       refreshLikedEpisodes: false,
+      refreshLikedSongs: false,
       settingsOpen: false,
       isMinimized: false,
       guests: {

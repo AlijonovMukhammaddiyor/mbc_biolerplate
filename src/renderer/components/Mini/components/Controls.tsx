@@ -22,15 +22,9 @@ export default function Controls() {
   return (
     <div className="mini__controls__container">
       <div className="left">
-        <PlayPause
-          dispatch={dispatch}
-          pause={pause}
-          setPause={setPause}
-          state={state}
-          isMini
-        />
+        <PlayPause dispatch={dispatch} state={state} isMini />
         <AudioInfo util={utils} />
-        <Audio getDuration={() => {}} setPause={setPause} />
+        <Audio getDuration={() => {}} />
       </div>
       <div className="right">
         <Volume

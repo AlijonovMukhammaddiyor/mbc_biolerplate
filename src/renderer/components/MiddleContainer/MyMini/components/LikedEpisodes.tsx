@@ -217,6 +217,7 @@ export default function RecentEpisodes() {
         'LikedEpisodes',
         JSON.stringify({ list: temp })
       );
+      dispatch({ type: 'REFRESH_LIKED_EPISODES' });
       setDeleting([]);
     }
     setPrompt(false);

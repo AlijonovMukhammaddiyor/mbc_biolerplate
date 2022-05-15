@@ -64,7 +64,7 @@ export default function RecentPodcasts() {
               <div className="info">
                 <p className="program__name">{podcast.ProgramTitle}</p>
                 <p className="episode__title">{podcast.ContentTitle}</p>
-                <p className="date">{podcast.BroadDate}</p>
+                <p className="date">{podcast.BroadDate.slice(0, 10)}</p>
               </div>
             </div>
           );

@@ -4,12 +4,15 @@
   padding: 20px 64px 8px;
   width: 100%;
   flex-basis: 58px !important;
-  @include flex($just: space-between);
-  min-height: 58px;
+  // @include flex($just: space-between);
+  height: 58px;
   border-radius: $player_extra_div_height $player_extra_div_height 0 0;
   margin-bottom: 8px;
 
   .left {
+    position: absolute;
+    left: 60px;
+    top: 20px;
     button {
       border: none;
       background-color: transparent;
@@ -43,6 +46,9 @@
   }
 
   .right {
+    position: absolute;
+    right: 80px;
+    top: 20px;
     button {
       border: none;
       background-color: transparent;

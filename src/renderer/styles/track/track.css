@@ -62,7 +62,6 @@ svg {
       -ms-flex-align: center;
           align-items: center;
   gap: 15px;
-  overflow: hidden;
 }
 
 .track__container .order_number {
@@ -98,7 +97,7 @@ svg {
       -ms-flex-align: center;
           align-items: center;
   gap: 20px;
-  overflow: hidden;
+  position: relative;
 }
 
 .track__container .main .left {
@@ -117,7 +116,6 @@ svg {
           align-items: center;
   gap: 10px;
   height: 100%;
-  overflow: hidden;
   -ms-flex-preferred-size: calc(100% - 70px);
       flex-basis: calc(100% - 70px);
 }
@@ -149,7 +147,6 @@ svg {
       -ms-flex-align: start;
           align-items: flex-start;
   gap: 2px;
-  overflow: hidden;
 }
 
 .track__container .main .left .names .title {

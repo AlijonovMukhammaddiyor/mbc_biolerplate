@@ -1,33 +1,33 @@
-@import "../../general//general";
+@import '../../general//general';
 
 .channel__button {
-	.channel__btn {
-		background-color: transparent;
-		border: none;
-		cursor: pointer;
-		width: $channel_btn_width;
-		padding: 4px 13px;
-		border-radius: 1rem;
-		@include font($weight: $light, $color: $channel_button_font_color);
-		@include animation($time: 0.3s, $type: ease);
-		position: relative;
-		z-index: 100;
+  .channel__btn {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    width: $channel_btn_width;
+    padding: 4px 13px;
+    border-radius: 1rem;
+    @include font($weight: $light, $color: $channel_button_font_color);
+    position: relative;
+    z-index: 100;
 
-		&:hover {
-			background-color: rgb(173, 133, 238);
-		}
-	}
+    &:hover {
+      background-color: rgb(173, 133, 238);
+      @include animation($time: 0.3s, $type: ease);
+    }
+  }
 
-	#current__channel {
-		background-color: $main_color;
-		@include font();
-	}
-	.podcast__in {
-		color: $main_color;
-	}
+  #current__channel {
+    background-color: $main_color;
+    @include font();
+  }
+  .podcast__in {
+    color: $main_color;
+  }
 
-	.podcast__in#current__channel {
-		background-color: $main_color;
-		color: white;
-	}
+  .podcast__in#current__channel {
+    background-color: $main_color;
+    color: white;
+  }
 }

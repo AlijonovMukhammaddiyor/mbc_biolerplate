@@ -159,6 +159,17 @@ const Reducer = (state: STATE, action: any): STATE => {
           },
         },
       };
+    case 'REFRESH_LIKED_SONGS':
+      return {
+        ...state,
+        main_state: {
+          ...state.main_state,
+          general: {
+            ...state.main_state.general,
+            refreshLikedSongs: !state.main_state.general.refreshLikedSongs,
+          },
+        },
+      };
     case 'OPEN_MY_MINI':
       return {
         ...state,

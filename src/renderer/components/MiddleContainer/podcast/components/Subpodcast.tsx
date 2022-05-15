@@ -1,5 +1,6 @@
-import { useContext, useState, useEffect } from 'react';
+import { useContext, useState, useEffect, useRef } from 'react';
 import $ from 'jquery';
+import ToolTip from 'renderer/components/Utils/ToolTip';
 import Data from '../../../../context/utils/data';
 import iconLike from '../../../../assets/player/podcast/podcast-icon-list-like-off.svg';
 import iconLikeOn from '../../../../assets/player/podcast/podcast-icon-like-on_footer.svg';
@@ -26,6 +27,8 @@ export default function EachSubpodcast({
   const { state, dispatch } = useContext(Context);
   const [mouseOver, setMouseOver] = useState<string | null>(null);
   const [liked, setLiked] = useState(false);
+  const [hover, setHover] = useState(false);
+  const titleRef = useRef() as React.RefObject<HTMLParagraphElement>;
 
   useEffect(() => {
     const inList = isInList(subpodcast);
@@ -87,6 +90,14 @@ export default function EachSubpodcast({
             className={
               mouseOver === subpodcast.EncloserURL ? 'title hover' : 'title'
             }
+            onMouseOver={() => {
+              setHover(true);
+            }}
+            onMouseLeave={() => {
+              setHover(false);
+            }}
+            onFocus={() => {}}
+            ref={titleRef}
           >
             {subpodcast.ContentTitle}
           </p>
@@ -97,6 +108,10 @@ export default function EachSubpodcast({
           >
             {subpodcast.BroadDate || subpodcast.DatePub || subpodcast.PubDate}
           </p>
+          <ToolTip
+            visible={hover && shouldDisplay()}
+            text={subpodcast.ContentTitle}
+          />
         </div>
         <img
           onClick={() => toggleLike(subpodcast as ListenedSubpodcast)}
@@ -166,6 +181,13 @@ export default function EachSubpodcast({
         },
       });
     }
+  }
+
+  function shouldDisplay() {
+    if (titleRef.current) {
+      return titleRef.current.offsetHeight < titleRef.current.scrollHeight;
+    }
+    return false;
   }
 
   function isInList(sub: ListenedSubpodcast | null) {

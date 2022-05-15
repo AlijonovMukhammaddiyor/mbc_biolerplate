@@ -89,6 +89,7 @@ svg {
 }
 
 .subpodcasts__container .podcast {
+  width: 100%;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -114,7 +115,12 @@ svg {
      object-fit: contain;
 }
 
+.subpodcasts__container .podcast .info {
+  width: 260px;
+}
+
 .subpodcasts__container .podcast .info .contents {
+  overflow: hidden;
   width: 100%;
 }
 
@@ -125,10 +131,9 @@ svg {
   font-style: normal;
   letter-spacing: -0.32px;
   text-align: left;
-  max-width: 250px;
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
+  width: 100%;
+  max-width: 100%;
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   font-family: "MBCNEW";
@@ -143,10 +148,9 @@ svg {
   line-height: 1.6;
   letter-spacing: -0.24px;
   text-align: left;
-  max-width: 250px;
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
+  width: 100%;
+  max-width: 100%;
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   font-family: "MBCNEW";
@@ -399,7 +403,6 @@ svg {
   position: relative;
   overflow-y: scroll;
   padding: 0 22px;
-  overflow-x: hidden;
 }
 
 .subpodcasts__container .subpodcasts .no__subpodcast {
@@ -440,6 +443,7 @@ svg {
 }
 
 .subpodcasts__container .subpodcasts .subpodcast .contents {
+  position: relative;
   -ms-flex-preferred-size: calc(100% - 45px);
       flex-basis: calc(100% - 45px);
   display: -webkit-box;
@@ -460,16 +464,17 @@ svg {
 }
 
 .subpodcasts__container .subpodcasts .subpodcast .contents .subpodcast__info .title {
-  display: -webkit-box;
-  max-width: 100%;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
+  width: 267px;
+  max-width: 267px;
   overflow: hidden;
   font-stretch: normal;
   font-style: normal;
   line-height: 1.29;
   letter-spacing: -0.56px;
   text-align: left;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
   margin-bottom: 7px;
   font-family: "MBCNEW";
   font-size: 13px;

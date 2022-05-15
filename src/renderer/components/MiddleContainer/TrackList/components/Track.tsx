@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import $ from 'jquery';
-import jsonp from 'jsonp';
+import ToolTip from '../../../Utils/ToolTip';
 import '../../../../styles/track/track.css';
-import Data from 'renderer/context/utils/data';
+import Data from '../../../../context/utils/data';
 import { STATE, TrackType } from '../../../../context/utils/types';
 import iconLikeOn from '../../../../assets/middle/icon-song-like-on_heart.svg';
 import iconLikeOff from '../../../../assets/middle/icon-song-like-off_heart.svg';
@@ -17,6 +17,18 @@ type Props = {
 
 export default function Track({ track, state }: Props) {
   const [liked, setLiked] = useState(false);
+  const titleRef = useRef() as React.RefObject<HTMLParagraphElement>;
+  const [hover, setHover] = useState(false);
+
+  useEffect(() => {
+    const inList = isInList(track);
+    if (inList) {
+      setLiked(true);
+    } else {
+      setLiked(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.main_state.general.refreshLikedSongs]);
 
   return (
     <div className="track__container">
@@ -27,12 +39,27 @@ export default function Track({ track, state }: Props) {
           <p>{track.TR_IDX}</p>
         )}
       </div>
-      <div className="main">
+      <div
+        onMouseOver={() => {
+          setHover(true);
+        }}
+        onMouseLeave={() => {
+          setHover(false);
+        }}
+        onFocus={() => {}}
+        className="main"
+      >
         <div className="left">
           <img src={track.AlbumImageUrl} alt="" />
           <div className={isPlaying() ? 'names playing__track' : 'names'}>
-            <p className="title">{track.TrackTitle}</p>
+            <p ref={titleRef} className="title">
+              {track.TrackTitle}
+            </p>
             <p className="subtitle">{track.ArtistName}</p>
+            <ToolTip
+              visible={hover && shouldDisplay()}
+              text={track.TrackTitle}
+            />
           </div>
         </div>
         <div className="icons">
@@ -91,6 +118,13 @@ export default function Track({ track, state }: Props) {
         JSON.stringify({ list: parsedEpisodes })
       );
     }
+  }
+
+  function shouldDisplay() {
+    if (titleRef.current) {
+      return titleRef.current.offsetHeight < titleRef.current.scrollHeight;
+    }
+    return false;
   }
 
   function callApi() {

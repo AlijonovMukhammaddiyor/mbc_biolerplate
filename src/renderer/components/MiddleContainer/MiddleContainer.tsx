@@ -66,15 +66,18 @@ export default function MiddleContainer() {
             <img
               id="close-btn"
               src={iconClose}
-              onClick={() =>
+              onClick={() => {
                 changeAppState({
                   close: true,
                   hide: false,
                   minimize: false,
                   maximize: false,
                   noMessage: !state.main_state.mini.isMessageOpen,
-                })
-              }
+                });
+
+                dispatch({ type: 'PAUSE_SET_AUDIO', pause: true });
+                dispatch({ type: 'PAUSE_SET_VIDEO', vodPlay: false });
+              }}
               alt=""
             />
           </div>

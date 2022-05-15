@@ -5,7 +5,7 @@ import volumeChangeIcon from '../../../../assets/player/top/p-i-sound.svg';
 import '../../../../styles/volume/volume.css';
 import volumeIconPod from '../../../../assets/player/top/p-i-sound-default-white.svg';
 import volumeIconMutedPod from '../../../../assets/player/top/p-i-sound-mute-white.svg';
-import volumeChangeIconPod from '../../../../assets/player/top/p-i-sound-white.svg';
+import volumeChangeIconPod from '../../../../assets/player/top/p-i-sound-v.svg';
 import volumeIconMini from '../../../../assets/mini/icon-volume-on.svg';
 import mutedIconMini from '../../../../assets/mini/icon-sound-off.svg';
 import volumeChangeIconMini from '../../../../assets/mini/icon-volume-change.svg';
@@ -94,7 +94,7 @@ export default function Volume({
   }
 
   function handleMouseLeave() {
-    const timer = window.setTimeout(() => setChangeVol(false), 1000);
+    const timer = window.setTimeout(() => setChangeVol(false), 800);
     setDelayHandler(timer);
   }
 }

@@ -648,9 +648,12 @@ export default class Utils {
     };
 
     function isEllipsisActive(e: RefObject<HTMLParagraphElement>): number {
+      // console.log(
+      //   e.current?.innerText,
+      //   e.current?.scrollWidth,
+      //   e.current?.offsetWidth
+      // );
       if (e.current) {
-        // console.log(e.current);
-
         return e.current.scrollWidth / e.current.offsetWidth;
       }
       return 0;
@@ -672,9 +675,11 @@ export default class Utils {
       ref.current!.style.animation = css.animation;
       ref.current!.style.overflow = css.overflow;
     }
+
     const ratio = isEllipsisActive(textRef);
-    if (ratio > 1) {
-      textRef.current!.onmouseover = (e) => {
+    if (ratio > 1 && textRef.current) {
+      textRef.current.onmouseover = (e) => {
+        // console.log('mouse over');
         if (textRef.current) {
           helper(
             textRef,
@@ -693,7 +698,9 @@ export default class Utils {
         // }
       };
     } else {
-      textRef.current!.onmouseover = (e) => {};
+      textRef.current!.onmouseover = (e) => {
+        // console.log('mouse');
+      };
       textRef.current!.onmouseleave = (e) => {};
     }
   };

@@ -284,6 +284,7 @@ export type STATE = {
       myMiniOpen: boolean;
       settingsOpen: boolean;
       refreshLikedEpisodes: boolean;
+      refreshLikedSongs: boolean;
       guests: {
         [key in Channels]: Guest | null;
       };

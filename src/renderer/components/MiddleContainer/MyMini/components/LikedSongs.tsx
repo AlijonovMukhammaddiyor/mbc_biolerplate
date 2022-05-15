@@ -12,7 +12,7 @@ import iconSongOff from '../../../../assets/middle/icon-song-off.svg';
 import DeletePrompt from './DeletePrompt';
 
 export default function RecentEpisodes() {
-  const { state } = useContext(Context);
+  const { state, dispatch } = useContext(Context);
   const [songs, setSongs] = useState<TrackType[]>([]);
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
   const [deleting, setDeleting] = useState<number[]>([]);
@@ -195,6 +195,7 @@ export default function RecentEpisodes() {
 
       window.localStorage.setItem('LikedSongs', JSON.stringify({ list: temp }));
       setDeleting([]);
+      dispatch({ type: 'REFRESH_LIKED_SONGS' });
     }
     setPrompt(false);
     setIsDeleting(false);

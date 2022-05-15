@@ -48,6 +48,8 @@ export default function Subpodcasts() {
     state.main_state.podcast.currentPodcast?.isSubscribed ? 'subs' : 'unsubs'
   );
   const [update, setUpdate] = useState(false);
+  const titleRef = useRef() as React.RefObject<HTMLParagraphElement>;
+  const subtitleRef = useRef() as React.RefObject<HTMLParagraphElement>;
 
   useEffect(() => {
     // console.log("useEffect subpodcasts");
@@ -83,6 +85,18 @@ export default function Subpodcasts() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchCurCount]);
 
+  useEffect(() => {
+    utils.animateText(titleRef);
+    utils.animateText(subtitleRef);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    titleRef.current?.innerText,
+    subtitleRef.current?.innerText,
+    state.main_state.podcast.PodcastIn.isIn,
+    titleRef.current,
+    subtitleRef.current,
+  ]);
+
   // console.log(subpodcasts);
 
   return (
@@ -115,11 +129,11 @@ export default function Subpodcasts() {
         />
         <div className="info">
           <div className="contents">
-            <p className="title">
+            <p className="title" ref={titleRef}>
               {state.main_state.podcast.currentPodcast?.Title ||
                 state.main_state.podcast.currentPodcast?.ProgramTitle}
             </p>
-            <p className="subtitle">
+            <p className="subtitle" ref={subtitleRef}>
               {state.main_state.podcast.currentPodcast?.SubTitle}
             </p>
           </div>

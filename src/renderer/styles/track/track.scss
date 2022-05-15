@@ -8,7 +8,7 @@
   min-width: 100%;
   padding: 0 25px !important;
   @include flex($just: flex-start, $gap: 15px);
-  overflow: hidden;
+  // overflow: hidden;
 
   .order_number {
     @include font($color: #484848, $size: 12px, $weight: $light);
@@ -26,12 +26,13 @@
     width: calc(100%);
     max-width: calc(100%);
     @include flex($just: space-between, $gap: 20px);
-    overflow: hidden;
+    // overflow: hidden;
+    position: relative;
 
     .left {
       @include flex($just: flex-start, $gap: 10px);
       height: 100%;
-      overflow: hidden;
+      // overflow: hidden;
       flex-basis: calc(100% - 70px);
 
       img {
@@ -44,13 +45,14 @@
         height: 100%;
         flex-basis: calc(100% - 60px);
         width: calc(100% - 60px);
+        // position: relative;
         @include flex(
           $dir: column,
           $align: flex-start,
           $just: center,
           $gap: 2px
         );
-        overflow: hidden;
+        // overflow: hidden;
 
         .title {
           max-width: 100%;

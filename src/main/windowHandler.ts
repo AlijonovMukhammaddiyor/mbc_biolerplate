@@ -169,7 +169,11 @@ export const createWindow = async () => {
   let visible = false;
 
   tray.on('click', () => {
-    console.log(mainWindow?.isVisible());
+    mainWindow?.maximize();
+    mainWindow?.setAlwaysOnTop(true);
+  });
+
+  tray.on('right-click', () => {
     const obj = !mainWindow?.isVisible()
       ? {
           label: 'MBC Radio 보이기',

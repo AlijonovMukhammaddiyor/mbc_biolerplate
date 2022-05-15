@@ -1,15 +1,26 @@
 @import '../general/general';
 
 .volume__container {
-  @include flex($just: flex-start, $gap: 3px, $align: flex-start);
+  // @include flex($just: flex-start, $gap: 1px, $align: flex-start);
   position: relative;
-  height: 18px;
-  width: 23px;
+  height: 20px;
+  width: 24px;
+  // overflow: hidden;
 
   img {
     cursor: pointer;
-    width: 23px;
-    height: 18px;
+    width: 24.8px;
+    height: 20px;
+    object-fit: contain;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    transform-origin: 50% 50%;
+  }
+
+  .volume__changing {
+    height: 20px;
+    width: 15px;
     object-fit: contain;
   }
 
@@ -17,7 +28,7 @@
     cursor: pointer;
     overflow: hidden;
     bottom: 50%;
-    right: -90%;
+    right: -65%;
     position: absolute;
     transform: rotate(-90deg);
     width: 37px;
@@ -26,6 +37,7 @@
     -webkit-appearance: none;
     background-color: hsl(0, 0%, 80%);
     display: none;
+    @include animation;
 
     &::-webkit-slider-runnable-track {
       height: 6px;
@@ -84,7 +96,8 @@
 }
 
 .change {
-  transform: translateX(-4.6px);
+  // transform: translateX(-4.6px);
+  // height: 37px;
 
   input[type='range'] {
     display: block;
@@ -92,5 +105,5 @@
 }
 
 .change.podcast_in {
-  transform: translateX(-4.5px);
+  // transform: translateX(-4.5px);
 }

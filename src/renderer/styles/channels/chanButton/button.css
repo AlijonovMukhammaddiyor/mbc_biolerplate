@@ -52,14 +52,14 @@ svg {
   font-size: 14px;
   color: #fff;
   font-weight: 300;
-  -webkit-transition: all 0.3s ease;
-  transition: all 0.3s ease;
   position: relative;
   z-index: 100;
 }
 
 .channel__button .channel__btn:hover {
   background-color: #ad85ee;
+  -webkit-transition: all 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .channel__button #current__channel {
