@@ -12,24 +12,27 @@ export default function SubscribedPodcasts() {
   useEffect(() => {
     const getSubsPodcasts = async () => {
       if (state.user.cookieAvailable) {
-        const rawResponse = await fetch(
-          `${Data.urls.subscribedProgramLIstApiPC}?cookieinfo=${readCookie(
-            'IMBCSession'
-          )}`,
-          {
-            method: 'POST',
-            headers: {
-              Accept: 'application/json',
-              'Content-Type': 'application/json',
-            },
+        try {
+          const rawResponse = await fetch(
+            `${Data.urls.subscribedProgramLIstApiPC}?cookieinfo=${readCookie(
+              'IMBCSession'
+            )}`,
+            {
+              method: 'POST',
+              headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+              },
+            }
+          );
+          if (!rawResponse.ok) {
+            throw new Error('network error');
           }
-        );
-
-        const content = await rawResponse.json();
-
-        if (content.length > 0) {
-          setPodcasts(content);
-        }
+          const content = await rawResponse.json();
+          if (content.length > 0) {
+            setPodcasts(content);
+          }
+        } catch (err) {}
       }
     };
     getSubsPodcasts();
