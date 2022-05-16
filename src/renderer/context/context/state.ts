@@ -110,6 +110,24 @@ const DEFAULT_STATE = {
 const localStorageData: string | null = localStorage.getItem('state');
 const parsedState = localStorageData ? JSON.parse(localStorageData) : null;
 
+if (parsedState?.main_state.podcast) {
+  if (!parsedState.main_state.podcast.search)
+    parsedState.main_state.podcast.search = {
+      category: 2,
+      sortBy: 'Imp',
+      sort: 'DESC',
+      channel: 6,
+      state: 2,
+      sorts: ['인기순', '방송시간순', '가나다순'],
+      dropChannels: ['표준FM', 'FM4U', '오리지널', '코너 다시듣기', '기타'],
+      dropStates: ['방송중', '방송종료'],
+      categories: ['음악/예능/오락', '시사/교양', '드라마', '기타'],
+    };
+
+  parsedState.main_state.podcast.isPodcastIn = false;
+  parsedState.main_state.podcast.currentPodcast = null;
+}
+
 const INITIAL_STATE: STATE = parsedState
   ? {
       main_state: parsedState.main_state,
