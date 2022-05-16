@@ -108,7 +108,7 @@ export const createWindow = async () => {
     },
   });
 
-  if (mainWindow) mainWindow.webContents.openDevTools();
+  // if (mainWindow) mainWindow.webContents.openDevTools();
 
   mainWindow.webContents.on('did-finish-load', () => {
     if (mainWindow) {
