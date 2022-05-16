@@ -1,10 +1,10 @@
-import { ipcMain, app, Notification, session } from 'electron';
+import { ipcMain, app, Notification, session, dialog } from 'electron';
 import path from 'path';
 import Store from 'electron-store';
 
 import { getWindow } from './windowHandler';
 
-import { openAuthWindow } from './authWindow';
+import { openAuthWindow, handleLoginResult } from './authWindow';
 
 const mainWindow = getWindow();
 const store = new Store();
@@ -192,7 +192,29 @@ ipcMain.on('set-cookie', async (_, args) => {
 });
 
 ipcMain.on('sns-login', async (event, { snsType }) => {
-  event.sender.send('sns-login-success', {
-    data: await openAuthWindow(snsType),
-  });
+  const data = (await openAuthWindow(snsType)) as {
+    [key: string]: string | object;
+  };
+
+  if (data.State && data.State === 'S') {
+    event.sender.send('sns-login-success', {
+      data,
+    });
+  } else {
+    const ButtonList = data.ButtonList as Array<{
+      [key: string]: string;
+    }> | null;
+    const ReturnMsg = data.ReturnMsg as string;
+
+    if (ButtonList != null) {
+      const confirmResult = dialog.showMessageBoxSync({
+        type: 'question',
+        buttons: ButtonList.map(({ Title }) => Title),
+        title: 'Log In',
+        message: ReturnMsg,
+      });
+
+      handleLoginResult(ButtonList[confirmResult]);
+    }
+  }
 });

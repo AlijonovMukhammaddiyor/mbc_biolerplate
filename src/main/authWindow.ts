@@ -42,9 +42,8 @@ const openAuthWindow = async (snsType: string) => {
           const contents = await authWindow?.webContents.executeJavaScript(
             'document.querySelector("body").innerHTML'
           );
-
-          resolve(JSON.parse(contents));
           authWindow?.close();
+          setTimeout(() => resolve(JSON.parse(contents)), 300);
         }
       });
       return;
@@ -54,4 +53,20 @@ const openAuthWindow = async (snsType: string) => {
   });
 };
 
-export { openAuthWindow };
+const handleLoginResult = async (loginAction: { [key: string]: string }) => {
+  if (loginAction.ActionURL) {
+    let socialWindow: BrowserWindow | null = new BrowserWindow({
+      width: 800,
+      height: 700,
+      show: false,
+    });
+    socialWindow.removeMenu();
+    socialWindow.loadURL(loginAction.ActionURL);
+    socialWindow.show();
+    socialWindow.on('closed', () => {
+      socialWindow = null;
+    });
+  }
+};
+
+export { openAuthWindow, handleLoginResult };
