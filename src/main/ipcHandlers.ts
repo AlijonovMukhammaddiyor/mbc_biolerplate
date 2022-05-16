@@ -4,6 +4,8 @@ import Store from 'electron-store';
 
 import { getWindow } from './windowHandler';
 
+import { openAuthWindow } from './authWindow';
+
 const mainWindow = getWindow();
 const store = new Store();
 
@@ -131,7 +133,7 @@ ipcMain.on('check-user', async (event, args) => {
             return;
           }
         }
-        event.sender.send('take-cooki', {
+        event.sender.send('take-cookie', {
           name: null,
           cookie: cookies,
         });
@@ -187,4 +189,10 @@ ipcMain.on('set-cookie', async (_, args) => {
         .then(() => {})
         .catch((err: Error) => console.log(err));
   }
+});
+
+ipcMain.on('sns-login', async (event, { snsType }) => {
+  event.sender.send('sns-login-success', {
+    data: await openAuthWindow(snsType),
+  });
 });

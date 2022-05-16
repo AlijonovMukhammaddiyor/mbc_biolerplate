@@ -22,7 +22,25 @@ export default function Login() {
   const utils = new Utils(state, dispatch);
   const miniClass = state.main_state.mini.isMini ? 'mini' : '';
 
+  const sendSNSLoginToMain = (snsType: string) => {
+    window.electron.ipcRenderer.send('sns-login', { snsType });
+  };
+
+  const getSNSUserCookie = async ({ data }: any) => {
+    if (data.State && data.State[0] !== 'E') {
+      dispatch({ type: 'LOGIN', mainUser: data });
+      window.electron.ipcRenderer.send('set-cookie', {
+        cookie: data.UserInfo.IMBCCookie,
+        domain: 'https://miniapi.imbc.com',
+      });
+      dispatch({ type: 'HIDE_LOGIN_SCREEN' });
+    }
+  };
+
   useEffect(() => {
+    window.electron.ipcRenderer.receive('sns-login-success', (_, args) =>
+      getSNSUserCookie(args)
+    );
     if (
       state.main_state.login.autoLogin &&
       state.main_state.login.id !== '' &&
@@ -34,7 +52,12 @@ export default function Login() {
         true
       );
     }
-    return () => {};
+    return () => {
+      window.electron.ipcRenderer.removeListener(
+        'sns-login-success',
+        getSNSUserCookie
+      );
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -138,18 +161,36 @@ export default function Login() {
         </a>
       </div>
       <div className="others">
-        <div className="naver">
+        <button
+          type="button"
+          className="naver"
+          onClick={() => {
+            sendSNSLoginToMain('naver');
+          }}
+        >
           <img src={naver} alt="" />
           <p>네이버 계정으로 로그인</p>
-        </div>
-        <div className="kakao">
+        </button>
+        <button
+          type="button"
+          className="kakao"
+          onClick={() => {
+            sendSNSLoginToMain('kakao');
+          }}
+        >
           <img src={kakao} alt="" />
           <p>카카오톡 계정으로 로그인</p>
-        </div>
-        <div className="facebook">
+        </button>
+        <button
+          className="facebook"
+          onClick={() => {
+            sendSNSLoginToMain('facebook');
+          }}
+          type="button"
+        >
           <img src={facebook} alt="" />
           <p>페이스북 계정으로 로그인</p>
-        </div>
+        </button>
       </div>
     </div>
   );
