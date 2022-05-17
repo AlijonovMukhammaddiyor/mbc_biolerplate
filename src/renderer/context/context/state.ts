@@ -128,6 +128,16 @@ if (parsedState?.main_state.podcast) {
   parsedState.main_state.podcast.currentPodcast = null;
 }
 
+if (!parsedState?.main_state?.login?.autoLogin) {
+  parsedState.main_state.login = {
+    IDremember: false,
+    autoLogin: false,
+    id: null,
+    password: null,
+  };
+  window.electron.ipcRenderer.send('logout', {});
+}
+
 const INITIAL_STATE: STATE = parsedState
   ? {
       main_state: parsedState.main_state,
