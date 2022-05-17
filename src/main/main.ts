@@ -12,23 +12,19 @@
  */
 import { app, dialog, Notification } from 'electron';
 
-import { createWindow, getWindow } from './windowHandler';
+import { createWindow, getWindow, openWindow } from './windowHandler';
 
 let isQuitting = false;
 
 const gotTheLock = app.requestSingleInstanceLock();
-console.log(getWindow());
 if (!gotTheLock) {
-  // app.quit();
   app.quit();
 } else {
   app.on('second-instance', (event, commandLine, workingDirectory) => {
     // Someone tried to run a second instance, we should focus our window.
-    if (getWindow()) {
-      if (getWindow()?.isMinimized()) getWindow()?.restore();
-      getWindow()?.focus();
-    }
+    openWindow();
   });
+
   if (process.env.NODE_ENV === 'production') {
     const sourceMapSupport = require('source-map-support');
     sourceMapSupport.install();

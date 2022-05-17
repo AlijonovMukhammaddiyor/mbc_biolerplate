@@ -75,6 +75,14 @@ const installExtensions = async () => {
 const isDevelopment =
   process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true';
 
+export const openWindow = () => {
+  if (mainWindow != null) {
+    if (mainWindow.isMinimized()) mainWindow.restore();
+    if (!mainWindow.isVisible()) mainWindow.show();
+    mainWindow.focus();
+  }
+};
+
 export const createWindow = async () => {
   if (isDevelopment) {
     await installExtensions();
