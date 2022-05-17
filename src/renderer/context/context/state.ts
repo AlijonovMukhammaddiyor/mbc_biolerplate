@@ -39,8 +39,8 @@ const DEFAULT_STATE = {
     login: {
       IDremember: false,
       autoLogin: false,
-      id: '',
-      password: '',
+      id: null,
+      password: null,
     },
     settings: {
       autostart: false,

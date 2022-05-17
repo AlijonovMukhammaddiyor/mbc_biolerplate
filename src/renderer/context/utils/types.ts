@@ -296,8 +296,8 @@ export type STATE = {
     login: {
       IDremember: boolean;
       autoLogin: boolean;
-      id: string;
-      password: string;
+      id: string | null;
+      password: string | null;
     };
     settings: { autostart: boolean; onTop: boolean; videoNotice: boolean };
     schedule: {

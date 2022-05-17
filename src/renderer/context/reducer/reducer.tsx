@@ -334,6 +334,15 @@ const Reducer = (state: STATE, action: any): STATE => {
     case 'LOGOUT':
       return {
         ...state,
+        main_state: {
+          ...state.main_state,
+          login: {
+            IDremember: false,
+            autoLogin: false,
+            password: null,
+            id: null,
+          },
+        },
         user: { cookieAvailable: false, mainUser: null },
       };
     case 'AUDIO_LIST_ON':
