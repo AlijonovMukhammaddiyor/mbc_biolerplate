@@ -116,8 +116,6 @@ export const createWindow = async () => {
     },
   });
 
-  // if (mainWindow) mainWindow.webContents.openDevTools();
-
   mainWindow.webContents.on('did-finish-load', () => {
     if (mainWindow) {
       mainWindow.webContents.send('login-again', {});
@@ -172,72 +170,28 @@ export const createWindow = async () => {
   // eslint-disable-next-line
   new AppUpdater();
 
-  let tray: Tray | null = null;
-  tray = new Tray(getAssetPath('icon_tray.png'));
-  let visible = false;
+  const tray = new Tray(getAssetPath('icon_tray.png'));
 
-  tray.on('click', () => {
-    mainWindow?.maximize();
+  tray.on('double-click', () => {
+    openWindow();
     mainWindow?.setAlwaysOnTop(true);
   });
 
-  tray.on('right-click', () => {
-    const obj = !mainWindow?.isVisible()
-      ? {
-          label: 'MBC Radio 보이기',
-          click() {
-            visible = !visible;
-            mainWindow?.show();
-            mainWindow?.focus();
-          },
-        }
-      : {
-          label: 'MBC Radio 숨기기',
-          click() {
-            if (process.platform === 'darwin') {
-              app.hide();
-            } else {
-              mainWindow?.hide();
-            }
-            visible = !visible;
-          },
-        };
-    const contextMenu = Menu.buildFromTemplate([
-      obj,
-      {
-        label: '종료',
-        click() {
-          app.quit();
-        },
-        accelerator: process.platform === 'darwin' ? 'Command+Q' : 'Ctrl+Q',
-      },
-    ]);
-    tray?.setToolTip('MBC Radio');
-    tray?.setContextMenu(contextMenu);
-  });
-
-  const obj = !mainWindow?.isVisible()
-    ? {
-        label: 'MBC Radio 보이기',
-        click() {
-          visible = !visible;
-          mainWindow?.show();
-          mainWindow?.focus();
-        },
-      }
-    : {
-        label: 'MBC Radio 숨기기',
-        click() {
+  const contextMenu = Menu.buildFromTemplate([
+    {
+      label: 'MBC Radio 보이기/숨기기',
+      click() {
+        if (mainWindow?.isVisible() && !mainWindow.isMinimized()) {
           if (process.platform === 'darwin') {
             app.hide();
           } else {
             mainWindow?.hide();
           }
-          visible = !visible;
-        },
-      };
-  const contextMenu = Menu.buildFromTemplate([
-    obj,
+        } else {
+          openWindow();
+        }
+      },
+    },
     {
       label: '종료',
       click() {
