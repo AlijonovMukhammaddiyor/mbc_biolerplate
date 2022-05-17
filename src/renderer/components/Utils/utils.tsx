@@ -390,71 +390,59 @@ export default class Utils {
     return '';
   };
 
-  logInOut = (
+  logInOut = async (
     username: string | null,
     password: string | null,
     isLogIn: boolean
   ) => {
     if (username) {
       const url = `${Data.urls.loginAPI}`;
-      console.log(username, password);
-      $.ajax({
-        url,
-        type: 'POST',
-        data: $.param({
+
+      const fetchResponse = await fetch(url, {
+        method: 'POST',
+        body: new URLSearchParams({
           UID: username,
-          PASSWORD: password,
-          Type: isLogIn ? 1 : 2, // login or logout
+          PASSWORD: password as string,
+          Type: `${isLogIn ? 1 : 2}`, // login or logout
           ReturnType: 'JSON',
           Agent: window.navigator.userAgent,
         }),
-        crossDomain: true,
-        xhrFields: {
-          withCredentials: true,
-        },
-        dataType: 'json',
-        contentType: 'application/x-www-form-urlencoded',
-        success: (data) => {
-          if (isLogIn)
-            if (data.State && data.State[0] !== 'E') {
-              console.log(data);
-              console.log(this.dispatch);
-              this.dispatch({ type: 'LOGIN', mainUser: data });
-              console.log('setting cookie', data.UserInfo.IMBCCookie, data);
-              window.electron.ipcRenderer.send('set-cookie', {
-                cookie: data.UserInfo.IMBCCookie,
-                domain: 'https://miniapi.imbc.com',
-              });
-              this.dispatch({ type: 'HIDE_LOGIN_SCREEN' });
-              if (
-                this.state.main_state.login.IDremember ||
-                this.state.main_state.login.autoLogin
-              )
-                this.dispatch({
-                  type: 'LOGIN_CREDENTIALS',
-                  id: username,
-                  password,
-                });
-
-              if (this.state.main_state.login.autoLogin) {
-                setTimeout(
-                  () => this.dispatch({ type: 'LOGIN', mainUser: data }),
-                  1000
-                );
-              }
-            } else {
-              window.electron.ipcRenderer.send('logout', {});
-              console.log('Could not get user data');
-            }
-          else {
-            this.dispatch({ type: 'LOGOUT' });
-          }
-        },
-        error: (err) => {
-          console.log('Error in login');
-          console.log(err);
-        },
       });
+
+      if (!fetchResponse.ok) throw new Error(await fetchResponse.text());
+
+      const data = await fetchResponse.json();
+
+      if (isLogIn) {
+        if (data.State && data.State === 'S') {
+          this.setUserInfo({ username, password, data });
+        }
+        return data;
+      }
+      this.dispatch({ type: 'LOGOUT' });
+    }
+    return null;
+  };
+
+  setUserInfo = ({ username, password, data }: { [key: string]: any }) => {
+    this.dispatch({ type: 'LOGIN', mainUser: data });
+    window.electron.ipcRenderer.send('set-cookie', {
+      cookie: data.UserInfo.IMBCCookie,
+      domain: 'https://miniapi.imbc.com',
+    });
+    this.dispatch({ type: 'HIDE_LOGIN_SCREEN' });
+    if (
+      this.state.main_state.login.IDremember ||
+      this.state.main_state.login.autoLogin
+    )
+      this.dispatch({
+        type: 'LOGIN_CREDENTIALS',
+        id: username,
+        password,
+      });
+
+    if (this.state.main_state.login.autoLogin) {
+      setTimeout(() => this.dispatch({ type: 'LOGIN', mainUser: data }), 1000);
     }
   };
 

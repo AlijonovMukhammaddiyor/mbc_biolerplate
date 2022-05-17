@@ -1,4 +1,4 @@
-import { ipcMain, app, Notification, session, dialog } from 'electron';
+import { ipcMain, app, Notification, session, dialog, shell } from 'electron';
 import path from 'path';
 import Store from 'electron-store';
 
@@ -216,5 +216,11 @@ ipcMain.on('sns-login', async (event, { snsType }) => {
 
       handleLoginResult(ButtonList[confirmResult]);
     }
+  }
+});
+
+ipcMain.on('redirect-to-action-url', (event, { ActionURL }) => {
+  if (ActionURL) {
+    shell.openExternal(ActionURL);
   }
 });

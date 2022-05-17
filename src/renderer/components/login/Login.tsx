@@ -9,6 +9,24 @@ import Utils from '../Utils/utils';
 import emptyCheck from '../../assets/middle/mymini/check-box-off.svg';
 import filledCheck from '../../assets/middle/mymini/check-box-on.svg';
 import { Context } from '../../context/context/context';
+import LoginAlert from './LoginAlert';
+
+type UserInfo = {
+  UserID: string;
+  UserName: string;
+  UNO: string;
+  IMBCCookie: string;
+};
+
+type LoginResult = {
+  ReturnMsg: string;
+  ButtonList: {
+    ActionURL: string;
+    ClickAction: string;
+    Title: string;
+  }[];
+  UserInfo: UserInfo | null;
+};
 
 export default function Login() {
   const { state, dispatch } = useContext(Context);
@@ -18,6 +36,7 @@ export default function Login() {
   const [password, setPassword] = useState<string | null>(
     state.main_state.login.IDremember ? state.main_state.login.password : null
   );
+  const [loginResult, setLoginResult] = useState<LoginResult | null>(null);
 
   const utils = new Utils(state, dispatch);
   const miniClass = state.main_state.mini.isMini ? 'mini' : '';
@@ -34,6 +53,17 @@ export default function Login() {
         domain: 'https://miniapi.imbc.com',
       });
       dispatch({ type: 'HIDE_LOGIN_SCREEN' });
+    }
+  };
+
+  const login = async () => {
+    try {
+      const result = await utils.logInOut(username, password, true);
+      if (result?.State !== 'S') {
+        setLoginResult(result);
+      }
+    } catch (err) {
+      console.error(err);
     }
   };
 
@@ -69,6 +99,19 @@ export default function Login() {
           : `login__container ${miniClass}`
       }
     >
+      {loginResult && (
+        <LoginAlert
+          loginResult={loginResult}
+          closeAlert={() => setLoginResult(null)}
+          onNextChangeSuccess={() =>
+            utils.setUserInfo({
+              username,
+              password,
+              data: loginResult,
+            })
+          }
+        />
+      )}
       <button
         type="button"
         onClick={() => {
@@ -99,10 +142,7 @@ export default function Login() {
           placeholder="비밀번호를 입력하세요"
           value={password || ''}
         />
-        <button
-          type="submit"
-          onClick={() => utils.logInOut(username, password, true)}
-        >
+        <button type="submit" onClick={login}>
           로그인
         </button>
         <div className="checks">
