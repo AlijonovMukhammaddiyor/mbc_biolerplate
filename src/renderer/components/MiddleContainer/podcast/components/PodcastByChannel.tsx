@@ -43,30 +43,28 @@ export default function Podcast({ isByCatgory }: Props) {
   useEffect(() => {
     async function getResponse() {
       if (state.user.cookieAvailable) {
-        const rawResponse = await fetch(
-          `${
-            Data.urls.subscribedProgramLIstApiPC
-          }?cookieinfo=${utils.readCookie('IMBCSession')}`,
-          {
-            method: 'POST',
-            headers: {
-              Accept: 'application/json',
-              'Content-Type': 'application/json',
-            },
-          }
-        );
+        try {
+          const rawResponse = await fetch(
+            `${
+              Data.urls.subscribedProgramLIstApiPC
+            }?cookieinfo=${utils.readCookie('IMBCSession')}`,
+            {
+              method: 'POST',
+              headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+              },
+            }
+          );
 
-        rawResponse
-          .json()
-          .then((content) => {
-            setSubsPodcasts(content);
-          })
-          .then((_) => {
-            // setNewUpdate(!newUpdate);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+          if (!rawResponse.ok) {
+            throw new Error('network error');
+          }
+
+          setSubsPodcasts(await rawResponse.json());
+        } catch (err) {
+          console.error(err);
+        }
       }
     }
 
