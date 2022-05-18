@@ -110,9 +110,15 @@ const DEFAULT_STATE = {
 const localStorageData: string | null = localStorage.getItem('state');
 const parsedState = localStorageData ? JSON.parse(localStorageData) : null;
 
-if (parsedState?.main_state.podcast) {
-  if (!parsedState.main_state.podcast.search)
-    parsedState.main_state.podcast.search = {
+const INITIAL_STATE: STATE = {
+  main_state: parsedState?.main_state || DEFAULT_STATE.main_state,
+  error: null,
+  user: parsedState?.user || DEFAULT_STATE.user,
+};
+
+if (INITIAL_STATE.main_state.podcast) {
+  if (!INITIAL_STATE.main_state.podcast.search)
+    INITIAL_STATE.main_state.podcast.search = {
       category: 2,
       sortBy: 'Imp',
       sort: 'DESC',
@@ -124,12 +130,12 @@ if (parsedState?.main_state.podcast) {
       categories: ['음악/예능/오락', '시사/교양', '드라마', '기타'],
     };
 
-  parsedState.main_state.podcast.isPodcastIn = false;
-  parsedState.main_state.podcast.currentPodcast = null;
+  INITIAL_STATE.main_state.podcast.PodcastIn = { isIn: false, channel: null };
+  INITIAL_STATE.main_state.podcast.currentPodcast = null;
 }
 
-if (!parsedState?.main_state?.login?.autoLogin) {
-  parsedState.main_state.login = {
+if (!INITIAL_STATE?.main_state?.login?.autoLogin) {
+  INITIAL_STATE.main_state.login = {
     IDremember: false,
     autoLogin: false,
     id: null,
@@ -137,13 +143,4 @@ if (!parsedState?.main_state?.login?.autoLogin) {
   };
   window.electron.ipcRenderer.send('logout', {});
 }
-
-const INITIAL_STATE: STATE = parsedState
-  ? {
-      main_state: parsedState.main_state,
-      error: null,
-      user: parsedState.user,
-    }
-  : DEFAULT_STATE;
-
 export default INITIAL_STATE;
