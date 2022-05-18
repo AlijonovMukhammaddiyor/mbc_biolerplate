@@ -144,7 +144,7 @@ export default function Subpodcasts() {
               onClick={() => {
                 dispatch({
                   type: 'PODCAST_SHARE_ON',
-                  url: state.main_state.podcast.currentPodcast?.Link,
+                  url: `https://m.imbc.com/radio/${state.main_state.podcast.currentPodcast?.BroadCastID}`,
                 });
               }}
             >
