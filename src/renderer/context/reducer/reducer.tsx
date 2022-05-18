@@ -648,6 +648,17 @@ const Reducer = (state: STATE, action: any): STATE => {
         error: null,
         user: state.user,
       };
+    case 'UPDATE_GUESTS':
+      return {
+        ...state,
+        main_state: {
+          ...state.main_state,
+          general: {
+            ...state.main_state.general,
+            guests: action.guests,
+          },
+        },
+      };
     default:
       return state;
   }
