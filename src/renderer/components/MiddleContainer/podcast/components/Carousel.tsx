@@ -45,10 +45,9 @@ export default function Carousel({ podcasts, isSubscribed }: Props) {
         <div className={`podcasts `} id="podcasts" ref={podcastsRef}>
           {podcasts.map((podcast) => {
             return (
-              <div>
+              <div key={podcast.BroadCastID}>
                 <button
                   type="button"
-                  key={podcast.BroadCastID + +new Date()}
                   className="podcast"
                   onClick={() => {
                     dispatch({
