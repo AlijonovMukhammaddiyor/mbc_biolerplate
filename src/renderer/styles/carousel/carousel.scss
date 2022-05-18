@@ -1,4 +1,4 @@
-@import '../general/general';
+@import '../general/general.scss';
 
 .podcasts__main {
   width: 100%;
@@ -10,13 +10,12 @@
   .podcasts {
     width: 100%;
     max-width: 338px;
-    @include flex($just: flex-start, $gap: 6px);
+    @include flex($just: flex-start, $gap: 6px, $align: start);
     overflow: hidden;
 
     .podcast {
       flex-shrink: 0;
       width: 80px;
-      height: 80px;
       @include animation();
       cursor: pointer;
 
@@ -26,6 +25,24 @@
         object-fit: contain;
         border-radius: 10px;
       }
+    }
+
+    .podcast-title {
+      width: 80px;
+      font-weight: 300;
+      max-width: 100%;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-family: 'MBCNEW';
+      font-size: 12px;
+      text-align: center;
+      line-height: 16px;
+      letter-spacing: -0.24px;
+      color: #333333;
+      text-overflow: ellipsis;
     }
 
     .blank {

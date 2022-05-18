@@ -5,11 +5,16 @@ import { RecommendedPodcast } from '../../../../context/utils/types';
 import '../../../../styles/carousel/carousel.css';
 import { Context } from '../../../../context/context/context';
 
-type Props = {
+interface Props {
   podcasts: RecommendedPodcast[];
+  isSubscribed?: boolean;
+}
+
+Carousel.defaultProps = {
+  isSubscribed: false,
 };
 
-export default function Carousel({ podcasts }: Props) {
+export default function Carousel({ podcasts, isSubscribed }: Props) {
   const { dispatch } = useContext(Context);
   const [unit, setUnit] = useState<number>(0);
   const STEP = 4;
@@ -39,20 +44,27 @@ export default function Carousel({ podcasts }: Props) {
         <div className={`podcasts `} id="podcasts">
           {podcasts.map((podcast) => {
             return (
-              <button
-                type="button"
-                key={podcast.BroadCastID}
-                className="podcast"
-                onClick={() => {
-                  dispatch({
-                    type: 'PODCAST_IN',
-                    payload: podcast,
-                    channel: 'home',
-                  });
-                }}
-              >
-                <img src={podcast.ItunesImageURL} alt="" />
-              </button>
+              <div>
+                <button
+                  type="button"
+                  key={podcast.BroadCastID + +new Date()}
+                  className="podcast"
+                  onClick={() => {
+                    dispatch({
+                      type: 'PODCAST_IN',
+                      payload: podcast,
+                      channel: 'home',
+                    });
+                  }}
+                >
+                  <img src={podcast.ItunesImageURL} alt="" />
+                </button>
+                {isSubscribed && (
+                  <p className="podcast-title" key={podcast.BroadCastID}>
+                    {podcast.Title}
+                  </p>
+                )}
+              </div>
             );
           })}
 

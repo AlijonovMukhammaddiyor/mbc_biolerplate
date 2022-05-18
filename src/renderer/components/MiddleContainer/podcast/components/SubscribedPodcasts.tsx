@@ -48,7 +48,7 @@ export default function SubscribedPodcasts() {
         <>
           {podcasts.length > 0 ? (
             <div className="podcasts__carousel">
-              <Carousel podcasts={podcasts} />
+              <Carousel podcasts={podcasts} isSubscribed />
             </div>
           ) : (
             <div className="no__podcasts">
