@@ -9,29 +9,11 @@ import { openAuthWindow, handleLoginResult } from './authWindow';
 const mainWindow = getWindow();
 const store = new Store();
 
-const appFolder = path.dirname(process.execPath);
-const updateExe = path.resolve(appFolder, '..', 'Update.exe');
-const exeName = path.basename(process.execPath);
-
 function launchAtStartup(start: boolean, hidden: boolean) {
-  if (process.platform === 'darwin') {
-    app.setLoginItemSettings({
-      openAtLogin: start,
-      openAsHidden: hidden,
-    });
-  } else {
-    app.setLoginItemSettings({
-      openAtLogin: start,
-      openAsHidden: hidden,
-      path: updateExe,
-      args: [
-        '--processStart',
-        `"${exeName}"`,
-        '--process-start-args',
-        `"--hidden"`,
-      ],
-    });
-  }
+  app.setLoginItemSettings({
+    openAtLogin: start,
+    openAsHidden: hidden,
+  });
 }
 
 ipcMain.on('app-quit', async (_, args) => {});
