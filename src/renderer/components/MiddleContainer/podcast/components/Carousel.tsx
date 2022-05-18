@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState, useContext, useRef } from 'react';
 import leftIconOff from '../../../../assets/player/podcast/sch-butt-before-off.svg';
 import rightIconOn from '../../../../assets/player/podcast/sch-butt-next-on.svg';
 import { RecommendedPodcast } from '../../../../context/utils/types';
@@ -20,6 +20,7 @@ export default function Carousel({ podcasts, isSubscribed }: Props) {
   const STEP = 4;
   const LENGTH = Math.ceil(podcasts.length / 4) * 4;
   const [arr, setArr] = useState<number[]>([]);
+  const podcastsRef = useRef(null);
 
   useEffect(() => {
     const temp = [];
@@ -41,7 +42,7 @@ export default function Carousel({ podcasts, isSubscribed }: Props) {
         >
           <img src={unit === 0 ? leftIconOff : rightIconOn} alt="" />
         </button>
-        <div className={`podcasts `} id="podcasts">
+        <div className={`podcasts `} id="podcasts" ref={podcastsRef}>
           {podcasts.map((podcast) => {
             return (
               <div>
@@ -94,8 +95,8 @@ export default function Carousel({ podcasts, isSubscribed }: Props) {
 
   function prev() {
     const newUnit = unit - STEP;
-    if (newUnit >= 0) {
-      const container = document.getElementById('podcasts') as HTMLDivElement;
+    if (newUnit >= 0 && podcastsRef.current) {
+      const container = podcastsRef.current as HTMLDivElement;
       container.scroll({
         left: newUnit * 80 + newUnit * 6,
         behavior: 'smooth',
@@ -106,8 +107,8 @@ export default function Carousel({ podcasts, isSubscribed }: Props) {
 
   function next() {
     const newUnit = unit + STEP;
-    if (newUnit <= podcasts.length) {
-      const container = document.getElementById('podcasts') as HTMLDivElement;
+    if (newUnit <= podcasts.length && podcastsRef.current) {
+      const container = podcastsRef.current as HTMLDivElement;
       container.scroll({
         left: newUnit * 80 + newUnit * 6,
         behavior: 'smooth',
