@@ -15,6 +15,7 @@ export default function TimeProgress({ state, util, dispatch }: Props) {
   const [progress, setProgress] = useState(0);
   const [playedTime, setPlayedTime] = useState(0);
   const [subpodcastDuration, setDuration] = useState(0);
+  const [bufferedTime, setBufferTime] = useState(0);
 
   const style = {
     '--val': progress,
@@ -79,6 +80,19 @@ export default function TimeProgress({ state, util, dispatch }: Props) {
   ]);
   // console.log(progress);
 
+  const onProgressClick = (event: any) => {
+    const timeProgress = document.querySelector(
+      '.subpodcast__range'
+    ) as HTMLDivElement;
+    const { left, width } = timeProgress.getBoundingClientRect();
+    const percent = (event.clientX - left) / width;
+
+    const audio = document.getElementById('audio') as HTMLAudioElement;
+    const { duration } = audio;
+
+    audio.currentTime = duration * percent;
+  };
+
   return (
     <div
       className={
@@ -95,7 +109,12 @@ export default function TimeProgress({ state, util, dispatch }: Props) {
         }
       >
         {state.main_state.podcast.subpodcast.isSubpodcastPlaying ? (
-          <div className="subpodcast__range">
+          // eslint-disable-next-line jsx-a11y/no-static-element-interactions
+          <div
+            className="subpodcast__range"
+            onClick={onProgressClick}
+            onDragEnd={onProgressClick}
+          >
             <div className="buffered">
               <span id="buffered__amount" />
             </div>
