@@ -37,6 +37,7 @@ export default function Subpodcasts() {
     [] as ItemList['Itemlist']
   );
   const [TotalCount, setCount] = useState(0);
+  const [SubscribeCNT, setSubscribeCNT] = useState(0);
   const fetchStep = 50;
   const [currentCount, setCurrentCount] = useState(fetchStep);
   const [searchTotalCount, setSearchCount] = useState(0);
@@ -70,7 +71,7 @@ export default function Subpodcasts() {
 
     const list = getFilteredPodcasts();
     list.then((data) => {
-      // console.log(data);
+      setSubscribeCNT(data.SubscribeCNT);
       setSubPodcasts(data.Itemlist);
       setCount(data.TotalCount);
     });
@@ -192,6 +193,7 @@ export default function Subpodcasts() {
               src={render === 'subs' ? iconNotSubs : iconSubs}
               alt=""
             />
+            <p className="subscribe-cnt">구독자 {SubscribeCNT}</p>
           </div>
         </div>
       </div>

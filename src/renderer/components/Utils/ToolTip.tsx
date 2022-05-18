@@ -14,8 +14,6 @@ export default function ToolTip({ text, visible }: Props) {
   //   // eslint-disable-next-line react-hooks/exhaustive-deps
   // }, [text, titleRef.current]);
 
-  console.log(visible);
-
   return (
     <span
       className={visible ? 'tooltip__container visible' : 'tooltip__container'}

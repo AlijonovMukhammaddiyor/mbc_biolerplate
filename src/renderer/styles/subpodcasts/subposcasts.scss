@@ -113,6 +113,18 @@
             object-fit: contain;
           }
         }
+
+        p {
+          @include font(
+            $size: 12px,
+            $family: 'MBCNEWOTF',
+            $color: #969696,
+            $weight: $light
+          );
+
+          line-height: 13px;
+          letter-spacing: -0.24px;
+        }
       }
     }
   }
