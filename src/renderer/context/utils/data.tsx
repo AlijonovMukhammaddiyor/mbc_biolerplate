@@ -22,7 +22,6 @@ export default class Data<T> {
     onAirVodScheduleTableAPI: '//miniunit.imbc.com/schedule/BorascheduleTable',
 
     // programListAPI: "//miniunit.imbc.com/list/programList",
-    noticeAPI: '//miniunit.imbc.com/Notice',
     podcastListApi: ' https://miniapi.imbc.com/podcast/programlist',
     podcastListByFilterApi:
       'https://miniapi.imbc.com/podcast/categoryprogramlist',
@@ -46,7 +45,7 @@ export default class Data<T> {
       ? `https://miniapi.imbc.com/music/liketrack`
       : `http://miniapi.imbc.com/music/liketrack`,
     deleteMsgApiPC: `https://miniapi.imbc.com/minimsg/msgDel_pc`,
-    noticeApi: `http://miniapi.imbc.com/notice/newNotice`,
+    noticeApi: `https://miniapi.imbc.com/notice/newNotice`,
     guestCornerApi: `https://miniapi.imbc.com/notice/guestCorner`,
     myMsgListApi: window.location.href.includes('https')
       ? `https://miniapi.imbc.com/minimsg/mymsgList_PC`

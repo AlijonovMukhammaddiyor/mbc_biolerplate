@@ -1,5 +1,6 @@
-import { useContext, useState } from 'react';
-import { Context } from '../../../context/context/context';
+import { useContext, useEffect, useState } from 'react';
+import $ from 'jquery';
+import Data from 'renderer/context/utils/data';
 import Top from './Top/Top';
 import Video from './components/Video';
 import SubpodcastInfo from './components/SubpodcastInfo';
@@ -9,11 +10,48 @@ import toRightIcon from '../../../assets/player/top/icon-main.svg';
 import toLeftIcon from '../../../assets/player/top/icon-main_left.svg';
 import toLeftIconOn from '../../../assets/player/top/icon_ch_left_on.svg';
 import toRightIconOn from '../../../assets/player/top/icon_ch_right_on.svg';
+import closeIcon from '../../../assets/player/top/icon_mymess_close.svg';
+import { Context } from '../../../context/context/context';
+
+type Notice = {
+  EndDate: string | null;
+  EndTime: string | null;
+  Notice: string | null;
+  NoticeSeq: string | null;
+  NoticeURL: string | null;
+  startDate: string | null;
+  startTime: string | null;
+};
 
 export default function Image() {
   const { state, dispatch } = useContext(Context);
   const [leftIcon, setLeftIcon] = useState(toLeftIcon);
   const [rightIcon, setRightIcon] = useState(toRightIcon);
+  const [notice, setNotice] = useState<Notice | null>(null);
+  const [noticeClosed, setNoticeClosed] = useState<boolean>(false);
+
+  const fetchNoticeData = () =>
+    $.ajax({
+      url: Data.urls.noticeApi,
+      type: 'GET',
+      data: $.param({
+        Device: 'pc',
+      }),
+      dataType: 'jsonp',
+      success: (data: any) => {
+        setNotice(data);
+      },
+      error: (request, status, error) => {
+        console.error(error);
+      },
+    });
+
+  useEffect(() => {
+    const pollingDuration = 30000;
+    const noticePolling = setTimeout(fetchNoticeData, pollingDuration);
+    fetchNoticeData();
+    return () => clearTimeout(noticePolling);
+  }, []);
 
   const style = {
     display: state.main_state.podcast.subpodcast.isSubpodcastPlaying
@@ -84,6 +122,16 @@ export default function Image() {
       {isVod() && !state.main_state.vod.videoClosed && (
         <div className="temp">
           <Video />
+        </div>
+      )}
+      {!noticeClosed && notice?.Notice && (
+        <div className="mbc__notice">
+          <img
+            src={closeIcon}
+            alt="Close"
+            onClick={() => setNoticeClosed(true)}
+          />
+          <p className="notice">{notice?.Notice}</p>
         </div>
       )}
     </div>
