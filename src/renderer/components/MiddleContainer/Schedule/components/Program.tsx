@@ -107,6 +107,7 @@ export default function Program({ program, slided, setSlided, refer }: Props) {
   );
 
   async function openPodcast() {
+    if (!program.PodCastURL) return;
     let temp = ['표준FM', 'FM4U', '오리지널', '코너 다시듣기', '기타'];
     if (state.main_state.general.channel === 'mfm') {
       temp = ['FM4U', '표준FM', '오리지널', '코너 다시듣기', '기타'];
