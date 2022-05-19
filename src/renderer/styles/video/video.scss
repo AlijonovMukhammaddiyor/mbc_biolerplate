@@ -1,9 +1,9 @@
-@import '../general/general';
+@import '../general/general.scss';
 
 .video__container {
   background: black;
-  // position: absolute;
-  height: auto;
+  position: relative;
+  height: 100%;
   width: 100%;
   // left: 0;
   // bottom: 0;
@@ -66,6 +66,9 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
   }
 
   .video__resize {

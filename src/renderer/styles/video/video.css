@@ -1,35 +1,22 @@
 * {
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
 body {
-  font-family: "MBCNEW";
+  font-family: 'MBCNEW';
   margin: 0;
   padding: 0;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-  display: -webkit-box;
-  display: -ms-flexbox;
+  box-sizing: border-box;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
   gap: auto;
   height: 100%;
-  background: -webkit-gradient(linear, left top, left bottom, from(#3e3e5a), to(#333333));
   background: linear-gradient(to bottom, #3e3e5a, #333333);
 }
-
 @media screen and (max-width: 1080px) {
   body {
     display: block;
@@ -43,73 +30,42 @@ svg {
 
 .video__container {
   background: black;
-  height: auto;
+  position: relative;
+  height: 100%;
   width: 100%;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
   gap: auto;
 }
-
-.video__container:-webkit-full-screen {
-  width: 100vw;
-  height: 100vh;
-}
-
-.video__container:-moz-full-screen {
-  width: 100vw;
-  height: 100vh;
-}
-
-.video__container:-ms-fullscreen {
-  width: 100vw;
-  height: 100vh;
-}
-
 .video__container:fullscreen {
   width: 100vw;
   height: 100vh;
 }
-
 .video__container:-webkit-full-screen {
   width: 100vw;
   height: 80vh;
 }
-
 .video__container img {
   position: absolute;
   cursor: pointer;
   margin: auto;
   width: 100%;
   height: 100%;
-  -o-object-fit: contain;
-     object-fit: contain;
+  object-fit: contain;
   visibility: hidden;
 }
-
 .video__container .video__playing {
   opacity: 1;
 }
-
 .video__container .video__playing:hover {
   opacity: 0.7;
 }
-
 .video__container .video__darken,
 .video__container .video__paused {
   opacity: 0.7;
 }
-
 .video__container .video__volume {
   position: absolute;
   bottom: 25px;
@@ -118,92 +74,66 @@ svg {
   height: 25px;
   visibility: hidden;
 }
-
 .video__container .play__icon,
 .video__container .pause__icon {
   position: absolute;
   width: 66px;
   height: 66px;
 }
-
 .video__container .pause__icon:hover {
   visibility: visible;
 }
-
 .video__container video {
   width: 100%;
   height: 100%;
-  -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
-
 .video__container .video__resize {
-  width: -webkit-min-content;
-  width: -moz-min-content;
   width: min-content;
-  height: -webkit-min-content;
-  height: -moz-min-content;
   height: min-content;
   position: absolute;
   bottom: 50px;
   right: 35px;
 }
-
 .video__container .video__resize img {
   width: 20px;
   height: 20px;
-  -o-object-fit: contain;
-     object-fit: contain;
+  object-fit: contain;
 }
-
 .video__container .video__pop {
-  width: -webkit-min-content;
-  width: -moz-min-content;
   width: min-content;
-  height: -webkit-min-content;
-  height: -moz-min-content;
   height: min-content;
   position: absolute;
   bottom: 50px;
   right: 75px;
 }
-
 .video__container .video__pop .pop__icon {
   width: 20px;
   height: 20px;
-  -o-object-fit: contain;
-     object-fit: contain;
+  object-fit: contain;
 }
-
 .video__container .video__close {
-  width: -webkit-min-content;
-  width: -moz-min-content;
   width: min-content;
-  height: -webkit-min-content;
-  height: -moz-min-content;
   height: min-content;
   position: absolute;
   top: 10px;
   cursor: pointer;
   right: 30px;
 }
-
 .video__container .video__close img {
   width: 15px;
   height: 15px;
-  -o-object-fit: contain;
-     object-fit: contain;
+  object-fit: contain;
 }
-
 .video__container .play__icon__paused img {
   visibility: visible;
 }
-
 .video__container:hover img {
   visibility: visible;
 }
-
 .video__container:hover .video__volume {
   visibility: visible;
 }
-/*# sourceMappingURL=video.css.map */

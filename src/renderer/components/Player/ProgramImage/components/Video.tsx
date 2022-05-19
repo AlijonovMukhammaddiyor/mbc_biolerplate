@@ -18,7 +18,6 @@ export default function Audio() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [fullSize, setFullSize] = useState(false);
   const [isPoped, setPopped] = useState(false);
-  const [minHeight, setMinHeight] = useState('370px');
   async function getUrl(): Promise<string> {
     return new Promise((resolve, reject) => {
       const url = `https://sminiplay.imbc.com/boraplay.ashx?agent=webapp`;
@@ -112,21 +111,7 @@ export default function Audio() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.main_state.vod.vodPlay]);
 
-  useEffect(() => {
-    function changeMinHeight() {
-      const container = document.getElementById(
-        'video__container'
-      ) as HTMLDivElement;
-      const width = container.clientWidth;
-      setMinHeight(`${width * 0.5619}px`);
-    }
-    changeMinHeight();
-    window.addEventListener('resize', changeMinHeight);
-
-    return () => {
-      window.removeEventListener('resize', changeMinHeight);
-    };
-  }, []);
+  useEffect(() => {}, []);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -159,7 +144,6 @@ export default function Audio() {
   return (
     <div
       onMouseLeave={() => setDarken(false)}
-      style={{ minHeight }}
       className="video__container"
       id="video__container"
     >
