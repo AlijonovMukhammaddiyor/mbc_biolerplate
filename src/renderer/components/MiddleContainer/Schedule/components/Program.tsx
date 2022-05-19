@@ -108,40 +108,45 @@ export default function Program({ program, slided, setSlided, refer }: Props) {
 
   async function openPodcast() {
     if (!program.PodCastURL) return;
-    let temp = ['표준FM', 'FM4U', '오리지널', '코너 다시듣기', '기타'];
-    if (state.main_state.general.channel === 'mfm') {
-      temp = ['FM4U', '표준FM', '오리지널', '코너 다시듣기', '기타'];
-    }
-    dispatch({ type: 'PODCAST_TAB' });
-    dispatch({
-      type: 'PODCAST_SEARCH',
-      search: {
-        channel: state.main_state.general.channel === 'sfm' ? 6 : 7,
-        dropsChannel: temp,
-      },
-    });
-    dispatch({ type: 'CHANGE_PODCAST_CHANNEL', channel: 'byChannel' });
-    // dispatch({ type: 'PODCAST_IN', payload: program, channel: 'byChannel' });
+    const channel = state.main_state.general.channel === 'sfm' ? 6 : 7;
     const util = new Utils(state, dispatch);
-    const data = await util.getFilteredPodcastsByChannel(
-      state.main_state.podcast.search.channel,
+    const { list } = await util.getFilteredPodcastsByChannel(
+      channel,
       state.main_state.podcast.search.sortBy,
       100,
       state.main_state.podcast.search.state,
       state.main_state.podcast.search.sort
     );
-    for (let i = 0; i < data.list.length; i += 1) {
-      if (
-        data.list[i].BroadCastID.toString() === program.BroadCastID.toString()
-      ) {
-        dispatch({
-          type: 'PODCAST_IN',
-          payload: data.list[i],
-          channel: 'byChannel',
-        });
-        break;
-      }
+
+    const podcastData = list.find(
+      ({ BroadCastID }: any) =>
+        BroadCastID.toString() === program.BroadCastID.toString()
+    );
+
+    if (podcastData == null) {
+      redirect(program.PodCastURL);
+      return;
     }
+
+    let dropsChannel = ['표준FM', 'FM4U', '오리지널', '코너 다시듣기', '기타'];
+    if (state.main_state.general.channel === 'mfm') {
+      dropsChannel = ['FM4U', '표준FM', '오리지널', '코너 다시듣기', '기타'];
+    }
+    dispatch({ type: 'PODCAST_TAB' });
+    dispatch({
+      type: 'PODCAST_SEARCH',
+      search: {
+        channel,
+        dropsChannel,
+      },
+    });
+    dispatch({ type: 'CHANGE_PODCAST_CHANNEL', channel: 'byChannel' });
+
+    dispatch({
+      type: 'PODCAST_IN',
+      payload: podcastData,
+      channel: 'byChannel',
+    });
   }
 
   function redirect(url: string) {
