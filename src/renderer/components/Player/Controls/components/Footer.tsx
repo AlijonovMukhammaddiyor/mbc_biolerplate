@@ -85,6 +85,10 @@ export default function Footer() {
         />
         <img
           onClick={() => {
+            dispatch({
+              type: 'CHANGE_CHANNEL',
+              channel: state.main_state.general.channel,
+            });
             dispatch({ type: 'SHOW_SCHEDULE' });
             dispatch({ type: 'CLOSE_MY_MINI' });
             dispatch({ type: 'CLOSE_SETTINGS' });
