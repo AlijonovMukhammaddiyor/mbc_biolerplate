@@ -111,32 +111,24 @@ export default function Audio() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.main_state.vod.vodPlay]);
 
-  useEffect(() => {}, []);
-
   useEffect(() => {
     const video = videoRef.current;
     // Video entered Picture-in-Picture mode.
-    video?.addEventListener('enterpictureinpicture', () => {});
+    video?.addEventListener('enterpictureinpicture', () => {
+      setFullSize(false);
+    });
     // Video left Picture-in-Picture mode.
     video?.addEventListener('leavepictureinpicture', () => {
       setPopped(false);
-      const wasPlaying = !video.paused;
-
-      console.log(video.paused);
-
-      if (wasPlaying) {
-        dispatch({ type: 'PAUSE_SET_VIDEO', vodPlay: true });
-        dispatch({ type: 'PAUSE_SET_AUDIO', pause: true });
-      } else {
-        dispatch({ type: 'PAUSE_SET_VIDEO', vodPlay: false });
-      }
     });
 
     return () => {
       video?.removeEventListener('leavepictureinpicture', () => {
         setPopped(false);
       });
-      video?.removeEventListener('enterpictureinpicture', () => {});
+      video?.removeEventListener('enterpictureinpicture', () => {
+        setFullSize(false);
+      });
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -159,6 +151,8 @@ export default function Audio() {
         preload="metadata"
         id="video"
         controls={false}
+        onPause={onPipPause}
+        onPlay={onPipPlay}
       >
         <track default kind="captions" srcLang="kor" />
         Your browser does not support the HTML5 video tag. Use a better browser!
@@ -299,6 +293,16 @@ export default function Audio() {
   function closeVideo() {
     dispatch({ type: 'VIDEO_CLOSE' });
     if (videoPlayer) videoPlayer.destroy();
+    dispatch({ type: 'PAUSE_SET_VIDEO', vodPlay: false });
+  }
+
+  async function onPipPlay() {
+    if (isPoped && !state.main_state.vod.vodPlay) {
+      toggleVideo();
+    }
+  }
+
+  function onPipPause() {
     dispatch({ type: 'PAUSE_SET_VIDEO', vodPlay: false });
   }
 
