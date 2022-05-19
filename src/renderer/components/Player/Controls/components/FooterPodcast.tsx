@@ -80,12 +80,15 @@ export default function FooterPodcast({ dispatch, state }: Props) {
   function showEpisodeList() {
     const { channel } = state.main_state.podcast.subpodcast.parent;
     const { podcast } = state.main_state.podcast.subpodcast.parent;
-    if (channel && podcast)
+    if (channel && podcast) {
+      dispatch({ type: 'PODCAST_TAB' });
+      dispatch({ type: 'CHANGE_PODCAST_CHANNEL', channel: 'byChannel' });
       dispatch({
         type: 'PODCAST_IN',
         channel,
         payload: podcast,
       });
+    }
   }
 
   function toggleLike(subpodcast: ListenedSubpodcast | null) {
