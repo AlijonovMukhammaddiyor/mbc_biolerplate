@@ -238,7 +238,11 @@ export default function Audio({ getDuration }: Props) {
       'audio'
     ) as HTMLAudioElement;
     if (audio) audio.playbackRate = state.main_state.podcast.subpodcast.speed;
-  }, [state.main_state.podcast.subpodcast.speed]);
+  }, [
+    state.main_state.podcast.subpodcast.speed,
+    state.main_state.podcast.subpodcast.currentSubpodcast?.PodCastItemIdx,
+    state.main_state.podcast.subpodcast.isSubpodcastPlaying,
+  ]);
 
   useEffect(() => {
     const audio: HTMLAudioElement = document.getElementById(

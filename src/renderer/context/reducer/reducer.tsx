@@ -457,7 +457,7 @@ const Reducer = (state: STATE, action: any): STATE => {
               resetSubpodcast:
                 !state.main_state.podcast.subpodcast.resetSubpodcast,
               episodePlaylist: action.playlist,
-              currentIndex: action.currentindex,
+              currentIndex: action.currentIndex,
               parent: {
                 podcast: action.podcast,
                 channel: action.channel,
