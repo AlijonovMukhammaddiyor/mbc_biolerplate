@@ -12,99 +12,92 @@ import videoCloseIcon from '../../../../assets/player/video/pop-icon-close.svg';
 import '../../../../styles/video/video.css';
 
 export default function Audio() {
-  const [videoPlayer, setPlayer] = useState(new HLs());
+  const [videoPlayer, setPlayer] = useState<any>(new HLs());
   const [darken, setDarken] = useState(false);
   const { state, dispatch } = useContext(Context);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [fullSize, setFullSize] = useState(false);
   const [isPoped, setPopped] = useState(false);
   const [minHeight, setMinHeight] = useState('370px');
-  const [reRender, setReRender] = useState(false);
+  async function getUrl(): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const url = `https://sminiplay.imbc.com/boraplay.ashx?agent=webapp`;
+      jsonp(url, {}, (err, data) => {
+        if (err) reject(err);
+        else {
+          resolve(data.BoraURL);
+        }
+      });
+    });
+  }
+
+  const initStreaming = async () => {
+    if (!state.main_state.podcast.subpodcast.isSubpodcastPlaying) {
+      const data = await getUrl();
+      // eslint-disable-next-line no-param-reassign
+      if (HLs.isSupported()) {
+        if (videoPlayer) {
+          videoPlayer.destroy();
+        }
+        const newPlayer = new HLs({ autoStartLoad: true, debug: false });
+
+        newPlayer.loadSource(data);
+
+        if (videoRef.current !== null) {
+          newPlayer.attachMedia(videoRef.current);
+          if (state.main_state.vod.vodPlay)
+            newPlayer.on(HLs.Events.MANIFEST_PARSED, () => {
+              if (videoRef.current) {
+                videoRef.current.volume = state.main_state.player.volume / 10;
+                const playPromise = videoRef.current.play();
+                if (playPromise !== undefined) {
+                  // eslint-disable-next-line promise/no-nesting
+                  playPromise
+                    .then(() => {})
+                    .catch((error) => {
+                      console.log(error);
+                    });
+                }
+              }
+            });
+
+          newPlayer.on(HLs.Events.ERROR, (_event, res) => {
+            if (res.fatal) {
+              switch (res.type) {
+                case HLs.ErrorTypes.NETWORK_ERROR:
+                  // try to recover network error
+                  console.log(
+                    'fatal network error encountered, try to recover 1'
+                  );
+                  videoPlayer.startLoad();
+                  break;
+                case HLs.ErrorTypes.MEDIA_ERROR:
+                  console.log(
+                    'fatal media error encountered, try to recover 2'
+                  );
+                  videoPlayer.recoverMediaError();
+                  break;
+                default:
+                  // cannot recover
+                  if (videoPlayer) videoPlayer.destroy();
+                  break;
+              }
+            }
+          });
+
+          setPlayer(newPlayer);
+        }
+      }
+    }
+  };
 
   useEffect(() => {
-    async function getUrl(): Promise<string> {
-      return new Promise((resolve, reject) => {
-        const url = `https://sminiplay.imbc.com/boraplay.ashx?agent=webapp`;
-        jsonp(url, {}, (err, data) => {
-          if (err) reject(err);
-          else {
-            resolve(data.BoraURL);
-          }
-        });
-      });
-    }
-
-    if (!state.main_state.podcast.subpodcast.isSubpodcastPlaying) {
-      const data: Promise<string> = getUrl();
-      data
-        .then((response) => {
-          // eslint-disable-next-line no-param-reassign
-          // response =
-          //   'http://qthttp.apple.com.edgesuite.net/1010qwoeiuryfg/sl.m3u8';
-          const config = { autoStartLoad: true, debug: false };
-
-          if (HLs.isSupported()) {
-            if (videoPlayer) {
-              videoPlayer.destroy();
-            }
-            const newPlayer = new HLs(config);
-
-            newPlayer.loadSource(response);
-            if (videoRef.current !== null) {
-              newPlayer.attachMedia(videoRef.current);
-              if (state.main_state.vod.vodPlay)
-                newPlayer.on(HLs.Events.MANIFEST_PARSED, () => {
-                  if (videoRef.current) {
-                    videoRef.current.volume =
-                      state.main_state.player.volume / 10;
-                    const playPromise = videoRef.current.play();
-                    if (playPromise !== undefined) {
-                      // eslint-disable-next-line promise/no-nesting
-                      playPromise
-                        .then(() => {})
-                        .catch((error) => {
-                          console.log(error);
-                        });
-                    }
-                  }
-                });
-
-              newPlayer.on(HLs.Events.ERROR, (_event, res) => {
-                if (res.fatal) {
-                  switch (res.type) {
-                    case HLs.ErrorTypes.NETWORK_ERROR:
-                      // try to recover network error
-                      console.log(
-                        'fatal network error encountered, try to recover 1'
-                      );
-                      videoPlayer.startLoad();
-                      break;
-                    case HLs.ErrorTypes.MEDIA_ERROR:
-                      console.log(
-                        'fatal media error encountered, try to recover 2'
-                      );
-                      videoPlayer.recoverMediaError();
-                      break;
-                    default:
-                      // cannot recover
-                      if (videoPlayer) videoPlayer.destroy();
-                      break;
-                  }
-                }
-              });
-
-              setPlayer(newPlayer);
-            }
-          }
-        })
-        .catch((err) => console.log(err));
-    }
-
+    dispatch({ type: 'PAUSE_SET_VIDEO', vodPlay: false });
+    initStreaming();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     state.main_state.general.channel,
     state.main_state.podcast.subpodcast.isSubpodcastPlaying,
-    reRender,
   ]);
 
   useEffect(() => {
@@ -113,19 +106,8 @@ export default function Audio() {
   }, [state.main_state.vod.volume]);
 
   useEffect(() => {
-    const video = videoRef.current;
-    if (!state.main_state.vod.vodPlay && video) {
-      video.pause();
-    } else if (video) {
-      const playPromise = video.play();
-      playPromise
-        .then(() => {
-          dispatch({ type: 'PAUSE_SET_AUDIO', pause: true });
-        })
-        .catch(() => {
-          // video.play();
-          setReRender(!reRender);
-        });
+    if (!state.main_state.vod.vodPlay && videoRef.current) {
+      videoRef.current.pause();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.main_state.vod.vodPlay]);
@@ -312,13 +294,21 @@ export default function Audio() {
     }
   }
 
-  function toggleVideo() {
-    if (state.main_state.vod.vodPlay) {
-      // videoPlayer?.destroy();
-      dispatch({ type: 'PAUSE_SET_VIDEO', vodPlay: false });
-    } else {
-      dispatch({ type: 'PAUSE_SET_AUDIO', pause: true });
+  async function playVideo() {
+    dispatch({ type: 'SET_PAUSE', paused: true });
+    videoPlayer?.destroy();
+    setPlayer(null);
+    await initStreaming();
+    if (videoRef.current) videoRef.current.play();
+  }
+
+  async function toggleVideo() {
+    if (!state.main_state.vod.vodPlay) {
+      await playVideo();
       dispatch({ type: 'PAUSE_SET_VIDEO', vodPlay: true });
+      dispatch({ type: 'PAUSE_SET_AUDIO', pause: true });
+    } else {
+      dispatch({ type: 'PAUSE_SET_VIDEO', vodPlay: false });
     }
   }
 
