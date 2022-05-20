@@ -82,6 +82,17 @@ export default function Footer() {
               : videoIconNone
           }
           alt=""
+          style={
+            state.main_state.vod.isVod
+              ? state.main_state.vod.videoClosed
+                ? isRightChannel()
+                  ? { cursor: 'pointer' }
+                  : {}
+                : isRightChannel()
+                ? { cursor: 'pointer' }
+                : {}
+              : {}
+          }
         />
         <img
           onClick={() => {

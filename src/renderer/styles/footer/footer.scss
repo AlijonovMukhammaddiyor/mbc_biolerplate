@@ -1,24 +1,24 @@
-@import "../general/general.scss";
+@import '../general/general.scss';
 
 .footer__container {
   width: 100%;
   @include flex($just: space-between);
   padding: 10px 30px 0;
-  img {
-    cursor: pointer;
-  }
+
   .left {
     @include flex($gap: 20px, $align: baseline);
     .icon__home {
       width: 26px;
       height: 26px;
       object-fit: contain;
+      cursor: pointer;
     }
 
     .icon__sns {
       width: 24px;
       height: 24px;
       object-fit: contain;
+      cursor: pointer;
     }
   }
 
@@ -32,6 +32,7 @@
       width: 25px;
       height: 24px;
       object-fit: contain;
+      cursor: pointer;
     }
   }
 }

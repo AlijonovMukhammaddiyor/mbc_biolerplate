@@ -60,10 +60,6 @@ svg {
   padding: 10px 30px 0;
 }
 
-.footer__container img {
-  cursor: pointer;
-}
-
 .footer__container .left {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -86,6 +82,7 @@ svg {
   height: 26px;
   -o-object-fit: contain;
      object-fit: contain;
+  cursor: pointer;
 }
 
 .footer__container .left .icon__sns {
@@ -93,6 +90,7 @@ svg {
   height: 24px;
   -o-object-fit: contain;
      object-fit: contain;
+  cursor: pointer;
 }
 
 .footer__container .right {
@@ -123,5 +121,6 @@ svg {
   height: 24px;
   -o-object-fit: contain;
      object-fit: contain;
+  cursor: pointer;
 }
 /*# sourceMappingURL=footer.css.map */

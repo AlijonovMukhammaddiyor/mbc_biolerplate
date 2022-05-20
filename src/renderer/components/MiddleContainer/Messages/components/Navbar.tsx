@@ -45,6 +45,8 @@ export default function Navbar({
                 ? 'message_tab'
                 : 'not_message_tab'
             }
+            style={{ cursor: 'pointer' }}
+            onClick={() => dispatch({ type: 'MESSAGES_ON' })}
           >
             mini 메시지
           </p>
