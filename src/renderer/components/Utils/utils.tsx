@@ -217,11 +217,7 @@ export default class Utils {
                 parseInt(data.StartTime.substring(0, 2), 10) * 60 +
                 parseInt(data.StartTime.substring(3, 4), 10);
 
-              if (
-                startTime - now.time <= 1 / 30 &&
-                startTime - now.time > 0 &&
-                !this.NotificationSent
-              ) {
+              if (startTime - now.time === 0 && !this.NotificationSent) {
                 that.NotificationSent = true;
                 setTimeout(() => {
                   that.NotificationSent = false;

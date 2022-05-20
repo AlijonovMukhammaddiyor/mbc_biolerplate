@@ -106,7 +106,9 @@ export default function EachSubpodcast({
               mouseOver === subpodcast.EncloserURL ? 'date hover' : 'date'
             }
           >
-            {subpodcast.BroadDate || subpodcast.DatePub || subpodcast.PubDate}
+            {subpodcast.BroadDate?.slice(0, 10) ||
+              subpodcast.DatePub?.slice(0, 10) ||
+              subpodcast.PubDate?.slice(0, 10)}
           </p>
           <ToolTip
             visible={hover && shouldDisplay()}
